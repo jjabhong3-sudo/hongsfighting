@@ -374,12 +374,12 @@ export default function MainTab({
         )}
       </div>
 
-      {/* ===== 부채 동기부여 카드 (참고사이트 스타일) ===== */}
+      {/* ===== 부채 동기부여 카드 ===== */}
       {settings.debts.length > 0 && (
         <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-2">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-base font-bold text-[#f1f5f9]">갚아야 할 빚</h3>
-            <span className="text-base font-bold text-[#f59e0b]">
+            <span className="text-base font-bold text-[#f43f5e]">
               {debtProgress.paidPercent}%
             </span>
           </div>
@@ -389,20 +389,20 @@ export default function MainTab({
             <div
               className={`rounded-full h-10 transition-all duration-500 absolute top-0 left-0 ${
                 debtProgress.remainingPercent <= 25
-                  ? 'gradient-bar-green'
+                  ? 'gradient-bar-teal'
                   : debtProgress.remainingPercent <= 50
                   ? 'gradient-bar-blue'
                   : debtProgress.remainingPercent <= 75
                   ? 'gradient-bar-orange'
-                  : 'bg-gradient-to-r from-[#f43f5e] to-[#ec4899]'
+                  : 'gradient-bar-rose'
               }`}
               style={{ width: `${debtProgress.paidPercent}%` }}
             />
             <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-              <span>{Math.min(totalAllEarnings, totalDebtAmount).toLocaleString()}원</span>
-              <span className="mx-1 text-white/70">/</span>
-              <span className="text-[#fbbf24]">{totalDebtAmount.toLocaleString()}원</span>
-              <span className="ml-2 text-xs text-white/80">({debtProgress.remainingPercent}% 남음)</span>
+              <span className="text-[#f1f5f9]">{Math.min(totalAllEarnings, totalDebtAmount).toLocaleString()}원</span>
+              <span className="mx-1 text-white/60">/</span>
+              <span className="text-[#f43f5e]">{totalDebtAmount.toLocaleString()}원</span>
+              <span className="ml-2 text-xs text-[#f59e0b]">({debtProgress.remainingPercent}% 남음)</span>
             </div>
           </div>
 
