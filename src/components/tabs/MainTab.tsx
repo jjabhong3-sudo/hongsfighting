@@ -384,10 +384,10 @@ export default function MainTab({
             </span>
           </div>
 
-          {/* 전체 부채 진행 막대 - 남은 금액에 따라 색상 변경 */}
-          <div className="w-full bg-[#0f172a] rounded-full h-4 mb-2 overflow-hidden">
+          {/* 전체 부채 진행 막대 - 남은 금액에 따라 색상 변경, 내부에 금액 표시 */}
+          <div className="w-full bg-[#0f172a] rounded-full h-10 mb-2 overflow-hidden relative">
             <div
-              className={`rounded-full h-4 transition-all duration-500 ${
+              className={`rounded-full h-10 transition-all duration-500 absolute top-0 left-0 ${
                 debtProgress.remainingPercent <= 25
                   ? 'gradient-bar-green'
                   : debtProgress.remainingPercent <= 50
@@ -398,17 +398,12 @@ export default function MainTab({
               }`}
               style={{ width: `${debtProgress.paidPercent}%` }}
             />
-          </div>
-
-          {/* 전체 금액 표시 (갚은 금액 / 전체 금액) */}
-          <div className="text-center mb-2">
-            <span className="text-lg font-bold text-[#f1f5f9]">
-              {Math.min(totalAllEarnings, totalDebtAmount).toLocaleString()}원
-            </span>
-            <span className="text-base text-[#64748b]"> / </span>
-            <span className="text-lg font-bold text-[#f59e0b]">
-              {totalDebtAmount.toLocaleString()}원
-            </span>
+            <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+              <span>{Math.min(totalAllEarnings, totalDebtAmount).toLocaleString()}원</span>
+              <span className="mx-1 text-white/70">/</span>
+              <span className="text-[#fbbf24]">{totalDebtAmount.toLocaleString()}원</span>
+              <span className="ml-2 text-xs text-white/80">({debtProgress.remainingPercent}% 남음)</span>
+            </div>
           </div>
 
           {/* 부채 항목 리스트 (접기 가능, 기본 접힘) */}
