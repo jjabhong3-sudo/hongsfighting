@@ -1,12 +1,12 @@
 // ============================================================
-// Mapbox GL JS 경로 지도 (네온모드)
+// Mapbox GL JS 경로 지도 (네온모드 + 국가별 이모지 마커)
 // ============================================================
 
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { WAYPOINTS, TOTAL_DISTANCE_KM } from '@/lib/route/waypoints';
+import { WAYPOINTS, TOTAL_DISTANCE_KM, COUNTRY_SEGMENTS } from '@/lib/route/waypoints';
 import { calculateProgress, interpolatePosition } from '@/lib/route/progress';
 
 interface RouteMapProps {
@@ -33,7 +33,7 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: 'mapbox://styles/mapbox/dark-v11',
-        center: [126.83, 37.56], // 서울 화곡역 근처
+        center: [126.83, 37.56],
         zoom: 10,
         attributionControl: false,
       });
@@ -43,38 +43,43 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
       map.on('load', () => {
         if (!map) return;
 
-        // 전체 경로 라인
         const coordinates = WAYPOINTS.map((w) => [w.lng, w.lat] as [number, number]);
 
-        map.addSource('route', {
-          type: 'geojson',
-          data: {
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              type: 'LineString',
-              coordinates,
+        // ===== 국가별 구간 라인 =====
+        COUNTRY_SEGMENTS.forEach((seg) => {
+          const segCoords = coordinates.slice(seg.startIndex, seg.endIndex + 1);
+          if (segCoords.length < 2) return;
+
+          const sourceId = `segment-${seg.startIndex}`;
+          map.addSource(sourceId, {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates: segCoords,
+              },
             },
-          },
+          });
+
+          map.addLayer({
+            id: `segment-line-${seg.startIndex}`,
+            type: 'line',
+            source: sourceId,
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round',
+            },
+            paint: {
+              'line-color': seg.color,
+              'line-width': 2,
+              'line-opacity': 0.35,
+            },
+          });
         });
 
-        // 전체 경로 (네온 느낌)
-        map.addLayer({
-          id: 'route-line',
-          type: 'line',
-          source: 'route',
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round',
-          },
-          paint: {
-            'line-color': '#00e5ff',
-            'line-width': 2,
-            'line-opacity': 0.4,
-          },
-        });
-
-        // 지나온 구간 (네온 굵게)
+        // ===== 지나온 구간 (네온 굵게) =====
         const progress = calculateProgress(totalDistanceKm);
         const passedCoords = coordinates.slice(
           0,
@@ -128,40 +133,75 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
           });
         }
 
-        // 경유지 마커 (네온 스타일)
+        // ===== 경유지 마커 (국가별 이모지) =====
         WAYPOINTS.forEach((wp, i) => {
-          const el = document.createElement('div');
-          el.className = 'waypoint-marker';
           const isStart = i === 0;
           const isEnd = i === WAYPOINTS.length - 1;
-          const color = isStart ? '#00e676' : isEnd ? '#ff1744' : '#00e5ff';
-          el.style.cssText = `
-            width: ${isStart || isEnd ? '14px' : '10px'};
-            height: ${isStart || isEnd ? '14px' : '10px'};
-            border-radius: 50%;
-            background: ${color};
-            border: 2px solid rgba(255,255,255,0.8);
-            box-shadow: 0 0 12px ${color}, 0 0 24px ${color}40;
-          `;
 
-          const popup = new mapboxgl.Popup({
-            offset: 10,
-            className: 'neon-popup',
-          }).setHTML(
-            `<div style="color:#00e5ff;font-weight:bold;font-size:12px;">${wp.name}</div><div style="color:#aaa;font-size:10px;">${wp.distanceKmFromStart.toLocaleString()}km</div>`
-          );
+          // 주요 도시(시작/종료/수도/랜드마크)는 큰 이모지, 나머지는 작은 점
+          const isMajor =
+            isStart ||
+            isEnd ||
+            ['도쿄', '오사카', '베이징', '상하이', '타이베이', '홍콩', '하노이', '호치민', '방콕', '싱가포르', '치앙마이', '비엔티안', '파타야'].includes(
+              wp.name
+            );
 
-          new mapboxgl.Marker({ element: el })
-            .setLngLat([wp.lng, wp.lat])
-            .setPopup(popup)
-            .addTo(map);
+          if (isMajor) {
+            // 주요 도시: 큰 이모지 마커
+            const el = document.createElement('div');
+            el.textContent = wp.emoji;
+            el.style.cssText = `
+              font-size: ${isStart || isEnd ? '28px' : '22px'};
+              filter: drop-shadow(0 0 8px rgba(0,229,255,0.6));
+              cursor: pointer;
+              transition: transform 0.2s;
+            `;
+
+            const popup = new mapboxgl.Popup({
+              offset: 10,
+              className: 'neon-popup',
+            }).setHTML(
+              `<div style="color:#00e5ff;font-weight:bold;font-size:13px;">${wp.emoji} ${wp.name}</div>
+               <div style="color:#aaa;font-size:11px;">${wp.country} · ${wp.distanceKmFromStart.toLocaleString()}km</div>`
+            );
+
+            new mapboxgl.Marker({ element: el })
+              .setLngLat([wp.lng, wp.lat])
+              .setPopup(popup)
+              .addTo(map);
+          } else {
+            // 일반 도시: 작은 네온 점
+            const el = document.createElement('div');
+            el.style.cssText = `
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background: #00e5ff;
+              border: 1px solid rgba(255,255,255,0.5);
+              box-shadow: 0 0 6px #00e5ff;
+              opacity: 0.6;
+              cursor: pointer;
+            `;
+
+            const popup = new mapboxgl.Popup({
+              offset: 10,
+              className: 'neon-popup',
+            }).setHTML(
+              `<div style="color:#00e5ff;font-weight:bold;font-size:12px;">${wp.name}</div>
+               <div style="color:#aaa;font-size:10px;">${wp.country} · ${wp.distanceKmFromStart.toLocaleString()}km</div>`
+            );
+
+            new mapboxgl.Marker({ element: el })
+              .setLngLat([wp.lng, wp.lat])
+              .setPopup(popup)
+              .addTo(map);
+          }
         });
 
-        // 현재 위치 마커 (자전거 + 네온 링)
+        // ===== 현재 위치 마커 (자전거 + 네온 링) =====
         if (totalDistanceKm > 0) {
           const pos = interpolatePosition(totalDistanceKm);
 
-          // 네온 링
           const ringEl = document.createElement('div');
           ringEl.style.cssText = `
             width: 40px;
@@ -175,7 +215,6 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
             left: -20px;
           `;
 
-          // 자전거 아이콘
           const bikeEl = document.createElement('div');
           bikeEl.textContent = '🚴';
           bikeEl.style.cssText = `
@@ -195,13 +234,14 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
             .setLngLat([pos.lng, pos.lat])
             .setPopup(
               new mapboxgl.Popup({ offset: 10, className: 'neon-popup' }).setHTML(
-                `<div style="color:#00e5ff;font-weight:bold;font-size:12px;">현재 위치</div><div style="color:#aaa;font-size:10px;">${totalDistanceKm.toLocaleString()}km</div>`
+                `<div style="color:#00e5ff;font-weight:bold;font-size:12px;">🚴 현재 위치</div>
+                 <div style="color:#aaa;font-size:10px;">${totalDistanceKm.toLocaleString()}km</div>`
               )
             )
             .addTo(map);
         }
 
-        // 예상 도착 지점 (하루 50km 기준)
+        // ===== 예상 도착 지점 (하루 50km 기준) =====
         const estimatedKm = totalDistanceKm + 50;
         if (estimatedKm < TOTAL_DISTANCE_KM) {
           const estPos = interpolatePosition(estimatedKm);
@@ -217,13 +257,14 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
             .setLngLat([estPos.lng, estPos.lat])
             .setPopup(
               new mapboxgl.Popup({ offset: 10, className: 'neon-popup' }).setHTML(
-                `<div style="color:#ffab00;font-weight:bold;font-size:12px;">예상 도착</div><div style="color:#aaa;font-size:10px;">${estimatedKm.toLocaleString()}km</div>`
+                `<div style="color:#ffab00;font-weight:bold;font-size:12px;">📍 예상 도착 (+50km)</div>
+                 <div style="color:#aaa;font-size:10px;">${estimatedKm.toLocaleString()}km</div>`
               )
             )
             .addTo(map);
         }
 
-        // 초기 로드: 현재 위치 기준 반경 50km로 fitBounds
+        // ===== 초기 로드: 현재 위치 기준 반경 50km =====
         if (totalDistanceKm > 0) {
           const pos = interpolatePosition(totalDistanceKm);
           map.fitBounds(
@@ -234,7 +275,6 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
             { padding: 50, maxZoom: 12 }
           );
         } else {
-          // 출발 전: 서울 화곡역 기준 반경 50km
           map.fitBounds(
             [
               [126.38, 37.11],

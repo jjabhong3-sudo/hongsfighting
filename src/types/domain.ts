@@ -70,6 +70,8 @@ export interface Waypoint {
   lng: number;
   segmentType: SegmentType;
   distanceKmFromStart: number; // 시작점부터 누적 거리(km)
+  emoji: string;               // 국가별 마커 이모지
+  country: string;             // 국가명
 }
 
 /** 구간 진행 정보 */
