@@ -228,11 +228,11 @@ export default function MainTab({
         <div className="text-xl font-extrabold text-[#ef4444]">
           돈벌어서 여행가자!
         </div>
-        <div className="text-sm text-[#64748b]">{todayDisplay}</div>
+        <div className="text-sm text-[#2d334a]">{todayDisplay}</div>
       </div>
 
       {/* ===== 트래블 카드 (지도 + 상태 + 접기) ===== */}
-      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] overflow-hidden mb-2">
+      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] overflow-hidden mb-2">
         {/* 헤더: 운행일차 + 접기 버튼 */}
         <div className="flex items-center justify-between px-3 pt-2 pb-1">
           <div className="flex items-center gap-2">
@@ -243,7 +243,7 @@ export default function MainTab({
           </div>
           <button
             onClick={() => setMapCollapsed(!mapCollapsed)}
-            className="text-xs text-[#64748b] bg-slate-100 px-3 py-1 rounded-full hover:bg-slate-200 transition-colors"
+            className="text-xs text-[#2d334a] bg-[#e3f6f5] px-3 py-1 rounded-full hover:bg-[#bae8e8] transition-colors"
           >
             {mapCollapsed ? '지도 펼치기' : '지도 접기'}
           </button>
@@ -309,20 +309,20 @@ export default function MainTab({
       </div>
 
       {/* ===== 출퇴근 카드 ===== */}
-      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-2">
+      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-2">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <span
               className={`w-3 h-3 rounded-full ${
-                activeSession ? 'bg-[#10b981] animate-pulse' : 'bg-slate-300'
+                activeSession ? 'bg-[#10b981] animate-pulse' : 'bg-[#bae8e8]'
               }`}
             />
-            <span className="text-base font-bold text-[#0f172a]">
+            <span className="text-base font-bold text-[#272343]">
               {activeSession ? `${shiftLabel} 근무중` : '출근 준비'}
             </span>
           </div>
           {activeSession && (
-            <span className="text-sm text-[#64748b]">
+            <span className="text-sm text-[#2d334a]">
               {new Date(activeSession.startAt).toLocaleTimeString('ko-KR', {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -376,9 +376,9 @@ export default function MainTab({
 
       {/* ===== 부채 동기부여 카드 ===== */}
       {settings.debts.length > 0 && (
-        <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-2">
+        <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-2">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-base font-bold text-[#0f172a]">갚아야 할 빚</h3>
+            <h3 className="text-base font-bold text-[#272343]">갚아야 할 빚</h3>
             <span className="text-base font-bold text-[#ef4444]">
               {debtProgress.paidPercent}%
             </span>
@@ -468,10 +468,10 @@ export default function MainTab({
       )}
 
       {/* ===== 금주 수익 ===== */}
-      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-2">
+      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-2">
         <div className="flex justify-between items-center mb-1">
-          <h3 className="text-base font-bold text-[#0f172a]">이번 주 수익</h3>
-          <span className="text-sm text-[#64748b]">
+          <h3 className="text-base font-bold text-[#272343]">이번 주 수익</h3>
+          <span className="text-sm text-[#2d334a]">
             {weeklyStats.weekStart.slice(5)} ~ {weeklyStats.weekEnd.slice(5)}
           </span>
         </div>
@@ -537,8 +537,8 @@ export default function MainTab({
       </div>
 
       {/* ===== 금주 수익 그래프 (월~일 7일) ===== */}
-      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-2">
-        <h3 className="text-base font-bold text-[#0f172a] mb-2">금주 수익 그래프</h3>
+      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-2">
+        <h3 className="text-base font-bold text-[#272343] mb-2">금주 수익 그래프</h3>
         <div className="flex items-end gap-1.5 h-32 mb-2">
           {(() => {
             const ws = weekStartKst();
@@ -608,8 +608,8 @@ export default function MainTab({
       </div>
 
       {/* ===== 금주 수익 상세기록 ===== */}
-      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-4">
-        <h3 className="text-base font-bold text-[#0f172a] mb-2">이번 주 기록</h3>
+      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-4">
+        <h3 className="text-base font-bold text-[#272343] mb-2">이번 주 기록</h3>
 
         {thisWeekSessions.length === 0 ? (
           <div className="text-center text-[#64748b] text-base py-4">
