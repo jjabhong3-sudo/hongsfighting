@@ -168,6 +168,9 @@ export default function MainTab({
     (d) => !completedDebts.includes(d)
   );
 
+  // 주간 목표 달성 여부
+  const weeklyGoalAchieved = weeklyStats.totalEarnings >= settings.goals.weekly;
+
   return (
     <div className="px-4 pb-24">
       {/* ===== 레이어0: 헤더 (메인테마) ===== */}
@@ -375,7 +378,9 @@ export default function MainTab({
         </div>
         <div className="w-full bg-gray-100 rounded-full h-2 mb-3">
           <div
-            className="bg-blue-400 rounded-full h-2 transition-all"
+            className={`rounded-full h-2 transition-all ${
+              weeklyGoalAchieved ? 'bg-gradient-to-r from-yellow-400 to-orange-500 animate-pulse' : 'bg-blue-400'
+            }`}
             style={{
               width: `${Math.min(
                 100,
@@ -384,6 +389,15 @@ export default function MainTab({
             }}
           />
         </div>
+
+        {/* 주간 목표 달성 시 스타일리시한 COMPLETE */}
+        {weeklyGoalAchieved && (
+          <div className="text-center mb-3">
+            <span className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-bold px-4 py-1.5 rounded-full animate-bounce shadow-lg">
+              🎉 주간 목표 COMPLETE! 🎉
+            </span>
+          </div>
+        )}
 
         {/* 3행 요약 - 오늘 금액은 activeSession 포함 */}
         <div className="grid grid-cols-3 gap-2 text-xs text-gray-500">
@@ -461,7 +475,7 @@ export default function MainTab({
                   className={`w-full rounded-t transition-all ${
                     hasData
                       ? day.achieved
-                        ? 'bg-sky-400'
+                        ? 'bg-gradient-to-t from-yellow-400 to-orange-400'
                         : 'bg-gray-300'
                       : 'bg-gray-100'
                   }`}
@@ -501,6 +515,8 @@ export default function MainTab({
                 const sorted = [...daySessions].sort((a, b) =>
                   a.shiftType === 'morning' ? -1 : 1
                 );
+                const dailyTotal = dailyTotalEarnings(thisWeekSessions, dateKst);
+                const dailyGoalAchieved = dailyTotal >= settings.goals.daily;
 
                 return (
                   <div key={dateKst} className="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
@@ -509,9 +525,16 @@ export default function MainTab({
                       <span className="text-sm font-bold text-gray-700">
                         {dateKst}
                       </span>
-                      <span className="text-xs font-bold text-blue-600">
-                        일일 합계 {dailyTotalEarnings(thisWeekSessions, dateKst).toLocaleString()}원
-                      </span>
+                      <div className="flex items-center gap-2">
+                        {dailyGoalAchieved && (
+                          <span className="text-[10px] bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 py-0.5 rounded-full font-bold shadow-sm">
+                            COMPLETE
+                          </span>
+                        )}
+                        <span className="text-xs font-bold text-blue-600">
+                          일일 합계 {dailyTotal.toLocaleString()}원
+                        </span>
+                      </div>
                     </div>
 
                     {sorted.map((session) => {
@@ -551,6 +574,7 @@ export default function MainTab({
                           key={sessionKey}
                           className="ml-2 pl-3 border-l-2 border-gray-100 py-2"
                         >
+                          {/* 오전/오후 + 금액 + 건수/시간/거리 (같은 줄) */}
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex items-center gap-2">
                               <span
@@ -562,19 +586,17 @@ export default function MainTab({
                               >
                                 {isMorning ? '오전' : '오후'}
                               </span>
+                              <span className="text-sm font-bold">
+                                {earnings.toLocaleString()}원
+                              </span>
+                              <span className="text-xs text-gray-500">
+                                {count}건 | {formatDurationShort(session.durationMin)} | {session.distanceKmInput}km
+                              </span>
                             </div>
-                            <span className="text-sm font-bold">
-                              {earnings.toLocaleString()}원
-                            </span>
-                          </div>
-
-                          {/* 건수 | 시간 | 거리 */}
-                          <div className="text-[11px] text-gray-500 mb-1">
-                            건수 {count}건 | {formatDurationShort(session.durationMin)} | {session.distanceKmInput}km
                           </div>
 
                           {/* 건당 | 시급 | km당 */}
-                          <div className="grid grid-cols-3 gap-1 text-[10px] text-gray-400 mb-1">
+                          <div className="grid grid-cols-3 gap-1 text-xs text-gray-400 mb-1">
                             <span>건당 {avg.toLocaleString()}원</span>
                             <span>시급 {hr.toLocaleString()}원</span>
                             <span>km당 {epk.toLocaleString()}원</span>
@@ -583,12 +605,12 @@ export default function MainTab({
                           {/* 플랫폼별 상세 (색상 구분) */}
                           <div className="space-y-0.5">
                             {cquickCount > 0 && (
-                              <div className="text-[11px] text-blue-600 font-medium">
+                              <div className="text-xs text-blue-600 font-medium">
                                 🚀 카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
                               </div>
                             )}
                             {baeminCount > 0 && (
-                              <div className="text-[11px] text-emerald-600 font-medium">
+                              <div className="text-xs text-emerald-600 font-medium">
                                 🛵 배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
                               </div>
                             )}

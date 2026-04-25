@@ -100,6 +100,9 @@ export default function MonthlyTab({
     (d) => d.achieved
   ).length;
 
+  // 월간 목표 달성 여부
+  const monthlyGoalAchieved = stats.totalEarnings >= settings.goals.monthly;
+
   // 수정 시작
   const startEdit = (session: WorkSession) => {
     setEditingSession(session);
@@ -206,7 +209,7 @@ export default function MonthlyTab({
                 className={`aspect-square rounded-lg flex flex-col items-center justify-center text-xs ${
                   data
                     ? data.achieved
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-gradient-to-b from-yellow-100 to-green-100 text-green-700'
                       : 'bg-orange-100 text-orange-600'
                     : 'text-gray-300'
                 }`}
@@ -267,7 +270,7 @@ export default function MonthlyTab({
         <div className="w-full bg-gray-100 rounded-full h-3">
           <div
             className={`rounded-full h-3 transition-all ${
-              stats.goalAchieved ? 'bg-green-500' : 'bg-blue-500'
+              monthlyGoalAchieved ? 'bg-gradient-to-r from-yellow-400 to-orange-500 animate-pulse' : 'bg-blue-500'
             }`}
             style={{
               width: `${Math.min(
@@ -277,6 +280,15 @@ export default function MonthlyTab({
             }}
           />
         </div>
+
+        {/* 월간 목표 달성 시 스타일리시한 COMPLETE */}
+        {monthlyGoalAchieved && (
+          <div className="text-center mt-3">
+            <span className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-bold px-4 py-1.5 rounded-full animate-bounce shadow-lg">
+              🎉 월간 목표 COMPLETE! 🎉
+            </span>
+          </div>
+        )}
       </div>
 
       {/* ===== 레이어3: 월간 상세내역 (수정/삭제 포함) ===== */}
@@ -306,6 +318,8 @@ export default function MonthlyTab({
                 const sorted = [...daySessions].sort((a, b) =>
                   a.shiftType === 'morning' ? -1 : 1
                 );
+                const dailyTotal = dailyTotalEarnings(monthSessions, dateKst);
+                const dailyGoalAchieved = dailyTotal >= settings.goals.daily;
 
                 return (
                   <div key={dateKst} className="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
@@ -314,9 +328,16 @@ export default function MonthlyTab({
                       <span className="text-sm font-bold text-gray-700">
                         {dateKst}
                       </span>
-                      <span className="text-xs font-bold text-blue-600">
-                        일일 합계 {dailyTotalEarnings(monthSessions, dateKst).toLocaleString()}원
-                      </span>
+                      <div className="flex items-center gap-2">
+                        {dailyGoalAchieved && (
+                          <span className="text-[10px] bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 py-0.5 rounded-full font-bold shadow-sm">
+                            COMPLETE
+                          </span>
+                        )}
+                        <span className="text-xs font-bold text-blue-600">
+                          일일 합계 {dailyTotal.toLocaleString()}원
+                        </span>
+                      </div>
                     </div>
 
                     {/* 오전/오후 각각 표시 */}
@@ -357,6 +378,7 @@ export default function MonthlyTab({
                           key={sessionKey}
                           className="ml-2 pl-3 border-l-2 border-gray-100 py-2"
                         >
+                          {/* 오전/오후 + 금액 + 건수/시간/거리 (같은 줄) */}
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex items-center gap-2">
                               <span
@@ -367,6 +389,12 @@ export default function MonthlyTab({
                                 }`}
                               >
                                 {isMorning ? '오전' : '오후'}
+                              </span>
+                              <span className="text-sm font-bold">
+                                {earnings.toLocaleString()}원
+                              </span>
+                              <span className="text-xs text-gray-500">
+                                {count}건 | {formatDurationShort(session.durationMin)} | {session.distanceKmInput}km
                               </span>
                               <button
                                 onClick={() => startEdit(session)}
@@ -384,18 +412,10 @@ export default function MonthlyTab({
                                 🗑️
                               </button>
                             </div>
-                            <span className="text-sm font-bold">
-                              {earnings.toLocaleString()}원
-                            </span>
-                          </div>
-
-                          {/* 건수 | 시간 | 거리 */}
-                          <div className="text-[11px] text-gray-500 mb-1">
-                            건수 {count}건 | {formatDurationShort(session.durationMin)} | {session.distanceKmInput}km
                           </div>
 
                           {/* 건당 | 시급 | km당 */}
-                          <div className="grid grid-cols-3 gap-1 text-[10px] text-gray-400 mb-1">
+                          <div className="grid grid-cols-3 gap-1 text-xs text-gray-400 mb-1">
                             <span>건당 {avg.toLocaleString()}원</span>
                             <span>시급 {hr.toLocaleString()}원</span>
                             <span>km당 {epk.toLocaleString()}원</span>
@@ -404,12 +424,12 @@ export default function MonthlyTab({
                           {/* 플랫폼별 상세 (색상 구분) */}
                           <div className="space-y-0.5">
                             {cquickCount > 0 && (
-                              <div className="text-[11px] text-blue-600 font-medium">
+                              <div className="text-xs text-blue-600 font-medium">
                                 🚀 카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
                               </div>
                             )}
                             {baeminCount > 0 && (
-                              <div className="text-[11px] text-emerald-600 font-medium">
+                              <div className="text-xs text-emerald-600 font-medium">
                                 🛵 배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
                               </div>
                             )}
