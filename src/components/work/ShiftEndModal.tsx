@@ -167,7 +167,7 @@ export default function ShiftEndModal({
       {/* 배경 오버레이 (fade in) */}
       <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/50 animate-fadeIn">
         {/* 모달 본체 (slide up) */}
-        <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 max-h-[90vh] overflow-y-auto animate-slideUp border-2 border-[#7FC8FF]">
+        <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 max-h-[90vh] overflow-y-auto animate-slideUp border border-[#e3f6f5]">
           {/* 헤더 */}
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-xl font-bold text-[#0B3954]">퇴근 기록</h2>
@@ -185,7 +185,7 @@ export default function ShiftEndModal({
           </div>
 
           {/* 근무 시간 (수동 입력 가능) */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 mb-3 border-2 border-[#7FC8FF]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 mb-3 border border-[#e3f6f5]">
             <div className="flex items-center justify-between mb-1">
               <div className="text-sm text-[#6B8BA8]">오늘 근무 시간</div>
               <label className="flex items-center gap-1 text-sm text-[#6B8BA8]">
@@ -228,7 +228,7 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={cquickCount}
                   onChange={(e) => setCquickCount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="0"
                 />
               </div>
@@ -239,7 +239,7 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={cquickAmount}
                   onChange={(e) => setCquickAmount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="0"
                 />
               </div>
@@ -257,7 +257,7 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={baeminCount}
                   onChange={(e) => setBaeminCount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="0"
                 />
               </div>
@@ -268,7 +268,7 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={baeminAmount}
                   onChange={(e) => setBaeminAmount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="0"
                 />
               </div>
@@ -285,7 +285,7 @@ export default function ShiftEndModal({
               inputMode="decimal"
               value={distanceKm}
               onChange={(e) => setDistanceKm(e.target.value)}
-              className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+              className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
               placeholder="전기자전거 계기판 거리 입력"
             />
           </div>
@@ -298,14 +298,14 @@ export default function ShiftEndModal({
             <textarea
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
-              className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954] resize-none"
+              className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954] resize-none"
               rows={2}
               placeholder="오늘 하루는 어땠나요? (선택)"
             />
           </div>
 
           {/* 요약 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 mb-3 text-base border-2 border-[#7FC8FF]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 mb-3 text-base border border-[#e3f6f5]">
             <div className="flex justify-between mb-1">
               <span className="text-[#6B8BA8]">총 수익</span>
               <span className="font-bold text-[#0B3954]">{totalAmount.toLocaleString()}원</span>

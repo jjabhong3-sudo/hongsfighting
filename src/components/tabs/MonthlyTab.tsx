@@ -182,7 +182,7 @@ export default function MonthlyTab({
       </div>
 
       {/* ===== 레이어1: 달력 ===== */}
-      <div className="bg-white rounded-xl shadow-sm border-2 border-[#7FC8FF] p-3 mb-3">
+      <div className="bg-white rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-3">
         <div className="grid grid-cols-7 mb-2">
           {dayLabels.map((label, i) => (
             <div
@@ -232,17 +232,17 @@ export default function MonthlyTab({
       </div>
 
       {/* ===== 레이어2: 간단 내역 ===== */}
-      <div className="bg-white rounded-xl shadow-sm border-2 border-[#7FC8FF] p-3 mb-3">
+      <div className="bg-white rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-3">
         <h3 className="text-base font-bold text-[#0B3954] mb-2">월간 요약</h3>
 
         <div className="grid grid-cols-3 gap-2 mb-2">
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border-2 border-[#7FC8FF]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#e3f6f5]">
             <div className="text-sm text-[#6B8BA8]">월 수익</div>
             <div className="text-xl font-bold text-[#35A7FF]">
               {stats.totalEarnings.toLocaleString()}원
             </div>
           </div>
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border-2 border-[#7FC8FF]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#e3f6f5]">
             <div className="text-sm text-[#6B8BA8]">근무일</div>
             <div className="text-xl font-bold text-[#0B3954]">
               {stats.totalSessions}일
@@ -251,7 +251,7 @@ export default function MonthlyTab({
               {formatDuration(stats.totalDurationMin)}
             </div>
           </div>
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border-2 border-[#7FC8FF]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#e3f6f5]">
             <div className="text-sm text-[#6B8BA8]">목표 달성</div>
             <div className="text-xl font-bold text-[#10b981]">
               {achievedDays}일
@@ -292,7 +292,7 @@ export default function MonthlyTab({
       </div>
 
       {/* ===== 레이어3: 월간 상세내역 (수정/삭제 포함) ===== */}
-      <div className="bg-white rounded-xl shadow-sm border-2 border-[#7FC8FF] p-3">
+      <div className="bg-white rounded-xl shadow-sm border border-[#e3f6f5] p-3">
         <h3 className="text-base font-bold text-[#0B3954] mb-2">월간 상세 기록</h3>
 
         {monthSessions.length === 0 ? (
@@ -322,7 +322,7 @@ export default function MonthlyTab({
                 const dailyGoalAchieved = dailyTotal >= settings.goals.daily;
 
                 return (
-                  <div key={dateKst} className="border-b-2 border-[#7FC8FF] pb-3 last:border-0 last:pb-0">
+                  <div key={dateKst} className="border-b border-slate-200 pb-3 last:border-0 last:pb-0">
                     {/* 날짜 헤더 */}
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-base font-bold text-[#0B3954]">
@@ -376,7 +376,7 @@ export default function MonthlyTab({
                       return (
                         <div
                           key={sessionKey}
-                          className="ml-2 pl-3 border-l-2 border-[#7FC8FF] py-1"
+                          className="ml-2 pl-3 border-l-2 border-slate-200 py-1"
                         >
                           {/* 오전/오후 + 금액 + 건수/시간/거리 (같은 줄) */}
                           <div className="flex items-center justify-between mb-1">
@@ -460,7 +460,7 @@ export default function MonthlyTab({
       {/* 수정 모달 */}
       {editingSession && (
         <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/50 animate-fadeIn">
-          <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-5 max-h-[90vh] overflow-y-auto animate-slideUp border-2 border-[#7FC8FF]">
+          <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-5 max-h-[90vh] overflow-y-auto animate-slideUp border border-[#e3f6f5]">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-[#0B3954]">기록 수정</h2>
               <button
@@ -491,7 +491,7 @@ export default function MonthlyTab({
                     onChange={(e) =>
                       setEditForm({ ...editForm, cquickCount: formatInputNumber(e.target.value) })
                     }
-                    className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                    className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   />
                 </div>
                 <div className="flex-1">
@@ -503,7 +503,7 @@ export default function MonthlyTab({
                     onChange={(e) =>
                       setEditForm({ ...editForm, cquickAmount: formatInputNumber(e.target.value) })
                     }
-                    className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                    className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   />
                 </div>
               </div>
@@ -522,7 +522,7 @@ export default function MonthlyTab({
                     onChange={(e) =>
                       setEditForm({ ...editForm, baeminCount: formatInputNumber(e.target.value) })
                     }
-                    className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                    className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   />
                 </div>
                 <div className="flex-1">
@@ -534,7 +534,7 @@ export default function MonthlyTab({
                     onChange={(e) =>
                       setEditForm({ ...editForm, baeminAmount: formatInputNumber(e.target.value) })
                     }
-                    className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                    className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   />
                 </div>
               </div>
@@ -551,7 +551,7 @@ export default function MonthlyTab({
                 onChange={(e) =>
                   setEditForm({ ...editForm, distanceKm: e.target.value })
                 }
-                className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
               />
             </div>
 
@@ -565,7 +565,7 @@ export default function MonthlyTab({
                 onChange={(e) =>
                   setEditForm({ ...editForm, memo: e.target.value })
                 }
-                className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954] resize-none"
+                className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954] resize-none"
                 rows={2}
               />
             </div>
