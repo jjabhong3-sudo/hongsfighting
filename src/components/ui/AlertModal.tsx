@@ -42,8 +42,8 @@ export default function AlertModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50">
-      <div className="bg-white w-80 rounded-2xl p-5 shadow-xl">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 animate-fadeIn">
+      <div className="bg-white w-80 rounded-2xl p-5 shadow-xl animate-scaleIn">
         <div className="text-center mb-4">
           <div className="text-3xl mb-2">{iconMap[type]}</div>
           <h3 className="text-lg font-bold text-gray-800 mb-1">{title}</h3>

@@ -459,8 +459,8 @@ export default function MonthlyTab({
 
       {/* 수정 모달 */}
       {editingSession && (
-        <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/50">
-          <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-5 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/50 animate-fadeIn">
+          <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-5 max-h-[90vh] overflow-y-auto animate-slideUp">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold">기록 수정</h2>
               <button

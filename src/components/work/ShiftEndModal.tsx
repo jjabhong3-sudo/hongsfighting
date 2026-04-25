@@ -164,8 +164,10 @@ export default function ShiftEndModal({
 
   return (
     <>
-      <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/50">
-        <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-5 max-h-[90vh] overflow-y-auto">
+      {/* 배경 오버레이 (fade in) */}
+      <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/50 animate-fadeIn">
+        {/* 모달 본체 (slide up) */}
+        <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-5 max-h-[90vh] overflow-y-auto animate-slideUp">
           {/* 헤더 */}
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-bold">퇴근 기록</h2>

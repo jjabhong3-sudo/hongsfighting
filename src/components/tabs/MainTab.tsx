@@ -258,12 +258,14 @@ export default function MainTab({
           </button>
         </div>
 
-        {/* 지도 */}
-        {!mapCollapsed && (
-          <div className="px-4 pb-2">
-            <RouteMap totalDistanceKm={totalDistanceKm} />
-          </div>
-        )}
+        {/* 지도 (애니메이션) */}
+        <div
+          className={`px-4 pb-2 overflow-hidden transition-all duration-500 ease-in-out ${
+            mapCollapsed ? 'max-h-0 opacity-0 pb-0' : 'max-h-[500px] opacity-100'
+          }`}
+        >
+          <RouteMap totalDistanceKm={totalDistanceKm} />
+        </div>
 
         {/* 상태 정보 - 3개의 로딩바 */}
         <div className="px-4 pb-3">
