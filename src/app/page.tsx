@@ -1,14 +1,14 @@
 // ============================================================
-// 메인 진입 - 하단 탭 컨테이너 (스와이프 지원)
+// 메인 진입 - 하단 탭 컨테이너
 // ============================================================
 
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { WorkSession, AppSettings, Platforms, DEFAULT_SETTINGS } from '@/types/domain';
 import { todayKst, nowKst, diffMinutes } from '@/lib/time/kst';
 import { getCurrentShift } from '@/lib/work/shift';
-import { sessionEarnings, dailyTotalEarnings } from '@/lib/stats/earnings';
+import { sessionEarnings } from '@/lib/stats/earnings';
 import { isFirebaseConfigured } from '@/lib/firebase/client';
 import {
   getAllSessions,
@@ -23,8 +23,6 @@ import MainTab from '@/components/tabs/MainTab';
 import MonthlyTab from '@/components/tabs/MonthlyTab';
 import SettingsTab from '@/components/tabs/SettingsTab';
 
-const TAB_ORDER: TabType[] = ['main', 'monthly', 'settings'];
-
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabType>('main');
   const [sessions, setSessions] = useState<WorkSession[]>([]);
@@ -32,39 +30,6 @@ export default function Home() {
   const [activeSession, setActiveSession] = useState<WorkSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [firebaseReady, setFirebaseReady] = useState(false);
-
-  // 스와이프 제스처
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  }, []);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  }, []);
-
-  const handleTouchEnd = useCallback(() => {
-    const diff = touchStartX.current - touchEndX.current;
-    const threshold = 50;
-
-    if (Math.abs(diff) < threshold) return;
-
-    const currentIndex = TAB_ORDER.indexOf(activeTab);
-
-    if (diff > 0) {
-      // 왼쪽 스와이프 → 다음 탭
-      if (currentIndex < TAB_ORDER.length - 1) {
-        setActiveTab(TAB_ORDER[currentIndex + 1]);
-      }
-    } else {
-      // 오른쪽 스와이프 → 이전 탭
-      if (currentIndex > 0) {
-        setActiveTab(TAB_ORDER[currentIndex - 1]);
-      }
-    }
-  }, [activeTab]);
 
   // 초기 데이터 로드
   useEffect(() => {
@@ -269,7 +234,6 @@ export default function Home() {
     }
     try {
       if (firebaseReady) {
-        // 모든 세션 삭제
         const allSessions = await getAllSessions();
         await Promise.all(
           allSessions.map((s) => s.id && deleteSession(s.id))
@@ -312,15 +276,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#0f172a] max-w-lg mx-auto">
-      {/* 상단 헤더 - MainTab에서 관리하므로 제거 (중복 방지) */}
-
-      {/* 탭 컨텐츠 (스와이프 영역) */}
-      <main
-        className="pt-4"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+      {/* 탭 컨텐츠 */}
+      <main className="pt-2">
         {activeTab === 'main' && (
           <MainTab
             sessions={sessions}

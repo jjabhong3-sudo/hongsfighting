@@ -137,14 +137,14 @@ export default function SettingsTab({
   };
 
   return (
-    <div className="px-4 pb-24">
+    <div className="px-3 pb-24">
       {/* ===== 레이어1: 금액 목표 설정 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-4 mb-4">
-        <h3 className="font-bold text-[#f1f5f9] mb-3">금액 목표 설정</h3>
+      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
+        <h3 className="text-base font-bold text-[#f1f5f9] mb-2">금액 목표 설정</h3>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div>
-            <label className="text-xs text-[#64748b] mb-1 block">
+            <label className="text-sm text-[#64748b] mb-1 block">
               일일 목표 금액
             </label>
             <input
@@ -152,12 +152,12 @@ export default function SettingsTab({
               inputMode="numeric"
               value={dailyGoal}
               onChange={(e) => setDailyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+              className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
               placeholder="50,000"
             />
           </div>
           <div>
-            <label className="text-xs text-[#64748b] mb-1 block">
+            <label className="text-sm text-[#64748b] mb-1 block">
               주간 목표 금액
             </label>
             <input
@@ -165,12 +165,12 @@ export default function SettingsTab({
               inputMode="numeric"
               value={weeklyGoal}
               onChange={(e) => setWeeklyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+              className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
               placeholder="300,000"
             />
           </div>
           <div>
-            <label className="text-xs text-[#64748b] mb-1 block">
+            <label className="text-sm text-[#64748b] mb-1 block">
               월간 목표 금액
             </label>
             <input
@@ -178,7 +178,7 @@ export default function SettingsTab({
               inputMode="numeric"
               value={monthlyGoal}
               onChange={(e) => setMonthlyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+              className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
               placeholder="1,200,000"
             />
           </div>
@@ -186,19 +186,19 @@ export default function SettingsTab({
       </div>
 
       {/* ===== 레이어2: 부채 목록 설정 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-4 mb-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="font-bold text-[#f1f5f9]">부채 목록</h3>
+      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-base font-bold text-[#f1f5f9]">부채 목록</h3>
           <button
             onClick={addDebt}
-            className="text-[#60a5fa] text-sm font-medium"
+            className="text-[#60a5fa] text-base font-medium"
           >
             + 추가
           </button>
         </div>
 
         {debts.length === 0 ? (
-          <div className="text-center text-[#64748b] text-sm py-4">
+          <div className="text-center text-[#64748b] text-base py-4">
             부채를 추가해주세요.
           </div>
         ) : (
@@ -209,7 +209,7 @@ export default function SettingsTab({
                   type="text"
                   value={debt.name}
                   onChange={(e) => updateDebt(index, 'name', e.target.value)}
-                  className="flex-1 bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+                  className="flex-1 bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
                   placeholder="부채명"
                 />
                 <input
@@ -219,12 +219,12 @@ export default function SettingsTab({
                   onChange={(e) =>
                     updateDebt(index, 'amount', e.target.value)
                   }
-                  className="w-28 bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-right text-[#f1f5f9]"
+                  className="w-28 bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-right text-[#f1f5f9]"
                   placeholder="금액"
                 />
                 <button
                   onClick={() => removeDebt(index)}
-                  className="text-[#f87171] text-sm px-1"
+                  className="text-[#f87171] text-base px-1"
                 >
                   ✕
                 </button>
@@ -238,7 +238,7 @@ export default function SettingsTab({
       <button
         onClick={handleSave}
         disabled={!hasChanges}
-        className={`w-full rounded-lg py-3 font-bold text-sm transition-colors mb-4 ${
+        className={`w-full rounded-lg py-3 font-bold text-base transition-colors mb-3 ${
           saved
             ? 'gradient-bar-green text-white'
             : hasChanges
@@ -250,75 +250,75 @@ export default function SettingsTab({
       </button>
 
       {/* ===== 레이어3: 전체 기록 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-4 mb-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="font-bold text-[#f1f5f9]">전체 기록</h3>
+      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-base font-bold text-[#f1f5f9]">전체 기록</h3>
           {sessions.length > 0 && (
             <button
               onClick={() => setShowResetAlert(true)}
-              className="text-[#f87171] text-xs font-medium"
+              className="text-[#f87171] text-sm font-medium"
             >
               기록 초기화
             </button>
           )}
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {/* 근무일 */}
-          <div className="bg-[#0f172a] rounded-lg p-3 border border-[#334155]">
-            <div className="text-xs text-[#64748b] mb-1">총 근무일</div>
-            <div className="text-lg font-bold text-[#f1f5f9]">
+          <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
+            <div className="text-sm text-[#64748b] mb-0.5">총 근무일</div>
+            <div className="text-xl font-bold text-[#f1f5f9]">
               {sessions.length}일
             </div>
-            <div className="text-[10px] text-[#64748b]">
+            <div className="text-xs text-[#64748b]">
               {formatDuration(totalDurationMin)}
             </div>
           </div>
 
           {/* 연속 출근 */}
-          <div className="bg-[#0f172a] rounded-lg p-3 border border-[#334155]">
-            <div className="text-xs text-[#64748b] mb-1">최대 연속 출근</div>
-            <div className="text-lg font-bold text-[#f59e0b]">
+          <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
+            <div className="text-sm text-[#64748b] mb-0.5">최대 연속 출근</div>
+            <div className="text-xl font-bold text-[#f59e0b]">
               {streak}일째
             </div>
           </div>
 
           {/* 누적 건수 */}
-          <div className="bg-[#0f172a] rounded-lg p-3 border border-[#334155]">
-            <div className="text-xs text-[#64748b] mb-1">누적 건수</div>
-            <div className="text-lg font-bold text-[#f1f5f9]">
+          <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
+            <div className="text-sm text-[#64748b] mb-0.5">누적 건수</div>
+            <div className="text-xl font-bold text-[#f1f5f9]">
               {totalCount}건
             </div>
             <div className="grid grid-cols-2 gap-2 mt-1">
-              <div className="text-[10px] text-[#64748b]">
+              <div className="text-xs text-[#64748b]">
                 카카오퀵: {cquickCount}건
               </div>
-              <div className="text-[10px] text-[#64748b]">
+              <div className="text-xs text-[#64748b]">
                 배민: {baeminCount}건
               </div>
             </div>
           </div>
 
           {/* 누적 수익 */}
-          <div className="bg-[#0f172a] rounded-lg p-3 border border-[#334155]">
-            <div className="text-xs text-[#64748b] mb-1">누적 수익</div>
-            <div className="text-lg font-bold text-[#3b82f6]">
+          <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
+            <div className="text-sm text-[#64748b] mb-0.5">누적 수익</div>
+            <div className="text-xl font-bold text-[#06b6d4]">
               {totalEarnings.toLocaleString()}원
             </div>
             <div className="grid grid-cols-2 gap-2 mt-1">
-              <div className="text-[10px] text-[#64748b]">
+              <div className="text-xs text-[#64748b]">
                 카카오퀵: {cquickTotal.toLocaleString()}원
               </div>
-              <div className="text-[10px] text-[#64748b]">
+              <div className="text-xs text-[#64748b]">
                 배민: {baeminTotal.toLocaleString()}원
               </div>
             </div>
           </div>
 
           {/* 누적 이동거리 */}
-          <div className="bg-[#0f172a] rounded-lg p-3 border border-[#334155]">
-            <div className="text-xs text-[#64748b] mb-1">누적 이동거리</div>
-            <div className="text-lg font-bold text-[#f1f5f9]">
+          <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
+            <div className="text-sm text-[#64748b] mb-0.5">누적 이동거리</div>
+            <div className="text-xl font-bold text-[#f1f5f9]">
               {totalDistance.toLocaleString()}km
             </div>
           </div>

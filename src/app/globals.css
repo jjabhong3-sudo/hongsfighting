@@ -11,6 +11,9 @@
   --accent-green: #10b981;
   --accent-orange: #f59e0b;
   --accent-pink: #ec4899;
+  --accent-rose: #f43f5e;
+  --accent-yellow: #eab308;
+  --accent-teal: #14b8a6;
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
@@ -29,6 +32,7 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 18px; /* 기본 폰트 3px 증가 */
 }
 
 /* 카드 공통 스타일 */
@@ -59,6 +63,18 @@ body {
 
 .gradient-bar-purple {
   background: linear-gradient(90deg, #8b5cf6, #a78bfa, #c4b5fd);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.gradient-bar-rose {
+  background: linear-gradient(90deg, #f43f5e, #ec4899, #d946ef);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.gradient-bar-teal {
+  background: linear-gradient(90deg, #14b8a6, #06b6d4, #3b82f6);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
@@ -132,12 +148,8 @@ input[type="number"] {
 
 /* fade in */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .animate-fadeIn {

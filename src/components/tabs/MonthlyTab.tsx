@@ -151,9 +151,9 @@ export default function MonthlyTab({
   };
 
   return (
-    <div className="px-4 pb-24">
+    <div className="px-3 pb-24">
       {/* 월 선택 */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <button
           onClick={() => {
             const [y, m] = selectedMonth.split('-').map(Number);
@@ -162,11 +162,11 @@ export default function MonthlyTab({
               `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
             );
           }}
-          className="text-[#64748b] px-2 py-1"
+          className="text-[#64748b] px-2 py-1 text-lg"
         >
           ◀
         </button>
-        <h2 className="text-lg font-bold text-[#f1f5f9]">{selectedMonth}</h2>
+        <h2 className="text-xl font-bold text-[#f1f5f9]">{selectedMonth}</h2>
         <button
           onClick={() => {
             const [y, m] = selectedMonth.split('-').map(Number);
@@ -175,19 +175,19 @@ export default function MonthlyTab({
               `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
             );
           }}
-          className="text-[#64748b] px-2 py-1"
+          className="text-[#64748b] px-2 py-1 text-lg"
         >
           ▶
         </button>
       </div>
 
       {/* ===== 레이어1: 달력 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-4">
+      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
         <div className="grid grid-cols-7 mb-2">
           {dayLabels.map((label, i) => (
             <div
               key={i}
-              className={`text-center text-xs font-medium py-1 ${
+              className={`text-center text-sm font-medium py-1 ${
                 i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-400'
               }`}
             >
@@ -206,7 +206,7 @@ export default function MonthlyTab({
             return (
               <div
                 key={dateStr}
-                className={`aspect-square rounded-lg flex flex-col items-center justify-center text-xs ${
+                className={`aspect-square rounded-lg flex flex-col items-center justify-center text-sm ${
                   data
                     ? data.achieved
                       ? 'bg-gradient-to-b from-yellow-100 to-green-100 text-green-700'
@@ -217,10 +217,10 @@ export default function MonthlyTab({
                 <span className="font-medium">{day}</span>
                 {data && (
                   <>
-                    <span className="text-[9px] leading-tight">
+                    <span className="text-[10px] leading-tight">
                       {data.earnings.toLocaleString()}원
                     </span>
-                    <span className="text-[8px] leading-tight">
+                    <span className="text-[9px] leading-tight">
                       {data.count}건
                     </span>
                   </>
@@ -232,35 +232,35 @@ export default function MonthlyTab({
       </div>
 
       {/* ===== 레이어2: 간단 내역 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-4 mb-4">
-        <h3 className="font-bold text-[#f1f5f9] mb-3">월간 요약</h3>
+      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
+        <h3 className="text-base font-bold text-[#f1f5f9] mb-2">월간 요약</h3>
 
-        <div className="grid grid-cols-3 gap-3 mb-3">
-          <div className="bg-[#0f172a] rounded-lg p-3 border border-[#334155]">
-            <div className="text-xs text-[#64748b]">월 수익</div>
-            <div className="text-lg font-bold text-[#3b82f6]">
+        <div className="grid grid-cols-3 gap-2 mb-2">
+          <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
+            <div className="text-sm text-[#64748b]">월 수익</div>
+            <div className="text-xl font-bold text-[#06b6d4]">
               {stats.totalEarnings.toLocaleString()}원
             </div>
           </div>
-          <div className="bg-[#0f172a] rounded-lg p-3 border border-[#334155]">
-            <div className="text-xs text-[#64748b]">근무일</div>
-            <div className="text-lg font-bold text-[#f1f5f9]">
+          <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
+            <div className="text-sm text-[#64748b]">근무일</div>
+            <div className="text-xl font-bold text-[#f1f5f9]">
               {stats.totalSessions}일
             </div>
-            <div className="text-[10px] text-[#64748b]">
+            <div className="text-xs text-[#64748b]">
               {formatDuration(stats.totalDurationMin)}
             </div>
           </div>
-          <div className="bg-[#0f172a] rounded-lg p-3 border border-[#334155]">
-            <div className="text-xs text-[#64748b]">목표 달성</div>
-            <div className="text-lg font-bold text-[#10b981]">
+          <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
+            <div className="text-sm text-[#64748b]">목표 달성</div>
+            <div className="text-xl font-bold text-[#10b981]">
               {achievedDays}일
             </div>
           </div>
         </div>
 
         {/* 목표 진행 */}
-        <div className="flex justify-between text-xs text-[#64748b] mb-1">
+        <div className="flex justify-between text-sm text-[#64748b] mb-1">
           <span>월간 목표</span>
           <span>
             {stats.totalEarnings.toLocaleString()}원 /{' '}
@@ -283,8 +283,8 @@ export default function MonthlyTab({
 
         {/* 월간 목표 달성 시 스타일리시한 COMPLETE */}
         {monthlyGoalAchieved && (
-          <div className="text-center mt-3">
-            <span className="inline-block gradient-bar-orange text-white text-sm font-bold px-4 py-1.5 rounded-full animate-bounce shadow-lg shadow-orange-500/30">
+          <div className="text-center mt-2">
+            <span className="inline-block gradient-bar-orange text-white text-base font-bold px-4 py-1.5 rounded-full animate-bounce shadow-lg shadow-orange-500/30">
               월간 목표 COMPLETE!
             </span>
           </div>
@@ -292,11 +292,11 @@ export default function MonthlyTab({
       </div>
 
       {/* ===== 레이어3: 월간 상세내역 (수정/삭제 포함) ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-4">
-        <h3 className="font-bold text-[#f1f5f9] mb-3">월간 상세 기록</h3>
+      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3">
+        <h3 className="text-base font-bold text-[#f1f5f9] mb-2">월간 상세 기록</h3>
 
         {monthSessions.length === 0 ? (
-          <div className="text-center text-[#64748b] text-sm py-4">
+          <div className="text-center text-[#64748b] text-base py-4">
             이번 달 기록이 없습니다.
           </div>
         ) : (
@@ -324,17 +324,17 @@ export default function MonthlyTab({
                 return (
                   <div key={dateKst} className="border-b border-[#334155] pb-3 last:border-0 last:pb-0">
                     {/* 날짜 헤더 */}
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-bold text-[#f1f5f9]">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-base font-bold text-[#f1f5f9]">
                         {dateKst}
                       </span>
                       <div className="flex items-center gap-2">
                         {dailyGoalAchieved && (
-                          <span className="text-[10px] gradient-bar-orange text-white px-2 py-0.5 rounded-full font-bold shadow-sm">
+                          <span className="text-xs gradient-bar-orange text-white px-2 py-0.5 rounded-full font-bold shadow-sm">
                             COMPLETE
                           </span>
                         )}
-                        <span className="text-xs font-bold text-[#3b82f6]">
+                        <span className="text-sm font-bold text-[#06b6d4]">
                           일일 합계 {dailyTotal.toLocaleString()}원
                         </span>
                       </div>
@@ -376,13 +376,13 @@ export default function MonthlyTab({
                       return (
                         <div
                           key={sessionKey}
-                          className="ml-2 pl-3 border-l-2 border-[#334155] py-2"
+                          className="ml-2 pl-3 border-l-2 border-[#334155] py-1"
                         >
                           {/* 오전/오후 + 금액 + 건수/시간/거리 (같은 줄) */}
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex items-center gap-2">
                               <span
-                                className={`text-xs px-2 py-0.5 rounded-full ${
+                                className={`text-sm px-2 py-0.5 rounded-full ${
                                   isMorning
                                     ? 'bg-[#fef3c7] text-[#92400e]'
                                     : 'bg-[#ede9fe] text-[#6d28d9]'
@@ -390,32 +390,32 @@ export default function MonthlyTab({
                               >
                                 {isMorning ? '오전' : '오후'}
                               </span>
-                              <span className="text-sm font-bold text-[#f1f5f9]">
+                              <span className="text-base font-bold text-[#f1f5f9]">
                                 {earnings.toLocaleString()}원
                               </span>
-                              <span className="text-xs text-[#64748b]">
+                              <span className="text-sm text-[#64748b]">
                                 {count}건 | {formatDurationShort(session.durationMin)} | {session.distanceKmInput}km
                               </span>
                               <button
                                 onClick={() => startEdit(session)}
-                                className="text-[#60a5fa] text-xs ml-1 hover:text-[#3b82f6]"
+                                className="text-[#60a5fa] text-sm ml-1 hover:text-[#3b82f6]"
                               >
-                                <svg className="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                               </button>
                               <button
                                 onClick={() => {
                                   const id = session.id || sessionKey;
                                   handleDelete(id);
                                 }}
-                                className="text-[#f87171] text-xs hover:text-[#ef4444]"
+                                className="text-[#f87171] text-sm hover:text-[#ef4444]"
                               >
-                                <svg className="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                               </button>
                             </div>
                           </div>
 
                           {/* 건당 | 시급 | km당 */}
-                          <div className="grid grid-cols-3 gap-1 text-xs text-[#64748b] mb-1">
+                          <div className="grid grid-cols-3 gap-1 text-sm text-[#64748b] mb-1">
                             <span>건당 {avg.toLocaleString()}원</span>
                             <span>시급 {hr.toLocaleString()}원</span>
                             <span>km당 {epk.toLocaleString()}원</span>
@@ -424,12 +424,12 @@ export default function MonthlyTab({
                           {/* 플랫폼별 상세 (색상 구분) */}
                           <div className="space-y-0.5">
                             {cquickCount > 0 && (
-                              <div className="text-xs text-[#60a5fa] font-medium">
+                              <div className="text-sm text-[#60a5fa] font-medium">
                                 카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
                               </div>
                             )}
                             {baeminCount > 0 && (
-                              <div className="text-xs text-[#34d399] font-medium">
+                              <div className="text-sm text-[#34d399] font-medium">
                                 배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
                               </div>
                             )}
@@ -471,19 +471,19 @@ export default function MonthlyTab({
               </button>
             </div>
 
-            <div className="mb-3 text-xs text-[#64748b]">
+            <div className="mb-3 text-sm text-[#64748b]">
               {editingSession.workDateKst}{' '}
               {editingSession.shiftType === 'morning' ? '오전' : '오후'}
             </div>
 
             {/* 카카오퀵 */}
             <div className="mb-3">
-              <h3 className="text-sm font-semibold text-[#94a3b8] mb-2">
+              <h3 className="text-base font-semibold text-[#94a3b8] mb-2">
                 카카오퀵
               </h3>
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <label className="text-xs text-[#64748b]">건수</label>
+                  <label className="text-sm text-[#64748b]">건수</label>
                   <input
                     type="text"
                     inputMode="numeric"
@@ -491,11 +491,11 @@ export default function MonthlyTab({
                     onChange={(e) =>
                       setEditForm({ ...editForm, cquickCount: formatInputNumber(e.target.value) })
                     }
-                    className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+                    className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
                   />
                 </div>
                 <div className="flex-1">
-                  <label className="text-xs text-[#64748b]">금액</label>
+                  <label className="text-sm text-[#64748b]">금액</label>
                   <input
                     type="text"
                     inputMode="numeric"
@@ -503,7 +503,7 @@ export default function MonthlyTab({
                     onChange={(e) =>
                       setEditForm({ ...editForm, cquickAmount: formatInputNumber(e.target.value) })
                     }
-                    className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+                    className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
                   />
                 </div>
               </div>
@@ -511,10 +511,10 @@ export default function MonthlyTab({
 
             {/* 배민 */}
             <div className="mb-3">
-              <h3 className="text-sm font-semibold text-[#94a3b8] mb-2">배민</h3>
+              <h3 className="text-base font-semibold text-[#94a3b8] mb-2">배민</h3>
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <label className="text-xs text-[#64748b]">건수</label>
+                  <label className="text-sm text-[#64748b]">건수</label>
                   <input
                     type="text"
                     inputMode="numeric"
@@ -522,11 +522,11 @@ export default function MonthlyTab({
                     onChange={(e) =>
                       setEditForm({ ...editForm, baeminCount: formatInputNumber(e.target.value) })
                     }
-                    className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+                    className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
                   />
                 </div>
                 <div className="flex-1">
-                  <label className="text-xs text-[#64748b]">금액</label>
+                  <label className="text-sm text-[#64748b]">금액</label>
                   <input
                     type="text"
                     inputMode="numeric"
@@ -534,7 +534,7 @@ export default function MonthlyTab({
                     onChange={(e) =>
                       setEditForm({ ...editForm, baeminAmount: formatInputNumber(e.target.value) })
                     }
-                    className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+                    className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
                   />
                 </div>
               </div>
@@ -542,7 +542,7 @@ export default function MonthlyTab({
 
             {/* 거리 */}
             <div className="mb-3">
-              <label className="text-sm font-semibold text-[#94a3b8] mb-1 block">
+              <label className="text-base font-semibold text-[#94a3b8] mb-1 block">
                 이동거리 (km)
               </label>
               <input
@@ -551,13 +551,13 @@ export default function MonthlyTab({
                 onChange={(e) =>
                   setEditForm({ ...editForm, distanceKm: e.target.value })
                 }
-                className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9]"
+                className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9]"
               />
             </div>
 
             {/* 메모 */}
             <div className="mb-4">
-              <label className="text-sm font-semibold text-[#94a3b8] mb-1 block">
+              <label className="text-base font-semibold text-[#94a3b8] mb-1 block">
                 메모
               </label>
               <textarea
@@ -565,14 +565,14 @@ export default function MonthlyTab({
                 onChange={(e) =>
                   setEditForm({ ...editForm, memo: e.target.value })
                 }
-                className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-sm text-[#f1f5f9] resize-none"
+                className="w-full bg-[#0f172a] border border-[#334155] rounded-lg px-3 py-2 text-base text-[#f1f5f9] resize-none"
                 rows={2}
               />
             </div>
 
             <button
               onClick={saveEdit}
-              className="w-full gradient-bar-blue text-white rounded-lg py-3 font-bold text-sm"
+              className="w-full gradient-bar-blue text-white rounded-lg py-3 font-bold text-base"
             >
               수정 저장
             </button>
