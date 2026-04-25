@@ -222,7 +222,7 @@ export default function MainTab({
   const totalDebtAmount = settings.debts.reduce((sum, d) => sum + d.amount, 0);
 
   return (
-    <div className="px-3 pb-24">
+    <div className="px-[17px] pb-24">
       {/* ===== 헤더: 타이틀 + 날짜 ===== */}
       <div className="flex items-center justify-between py-2 mb-1">
         <div className="text-xl font-extrabold text-[#648DE5]">
