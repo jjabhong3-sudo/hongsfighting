@@ -7,48 +7,99 @@ import { getWeekStart, getWeekEnd, toYearMonth, daysInMonth } from '@/lib/time/k
 
 /**
  * 세션의 표시용 수익 계산
- * - 오전/오후 각각 독립된 기록, 입력값 그대로 반환
+ * - 오전: 입력값 그대로 (첫번째 입력, 고정 금액)
+ * - 오후: 오후 입력값 - 같은 날 오전 입력값 (추가분만 표시)
+ * - 하루 = 하나의 묶음, 최대 2줄(오전/오후)
  */
-export function sessionEarnings(session: WorkSession, _allSessions?: WorkSession[]): number {
-  return session.platforms.cquick.amount + session.platforms.baemin.amount;
+export function sessionEarnings(session: WorkSession, allSessions?: WorkSession[]): number {
+  const rawAmount = session.platforms.cquick.amount + session.platforms.baemin.amount;
+  
+  // 오전이면 입력값 그대로
+  if (session.shiftType === 'morning') return rawAmount;
+  
+  // 오후면 같은 날 오전 데이터를 빼서 추가분만 표시
+  if (allSessions && session.shiftType === 'afternoon') {
+    const morningSession = allSessions.find(
+      (s) => s.workDateKst === session.workDateKst && s.shiftType === 'morning'
+    );
+    if (morningSession) {
+      const morningAmount = morningSession.platforms.cquick.amount + morningSession.platforms.baemin.amount;
+      return Math.max(0, rawAmount - morningAmount);
+    }
+  }
+  
+  return rawAmount;
 }
 
 /**
  * 세션의 표시용 건수 계산
- * - 오전/오후 각각 독립된 기록, 입력값 그대로 반환
+ * - 오전: 입력값 그대로
+ * - 오후: 오후 입력값 - 같은 날 오전 입력값 (추가분만 표시)
  */
-export function sessionTotalCount(session: WorkSession, _allSessions?: WorkSession[]): number {
-  return session.platforms.cquick.count + session.platforms.baemin.count;
+export function sessionTotalCount(session: WorkSession, allSessions?: WorkSession[]): number {
+  const rawCount = session.platforms.cquick.count + session.platforms.baemin.count;
+  
+  if (session.shiftType === 'morning') return rawCount;
+  
+  if (allSessions && session.shiftType === 'afternoon') {
+    const morningSession = allSessions.find(
+      (s) => s.workDateKst === session.workDateKst && s.shiftType === 'morning'
+    );
+    if (morningSession) {
+      const morningCount = morningSession.platforms.cquick.count + morningSession.platforms.baemin.count;
+      return Math.max(0, rawCount - morningCount);
+    }
+  }
+  
+  return rawCount;
 }
 
 /**
- * 특정 날짜의 최종 누적 수익 (오전+오후 합계)
+ * 특정 날짜의 최종 누적 수익
  * - 하루 = 하나의 묶음 (날짜가 부모, 오전/오후가 자식)
- * - 최종 수익 = 오전 raw + 오후 raw (합계)
+ * - 오전만 있으면: 오전 raw 값
+ * - 오전+오후 있으면: 오후 raw 값 (오후가 최종 누적)
+ * - 표시: 오전(입력값) + 오후(오후-오전) = 오후 raw
  */
 export function dailyTotalEarnings(sessions: WorkSession[], dateKst: string): number {
   const daySessions = sessions.filter((s) => s.workDateKst === dateKst);
   if (daySessions.length === 0) return 0;
   
-  // 오전+오후 합계
-  return daySessions.reduce(
-    (sum, s) => sum + s.platforms.cquick.amount + s.platforms.baemin.amount,
-    0
-  );
+  // 오후 세션이 있으면 오후 raw 값이 최종 누적
+  const afternoonSession = daySessions.find((s) => s.shiftType === 'afternoon');
+  if (afternoonSession) {
+    return afternoonSession.platforms.cquick.amount + afternoonSession.platforms.baemin.amount;
+  }
+  
+  // 오전만 있으면 오전 raw 값
+  const morningSession = daySessions.find((s) => s.shiftType === 'morning');
+  if (morningSession) {
+    return morningSession.platforms.cquick.amount + morningSession.platforms.baemin.amount;
+  }
+  
+  return 0;
 }
 
 /**
- * 특정 날짜의 최종 누적 건수 (오전+오후 합계)
+ * 특정 날짜의 최종 누적 건수
+ * - 오전만 있으면: 오전 raw 값
+ * - 오전+오후 있으면: 오후 raw 값 (최종 누적)
  */
 export function dailyTotalCount(sessions: WorkSession[], dateKst: string): number {
   const daySessions = sessions.filter((s) => s.workDateKst === dateKst);
   if (daySessions.length === 0) return 0;
   
-  // 오전+오후 합계
-  return daySessions.reduce(
-    (sum, s) => sum + s.platforms.cquick.count + s.platforms.baemin.count,
-    0
-  );
+  const afternoonSession = daySessions.find((s) => s.shiftType === 'afternoon');
+  if (afternoonSession) {
+    return afternoonSession.platforms.cquick.count + afternoonSession.platforms.baemin.count;
+  }
+  
+  const morningSession = daySessions.find((s) => s.shiftType === 'morning');
+  if (morningSession) {
+    return morningSession.platforms.cquick.count + morningSession.platforms.baemin.count;
+  }
+  
+  return 0;
 }
 
 /**

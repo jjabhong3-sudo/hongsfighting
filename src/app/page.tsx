@@ -168,16 +168,12 @@ export default function Home() {
       const now = Date.now();
       const durationMin = data.durationMin ?? diffMinutes(activeSession.startAt, now);
 
-      // 오후 세션 저장 시 검증: 오전+오후 합계가 기존 일일 합계보다 작으면 저장 차단
+      // 오후 세션 저장 시 검증: 새 오후 raw 값이 기존 일일 합계보다 작으면 저장 차단
       if (activeSession.shiftType === 'afternoon') {
         const existingDailyTotal = dailyTotalEarnings(sessions, activeSession.workDateKst);
-        const newAfternoonAmount = data.platforms.cquick.amount + data.platforms.baemin.amount;
-        const morningAmount = sessions
-          .filter((s) => s.workDateKst === activeSession.workDateKst && s.shiftType === 'morning')
-          .reduce((sum, s) => sum + s.platforms.cquick.amount + s.platforms.baemin.amount, 0);
-        const newTotal = morningAmount + newAfternoonAmount;
-        if (newTotal < existingDailyTotal) {
-          alert(`오전+오후 합계(${newTotal.toLocaleString()}원)가 기존 일일 합계(${existingDailyTotal.toLocaleString()}원)보다 작아 저장할 수 없습니다.`);
+        const newAfternoonRaw = data.platforms.cquick.amount + data.platforms.baemin.amount;
+        if (newAfternoonRaw < existingDailyTotal) {
+          alert(`오후 입력값(${newAfternoonRaw.toLocaleString()}원)이 기존 일일 합계(${existingDailyTotal.toLocaleString()}원)보다 작아 저장할 수 없습니다.\n오후 입력값은 오전+추가분을 포함한 최종 누적값이어야 합니다.`);
           return;
         }
       }

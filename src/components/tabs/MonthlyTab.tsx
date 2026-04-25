@@ -20,6 +20,7 @@ import {
   sessionEarnings,
   sessionTotalCount,
   dailyTotalEarnings,
+  dailyTotalCount,
   calculateMonthlyStats,
   hourlyRate,
   avgPerOrder,
@@ -73,7 +74,7 @@ export default function MonthlyTab({
     return days;
   }, [selectedMonth]);
 
-  // 날짜별 데이터 맵 (오전+오후 합계)
+  // 날짜별 데이터 맵 (dailyTotalEarnings 사용)
   const dayDataMap = useMemo(() => {
     const map = new Map<
       string,
@@ -81,16 +82,8 @@ export default function MonthlyTab({
     >();
     const uniqueDates = new Set(monthSessions.map((s) => s.workDateKst));
     for (const dateKst of uniqueDates) {
-      const daySessions = monthSessions.filter((s) => s.workDateKst === dateKst);
-      // 오전+오후 합계
-      const earnings = daySessions.reduce(
-        (sum, s) => sum + s.platforms.cquick.amount + s.platforms.baemin.amount,
-        0
-      );
-      const count = daySessions.reduce(
-        (sum, s) => sum + s.platforms.cquick.count + s.platforms.baemin.count,
-        0
-      );
+      const earnings = dailyTotalEarnings(monthSessions, dateKst);
+      const count = dailyTotalCount(monthSessions, dateKst);
       map.set(dateKst, {
         earnings,
         count,
@@ -328,8 +321,8 @@ export default function MonthlyTab({
 
                     {/* 오전/오후 각각 표시 */}
                     {sorted.map((session) => {
-                      const earnings = sessionEarnings(session);
-                      const count = sessionTotalCount(session);
+                      const earnings = sessionEarnings(session, sessions);
+                      const count = sessionTotalCount(session, sessions);
                       const hr = hourlyRate(earnings, session.durationMin);
                       const avg = avgPerOrder(earnings, count);
                       const epk = earningsPerKm(earnings, session.distanceKmInput);
