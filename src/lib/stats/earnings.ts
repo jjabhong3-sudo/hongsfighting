@@ -235,14 +235,15 @@ export function calculateMonthlyStats(
 export function calculateDebtProgress(
   totalEarnings: number,
   debts: { name: string; amount: number }[]
-): { totalDebt: number; paidPercent: number; remainingDebt: number } {
+): { totalDebt: number; paidPercent: number; remainingDebt: number; remainingPercent: number } {
   const totalDebt = debts.reduce((sum, d) => sum + d.amount, 0);
-  if (totalDebt <= 0) return { totalDebt: 0, paidPercent: 100, remainingDebt: 0 };
+  if (totalDebt <= 0) return { totalDebt: 0, paidPercent: 100, remainingDebt: 0, remainingPercent: 0 };
 
   const paidPercent = Math.min(100, Math.round((totalEarnings / totalDebt) * 100));
   const remainingDebt = Math.max(0, totalDebt - totalEarnings);
+  const remainingPercent = Math.max(0, 100 - paidPercent);
 
-  return { totalDebt, paidPercent, remainingDebt };
+  return { totalDebt, paidPercent, remainingDebt, remainingPercent };
 }
 
 /**

@@ -384,10 +384,18 @@ export default function MainTab({
             </span>
           </div>
 
-          {/* 전체 부채 진행 막대 */}
+          {/* 전체 부채 진행 막대 - 남은 금액에 따라 색상 변경 */}
           <div className="w-full bg-[#0f172a] rounded-full h-4 mb-2 overflow-hidden">
             <div
-              className="gradient-bar-orange rounded-full h-4 transition-all duration-500"
+              className={`rounded-full h-4 transition-all duration-500 ${
+                debtProgress.remainingPercent <= 25
+                  ? 'gradient-bar-green'
+                  : debtProgress.remainingPercent <= 50
+                  ? 'gradient-bar-blue'
+                  : debtProgress.remainingPercent <= 75
+                  ? 'gradient-bar-orange'
+                  : 'bg-gradient-to-r from-[#f43f5e] to-[#ec4899]'
+              }`}
               style={{ width: `${debtProgress.paidPercent}%` }}
             />
           </div>
@@ -403,49 +411,64 @@ export default function MainTab({
             </span>
           </div>
 
-          {/* 부채 항목 리스트 (참고사이트 스타일) */}
-          <div className="space-y-1.5">
-            {settings.debts.map((debt, i) => {
-              const cumulative = settings.debts
-                .slice(0, i + 1)
-                .reduce((sum, x) => sum + x.amount, 0);
-              const prevCumulative = settings.debts
-                .slice(0, i)
-                .reduce((sum, x) => sum + x.amount, 0);
-              const paid = Math.min(cumulative, Math.max(0, totalAllEarnings));
-              const debtPaid = Math.max(0, Math.min(debt.amount, paid - prevCumulative));
-              const isCompleted = debtPaid >= debt.amount;
+          {/* 부채 항목 리스트 (접기 가능, 기본 접힘) */}
+          <button
+            onClick={() => setDebtExpanded(!debtExpanded)}
+            className="w-full flex items-center justify-between text-sm text-[#64748b] bg-[#0f172a] rounded-lg px-3 py-2 hover:text-[#94a3b8] transition-colors"
+          >
+            <span>부채 내역 보기 ({settings.debts.length}개)</span>
+            <svg
+              className={`w-4 h-4 transition-transform ${debtExpanded ? 'rotate-180' : ''}`}
+              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
 
-              return (
-                <div
-                  key={i}
-                  className={`flex items-center justify-between px-2 py-1.5 rounded-lg ${
-                    isCompleted
-                      ? 'bg-[#064e3b] border border-[#10b981]/30'
-                      : 'bg-[#0f172a] border border-[#334155]'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    {isCompleted && (
-                      <span className="text-[#10b981] text-sm">✅</span>
-                    )}
-                    <span className={`text-sm font-medium ${isCompleted ? 'text-[#10b981]' : 'text-[#94a3b8]'}`}>
-                      {debt.name}
-                    </span>
+          {debtExpanded && (
+            <div className="space-y-1.5 mt-2">
+              {settings.debts.map((debt, i) => {
+                const cumulative = settings.debts
+                  .slice(0, i + 1)
+                  .reduce((sum, x) => sum + x.amount, 0);
+                const prevCumulative = settings.debts
+                  .slice(0, i)
+                  .reduce((sum, x) => sum + x.amount, 0);
+                const paid = Math.min(cumulative, Math.max(0, totalAllEarnings));
+                const debtPaid = Math.max(0, Math.min(debt.amount, paid - prevCumulative));
+                const isCompleted = debtPaid >= debt.amount;
+
+                return (
+                  <div
+                    key={i}
+                    className={`flex items-center justify-between px-2 py-1.5 rounded-lg ${
+                      isCompleted
+                        ? 'bg-[#064e3b] border border-[#10b981]/30'
+                        : 'bg-[#0f172a] border border-[#334155]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {isCompleted && (
+                        <span className="text-[#10b981] text-sm">✅</span>
+                      )}
+                      <span className={`text-sm font-medium ${isCompleted ? 'text-[#10b981]' : 'text-[#94a3b8]'}`}>
+                        {debt.name}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-sm font-bold ${isCompleted ? 'text-[#10b981]' : 'text-[#f1f5f9]'}`}>
+                        {debtPaid.toLocaleString()}원
+                      </span>
+                      <span className="text-sm text-[#64748b]">/</span>
+                      <span className="text-sm text-[#f59e0b]">
+                        {debt.amount.toLocaleString()}원
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-sm font-bold ${isCompleted ? 'text-[#10b981]' : 'text-[#f1f5f9]'}`}>
-                      {debtPaid.toLocaleString()}원
-                    </span>
-                    <span className="text-sm text-[#64748b]">/</span>
-                    <span className="text-sm text-[#f59e0b]">
-                      {debt.amount.toLocaleString()}원
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
