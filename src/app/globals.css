@@ -2,7 +2,7 @@
 
 :root {
   --background: #F0F6FA;
-  --foreground: #2C3E50;
+  --foreground: #0B3954;
   --card-bg: #FFFFFF;
   --card-border: #7FC8FF;
   --card-border-strong: #35A7FF;
@@ -14,7 +14,7 @@
   --accent-blue-dark: #38618C;
   --accent-green: #10B981;
   --accent-amber: #F59E0B;
-  --text-primary: #2C3E50;
+  --text-primary: #0B3954;
   --text-secondary: #6B8BA8;
   --text-muted: #8FA8C0;
 }

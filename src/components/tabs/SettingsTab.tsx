@@ -139,8 +139,8 @@ export default function SettingsTab({
   return (
     <div className="px-3 pb-24">
       {/* ===== 레이어1: 금액 목표 설정 ===== */}
-      <div className="bg-white rounded-xl shadow-sm border border-[#D6E8F5] p-3 mb-3">
-        <h3 className="text-base font-bold text-[#2C3E50] mb-2">금액 목표 설정</h3>
+      <div className="bg-white rounded-xl shadow-sm border-2 border-[#7FC8FF] p-3 mb-3">
+        <h3 className="text-base font-bold text-[#0B3954] mb-2">금액 목표 설정</h3>
 
         <div className="space-y-2">
           <div>
@@ -152,7 +152,7 @@ export default function SettingsTab({
               inputMode="numeric"
               value={dailyGoal}
               onChange={(e) => setDailyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#E8F4FD] border border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+              className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
               placeholder="50,000"
             />
           </div>
@@ -165,7 +165,7 @@ export default function SettingsTab({
               inputMode="numeric"
               value={weeklyGoal}
               onChange={(e) => setWeeklyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#E8F4FD] border border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+              className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
               placeholder="300,000"
             />
           </div>
@@ -178,7 +178,7 @@ export default function SettingsTab({
               inputMode="numeric"
               value={monthlyGoal}
               onChange={(e) => setMonthlyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#E8F4FD] border border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+              className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
               placeholder="1,200,000"
             />
           </div>
@@ -186,9 +186,9 @@ export default function SettingsTab({
       </div>
 
       {/* ===== 레이어2: 부채 목록 설정 ===== */}
-      <div className="bg-white rounded-xl shadow-sm border border-[#D6E8F5] p-3 mb-3">
+      <div className="bg-white rounded-xl shadow-sm border-2 border-[#7FC8FF] p-3 mb-3">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-base font-bold text-[#2C3E50]">부채 목록</h3>
+          <h3 className="text-base font-bold text-[#0B3954]">부채 목록</h3>
           <button
             onClick={addDebt}
             className="text-[#35A7FF] text-base font-medium"
@@ -209,7 +209,7 @@ export default function SettingsTab({
                   type="text"
                   value={debt.name}
                   onChange={(e) => updateDebt(index, 'name', e.target.value)}
-                  className="flex-1 bg-[#E8F4FD] border border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+                  className="flex-1 bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="부채명"
                 />
                 <input
@@ -219,7 +219,7 @@ export default function SettingsTab({
                   onChange={(e) =>
                     updateDebt(index, 'amount', e.target.value)
                   }
-                  className="w-28 bg-[#E8F4FD] border border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-right text-[#2C3E50]"
+                  className="w-28 bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-right text-[#0B3954]"
                   placeholder="금액"
                 />
                 <button
@@ -250,9 +250,9 @@ export default function SettingsTab({
       </button>
 
       {/* ===== 레이어3: 전체 기록 ===== */}
-      <div className="bg-white rounded-xl shadow-sm border border-[#D6E8F5] p-3 mb-3">
+      <div className="bg-white rounded-xl shadow-sm border-2 border-[#7FC8FF] p-3 mb-3">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-base font-bold text-[#2C3E50]">전체 기록</h3>
+          <h3 className="text-base font-bold text-[#0B3954]">전체 기록</h3>
           {sessions.length > 0 && (
             <button
               onClick={() => setShowResetAlert(true)}
@@ -265,9 +265,9 @@ export default function SettingsTab({
 
         <div className="space-y-2">
           {/* 근무일 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#D6E8F5]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 border-2 border-[#7FC8FF]">
             <div className="text-sm text-[#6B8BA8] mb-0.5">총 근무일</div>
-            <div className="text-xl font-bold text-[#2C3E50]">
+            <div className="text-xl font-bold text-[#0B3954]">
               {sessions.length}일
             </div>
             <div className="text-xs text-[#6B8BA8]">
@@ -276,7 +276,7 @@ export default function SettingsTab({
           </div>
 
           {/* 연속 출근 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#D6E8F5]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 border-2 border-[#7FC8FF]">
             <div className="text-sm text-[#6B8BA8] mb-0.5">최대 연속 출근</div>
             <div className="text-xl font-bold text-[#F59E0B]">
               {streak}일째
@@ -284,9 +284,9 @@ export default function SettingsTab({
           </div>
 
           {/* 누적 건수 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#D6E8F5]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 border-2 border-[#7FC8FF]">
             <div className="text-sm text-[#6B8BA8] mb-0.5">누적 건수</div>
-            <div className="text-xl font-bold text-[#2C3E50]">
+            <div className="text-xl font-bold text-[#0B3954]">
               {totalCount}건
             </div>
             <div className="grid grid-cols-2 gap-2 mt-1">
@@ -300,7 +300,7 @@ export default function SettingsTab({
           </div>
 
           {/* 누적 수익 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#D6E8F5]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 border-2 border-[#7FC8FF]">
             <div className="text-sm text-[#6B8BA8] mb-0.5">누적 수익</div>
             <div className="text-xl font-bold text-[#35A7FF]">
               {totalEarnings.toLocaleString()}원
@@ -316,9 +316,9 @@ export default function SettingsTab({
           </div>
 
           {/* 누적 이동거리 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#D6E8F5]">
+          <div className="bg-[#E8F4FD] rounded-lg p-2 border-2 border-[#7FC8FF]">
             <div className="text-sm text-[#6B8BA8] mb-0.5">누적 이동거리</div>
-            <div className="text-xl font-bold text-[#2C3E50]">
+            <div className="text-xl font-bold text-[#0B3954]">
               {totalDistance.toLocaleString()}km
             </div>
           </div>

@@ -1,4 +1,4 @@
-// ============================================================
+ // ============================================================
 // 인앱 알림 모달 (window.confirm 대체)
 // ============================================================
 
@@ -46,7 +46,7 @@ export default function AlertModal({
       <div className="bg-white w-80 rounded-2xl p-5 shadow-xl shadow-black/10 animate-scaleIn border-2 border-[#7FC8FF]">
         <div className="text-center mb-4">
           <div className="text-3xl mb-2">{iconMap[type]}</div>
-          <h3 className="text-lg font-bold text-[#2C3E50] mb-1">{title}</h3>
+          <h3 className="text-lg font-bold text-[#0B3954] mb-1">{title}</h3>
           <p className="text-sm text-[#6B8BA8] whitespace-pre-line">{message}</p>
         </div>
         <div className="flex gap-2">

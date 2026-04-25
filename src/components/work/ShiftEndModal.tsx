@@ -170,7 +170,7 @@ export default function ShiftEndModal({
         <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 max-h-[90vh] overflow-y-auto animate-slideUp border-2 border-[#7FC8FF]">
           {/* 헤더 */}
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-xl font-bold text-[#2C3E50]">퇴근 기록</h2>
+            <h2 className="text-xl font-bold text-[#0B3954]">퇴근 기록</h2>
             <button
               onClick={onClose}
               className="text-[#6B8BA8] text-xl leading-none p-1"
@@ -228,7 +228,7 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={cquickCount}
                   onChange={(e) => setCquickCount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border-2 border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+                  className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="0"
                 />
               </div>
@@ -239,7 +239,7 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={cquickAmount}
                   onChange={(e) => setCquickAmount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border-2 border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+                  className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="0"
                 />
               </div>
@@ -257,7 +257,7 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={baeminCount}
                   onChange={(e) => setBaeminCount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border-2 border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+                  className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="0"
                 />
               </div>
@@ -268,7 +268,7 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={baeminAmount}
                   onChange={(e) => setBaeminAmount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border-2 border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+                  className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
                   placeholder="0"
                 />
               </div>
@@ -285,7 +285,7 @@ export default function ShiftEndModal({
               inputMode="decimal"
               value={distanceKm}
               onChange={(e) => setDistanceKm(e.target.value)}
-              className="w-full bg-[#E8F4FD] border-2 border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50]"
+              className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954]"
               placeholder="전기자전거 계기판 거리 입력"
             />
           </div>
@@ -298,7 +298,7 @@ export default function ShiftEndModal({
             <textarea
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
-              className="w-full bg-[#E8F4FD] border-2 border-[#D6E8F5] rounded-lg px-3 py-2 text-base text-[#2C3E50] resize-none"
+              className="w-full bg-[#E8F4FD] border-2 border-[#7FC8FF] rounded-lg px-3 py-2 text-base text-[#0B3954] resize-none"
               rows={2}
               placeholder="오늘 하루는 어땠나요? (선택)"
             />
@@ -308,15 +308,15 @@ export default function ShiftEndModal({
           <div className="bg-[#E8F4FD] rounded-lg p-2 mb-3 text-base border-2 border-[#7FC8FF]">
             <div className="flex justify-between mb-1">
               <span className="text-[#6B8BA8]">총 수익</span>
-              <span className="font-bold text-[#2C3E50]">{totalAmount.toLocaleString()}원</span>
+              <span className="font-bold text-[#0B3954]">{totalAmount.toLocaleString()}원</span>
             </div>
             <div className="flex justify-between mb-1">
               <span className="text-[#6B8BA8]">총 건수</span>
-              <span className="font-bold text-[#2C3E50]">{totalCount}건</span>
+              <span className="font-bold text-[#0B3954]">{totalCount}건</span>
             </div>
             <div className="flex justify-between mb-1">
               <span className="text-[#6B8BA8]">건당 평균</span>
-              <span className="font-bold text-[#2C3E50]">{avgPerOrderVal.toLocaleString()}원</span>
+              <span className="font-bold text-[#0B3954]">{avgPerOrderVal.toLocaleString()}원</span>
             </div>
 
             {goalAchieved && (
