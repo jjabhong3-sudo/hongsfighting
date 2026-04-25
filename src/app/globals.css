@@ -49,3 +49,32 @@ input[type="number"] {
   background: #d1d5db;
   border-radius: 2px;
 }
+
+/* 네온 링 펄스 애니메이션 */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+}
+
+/* 네온 팝업 스타일 */
+.mapboxgl-popup.neon-popup .mapboxgl-popup-content {
+  background: #1a1a2e !important;
+  border: 1px solid #00e5ff40;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 0 16px #00e5ff20;
+}
+
+.mapboxgl-popup.neon-popup .mapboxgl-popup-tip {
+  border-top-color: #1a1a2e !important;
+}
