@@ -139,8 +139,8 @@ export default function SettingsTab({
   return (
     <div className="px-3 pb-24">
       {/* ===== 레이어1: 금액 목표 설정 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
-        <h3 className="text-base font-bold text-[#f1f5f9] mb-2">금액 목표 설정</h3>
+      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-3">
+        <h3 className="text-base font-bold text-[#0f172a] mb-2">금액 목표 설정</h3>
 
         <div className="space-y-2">
           <div>
@@ -186,9 +186,9 @@ export default function SettingsTab({
       </div>
 
       {/* ===== 레이어2: 부채 목록 설정 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
+      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-3">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-base font-bold text-[#f1f5f9]">부채 목록</h3>
+          <h3 className="text-base font-bold text-[#0f172a]">부채 목록</h3>
           <button
             onClick={addDebt}
             className="text-[#60a5fa] text-base font-medium"
@@ -250,9 +250,9 @@ export default function SettingsTab({
       </button>
 
       {/* ===== 레이어3: 전체 기록 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
+      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-3">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-base font-bold text-[#f1f5f9]">전체 기록</h3>
+          <h3 className="text-base font-bold text-[#0f172a]">전체 기록</h3>
           {sessions.length > 0 && (
             <button
               onClick={() => setShowResetAlert(true)}

@@ -166,7 +166,7 @@ export default function MonthlyTab({
         >
           ◀
         </button>
-        <h2 className="text-xl font-bold text-[#f1f5f9]">{selectedMonth}</h2>
+        <h2 className="text-xl font-bold text-[#0f172a]">{selectedMonth}</h2>
         <button
           onClick={() => {
             const [y, m] = selectedMonth.split('-').map(Number);
@@ -182,7 +182,7 @@ export default function MonthlyTab({
       </div>
 
       {/* ===== 레이어1: 달력 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
+      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-3">
         <div className="grid grid-cols-7 mb-2">
           {dayLabels.map((label, i) => (
             <div
@@ -232,8 +232,8 @@ export default function MonthlyTab({
       </div>
 
       {/* ===== 레이어2: 간단 내역 ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-3">
-        <h3 className="text-base font-bold text-[#f1f5f9] mb-2">월간 요약</h3>
+      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3 mb-3">
+        <h3 className="text-base font-bold text-[#0f172a] mb-2">월간 요약</h3>
 
         <div className="grid grid-cols-3 gap-2 mb-2">
           <div className="bg-[#0f172a] rounded-lg p-2 border border-[#334155]">
@@ -292,8 +292,8 @@ export default function MonthlyTab({
       </div>
 
       {/* ===== 레이어3: 월간 상세내역 (수정/삭제 포함) ===== */}
-      <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3">
-        <h3 className="text-base font-bold text-[#f1f5f9] mb-2">월간 상세 기록</h3>
+      <div className="bg-[#faf3e0] rounded-xl shadow-sm border border-[#e8dcc8] p-3">
+        <h3 className="text-base font-bold text-[#0f172a] mb-2">월간 상세 기록</h3>
 
         {monthSessions.length === 0 ? (
           <div className="text-center text-[#64748b] text-base py-4">
@@ -322,10 +322,10 @@ export default function MonthlyTab({
                 const dailyGoalAchieved = dailyTotal >= settings.goals.daily;
 
                 return (
-                  <div key={dateKst} className="border-b border-[#334155] pb-3 last:border-0 last:pb-0">
+                  <div key={dateKst} className="border-b border-[#e8dcc8] pb-3 last:border-0 last:pb-0">
                     {/* 날짜 헤더 */}
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-base font-bold text-[#f1f5f9]">
+                      <span className="text-base font-bold text-[#0f172a]">
                         {dateKst}
                       </span>
                       <div className="flex items-center gap-2">
@@ -376,7 +376,7 @@ export default function MonthlyTab({
                       return (
                         <div
                           key={sessionKey}
-                          className="ml-2 pl-3 border-l-2 border-[#334155] py-1"
+                          className="ml-2 pl-3 border-l-2 border-[#e8dcc8] py-1"
                         >
                           {/* 오전/오후 + 금액 + 건수/시간/거리 (같은 줄) */}
                           <div className="flex items-center justify-between mb-1">
@@ -390,7 +390,7 @@ export default function MonthlyTab({
                               >
                                 {isMorning ? '오전' : '오후'}
                               </span>
-                              <span className="text-base font-bold text-[#f1f5f9]">
+                          <span className="text-base font-bold text-[#0f172a]">
                                 {earnings.toLocaleString()}원
                               </span>
                               <span className="text-sm text-[#64748b]">

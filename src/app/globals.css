@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
+  --background: #1a1a2e;
   --foreground: #0f172a;
-  --card-bg: #ffffff;
-  --card-border: #e2e8f0;
+  --card-bg: #faf3e0;
+  --card-border: #e8dcc8;
   --accent-red: #ef4444;
   --accent-red-light: #fca5a5;
   --accent-red-dark: #dc2626;
@@ -33,12 +33,12 @@ body {
   font-size: 18px;
 }
 
-/* 카드 공통 스타일 - 순백색 + 얇은 테두리 + 부드러운 그림자 */
+/* 카드 공통 스타일 - 크림화이트 + 얇은 테두리 + 부드러운 그림자 */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 /* 레드 그라데이션 로딩바 - 에너지 차오르는 느낌 */
@@ -110,7 +110,7 @@ input[type="number"] {
 
 /* 네온 팝업 스타일 */
 .mapboxgl-popup.neon-popup .mapboxgl-popup-content {
-  background: #ffffff !important;
+  background: #faf3e0 !important;
   border: 1px solid #ef444440;
   border-radius: 8px;
   padding: 8px 12px;
@@ -118,7 +118,7 @@ input[type="number"] {
 }
 
 .mapboxgl-popup.neon-popup .mapboxgl-popup-tip {
-  border-top-color: #ffffff !important;
+  border-top-color: #faf3e0 !important;
 }
 
 /* ===== 애니메이션 ===== */

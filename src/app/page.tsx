@@ -262,7 +262,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#f8fafc]">
+      <div className="flex items-center justify-center min-h-screen bg-[#1a1a2e]">
         <div className="text-center">
           <div className="text-4xl mb-3 animate-bounce">🚴</div>
           <div className="text-[#64748b] font-medium">로딩 중...</div>
@@ -275,7 +275,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] max-w-lg mx-auto">
+    <div className="min-h-screen bg-[#1a1a2e] max-w-lg mx-auto">
       {/* 탭 컨텐츠 */}
       <main className="pt-2">
         {activeTab === 'main' && (
