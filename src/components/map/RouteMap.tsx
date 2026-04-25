@@ -192,8 +192,8 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
   return (
     <div
       ref={mapContainerRef}
-      className="w-full h-48 rounded-lg overflow-hidden"
-      style={{ minHeight: '12rem' }}
+      className="w-full h-68 rounded-lg overflow-hidden"
+      style={{ minHeight: '17rem' }}
     />
   );
 }
