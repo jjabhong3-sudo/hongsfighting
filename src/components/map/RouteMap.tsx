@@ -1,5 +1,5 @@
 // ============================================================
-// Mapbox GL JS 경로 지도 (네온모드 + 국가별 이모지 마커)
+// Mapbox GL JS 경로 지도 (컬러모드 + 국가별 이모지 마커)
 // ============================================================
 
 'use client';
@@ -32,7 +32,7 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
     try {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
-        style: 'mapbox://styles/mapbox/dark-v11',
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: [126.83, 37.56],
         zoom: 10,
         attributionControl: false,
@@ -73,13 +73,13 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
             },
             paint: {
               'line-color': seg.color,
-              'line-width': 2,
-              'line-opacity': 0.35,
+              'line-width': 3,
+              'line-opacity': 0.6,
             },
           });
         });
 
-        // ===== 지나온 구간 (네온 굵게) =====
+        // ===== 지나온 구간 (굵게 강조) =====
         const progress = calculateProgress(totalDistanceKm);
         const passedCoords = coordinates.slice(
           0,
@@ -99,24 +99,6 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
             },
           });
 
-          // 네온 글로우 효과 (바깥)
-          map.addLayer({
-            id: 'passed-route-glow',
-            type: 'line',
-            source: 'passed-route',
-            layout: {
-              'line-join': 'round',
-              'line-cap': 'round',
-            },
-            paint: {
-              'line-color': '#00e5ff',
-              'line-width': 10,
-              'line-opacity': 0.3,
-              'line-blur': 6,
-            },
-          });
-
-          // 네온 라인 (안쪽)
           map.addLayer({
             id: 'passed-route-line',
             type: 'line',
@@ -126,8 +108,8 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
               'line-cap': 'round',
             },
             paint: {
-              'line-color': '#00e5ff',
-              'line-width': 4,
+              'line-color': '#2563eb',
+              'line-width': 5,
               'line-opacity': 0.9,
             },
           });
@@ -152,17 +134,16 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
             el.textContent = wp.emoji;
             el.style.cssText = `
               font-size: ${isStart || isEnd ? '28px' : '22px'};
-              filter: drop-shadow(0 0 8px rgba(0,229,255,0.6));
+              filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
               cursor: pointer;
               transition: transform 0.2s;
             `;
 
             const popup = new mapboxgl.Popup({
               offset: 10,
-              className: 'neon-popup',
             }).setHTML(
-              `<div style="color:#00e5ff;font-weight:bold;font-size:13px;">${wp.emoji} ${wp.name}</div>
-               <div style="color:#aaa;font-size:11px;">${wp.country} · ${wp.distanceKmFromStart.toLocaleString()}km</div>`
+              `<div style="font-weight:bold;font-size:13px;">${wp.emoji} ${wp.name}</div>
+               <div style="color:#666;font-size:11px;">${wp.country} · ${wp.distanceKmFromStart.toLocaleString()}km</div>`
             );
 
             new mapboxgl.Marker({ element: el })
@@ -170,25 +151,24 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
               .setPopup(popup)
               .addTo(map);
           } else {
-            // 일반 도시: 작은 네온 점
+            // 일반 도시: 작은 점
             const el = document.createElement('div');
             el.style.cssText = `
               width: 6px;
               height: 6px;
               border-radius: 50%;
-              background: #00e5ff;
-              border: 1px solid rgba(255,255,255,0.5);
-              box-shadow: 0 0 6px #00e5ff;
-              opacity: 0.6;
+              background: #6b7280;
+              border: 1px solid white;
+              box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+              opacity: 0.7;
               cursor: pointer;
             `;
 
             const popup = new mapboxgl.Popup({
               offset: 10,
-              className: 'neon-popup',
             }).setHTML(
-              `<div style="color:#00e5ff;font-weight:bold;font-size:12px;">${wp.name}</div>
-               <div style="color:#aaa;font-size:10px;">${wp.country} · ${wp.distanceKmFromStart.toLocaleString()}km</div>`
+              `<div style="font-weight:bold;font-size:12px;">${wp.name}</div>
+               <div style="color:#666;font-size:10px;">${wp.country} · ${wp.distanceKmFromStart.toLocaleString()}km</div>`
             );
 
             new mapboxgl.Marker({ element: el })
@@ -198,44 +178,43 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
           }
         });
 
-        // ===== 현재 위치 마커 (자전거 + 네온 링) =====
+        // ===== 현재 위치 마커 (자전거 + 파랑 링) =====
         if (totalDistanceKm > 0) {
           const pos = interpolatePosition(totalDistanceKm);
 
           const ringEl = document.createElement('div');
           ringEl.style.cssText = `
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: 3px solid #00e5ff;
-            box-shadow: 0 0 16px #00e5ff, 0 0 32px #00e5ff40;
-            animation: pulse-ring 2s infinite;
+            border: 3px solid #2563eb;
+            background: rgba(37,99,235,0.15);
+            box-shadow: 0 0 0 2px rgba(37,99,235,0.3);
             position: absolute;
-            top: -20px;
-            left: -20px;
+            top: -18px;
+            left: -18px;
           `;
 
           const bikeEl = document.createElement('div');
           bikeEl.textContent = '🚴';
           bikeEl.style.cssText = `
-            font-size: 24px;
-            filter: drop-shadow(0 0 8px #00e5ff);
+            font-size: 22px;
             position: absolute;
-            top: -12px;
-            left: -12px;
+            top: -11px;
+            left: -11px;
           `;
 
           const container = document.createElement('div');
-          container.style.cssText = 'position:relative;width:40px;height:40px;';
+          container.style.cssText = 'position:relative;width:36px;height:36px;';
           container.appendChild(ringEl);
           container.appendChild(bikeEl);
 
           new mapboxgl.Marker({ element: container })
             .setLngLat([pos.lng, pos.lat])
             .setPopup(
-              new mapboxgl.Popup({ offset: 10, className: 'neon-popup' }).setHTML(
-                `<div style="color:#00e5ff;font-weight:bold;font-size:12px;">🚴 현재 위치</div>
-                 <div style="color:#aaa;font-size:10px;">${totalDistanceKm.toLocaleString()}km</div>`
+              new mapboxgl.Popup({ offset: 10 }).setHTML(
+                `<div style="font-weight:bold;font-size:12px;">🚴 현재 위치</div>
+                 <div style="color:#666;font-size:10px;">${totalDistanceKm.toLocaleString()}km</div>`
               )
             )
             .addTo(map);
@@ -250,15 +229,14 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
           estEl.style.cssText = `
             font-size: 20px;
             opacity: 0.8;
-            filter: drop-shadow(0 0 6px #ffab00);
           `;
 
           new mapboxgl.Marker({ element: estEl })
             .setLngLat([estPos.lng, estPos.lat])
             .setPopup(
-              new mapboxgl.Popup({ offset: 10, className: 'neon-popup' }).setHTML(
-                `<div style="color:#ffab00;font-weight:bold;font-size:12px;">📍 예상 도착 (+50km)</div>
-                 <div style="color:#aaa;font-size:10px;">${estimatedKm.toLocaleString()}km</div>`
+              new mapboxgl.Popup({ offset: 10 }).setHTML(
+                `<div style="font-weight:bold;font-size:12px;">📍 예상 도착 (+50km)</div>
+                 <div style="color:#666;font-size:10px;">${estimatedKm.toLocaleString()}km</div>`
               )
             )
             .addTo(map);
@@ -296,7 +274,7 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
 
   if (mapError) {
     return (
-      <div className="bg-gray-900 rounded-lg h-68 flex items-center justify-center text-gray-400 text-sm">
+      <div className="bg-gray-100 rounded-lg h-[372px] flex items-center justify-center text-gray-400 text-sm">
         {mapError}
       </div>
     );
@@ -305,8 +283,8 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
   return (
     <div
       ref={mapContainerRef}
-      className="w-full h-68 rounded-lg overflow-hidden"
-      style={{ minHeight: '17rem' }}
+      className="w-full h-[372px] rounded-lg overflow-hidden"
+      style={{ minHeight: '23rem' }}
     />
   );
 }
