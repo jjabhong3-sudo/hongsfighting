@@ -40,6 +40,11 @@ export default function RouteMap({ totalDistanceKm }: RouteMapProps) {
 
       mapRef.current = map;
 
+      // 한국어 설정
+      map.on('style.load', () => {
+        map.setLanguage('ko');
+      });
+
       map.on('load', () => {
         if (!map) return;
 
