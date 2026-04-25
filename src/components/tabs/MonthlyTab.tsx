@@ -19,6 +19,7 @@ import AlertModal from '@/components/ui/AlertModal';
 import {
   sessionEarnings,
   sessionTotalCount,
+  dailyTotalEarnings,
   calculateMonthlyStats,
   hourlyRate,
   avgPerOrder,
@@ -294,73 +295,104 @@ export default function MonthlyTab({
             이번 달 기록이 없습니다.
           </div>
         ) : (
-          <div className="space-y-3">
-            {monthSessions.map((session) => {
-              const earnings = sessionEarnings(session, sessions);
-              const count = sessionTotalCount(session, sessions);
-              const hr = hourlyRate(earnings, session.durationMin);
-              const avg = avgPerOrder(earnings, count);
-              const epk = earningsPerKm(earnings, session.distanceKmInput);
-              const isMorning = session.shiftType === 'morning';
+          <div className="space-y-4">
+            {(() => {
+              // 날짜별로 그룹핑
+              const dateGroups = new Map<string, WorkSession[]>();
+              for (const s of monthSessions) {
+                const existing = dateGroups.get(s.workDateKst) || [];
+                existing.push(s);
+                dateGroups.set(s.workDateKst, existing);
+              }
+              // 날짜 내림차순 정렬
+              const sortedDates = Array.from(dateGroups.keys()).sort().reverse();
 
-              const sessionKey = session.id || `${session.workDateKst}-${session.shiftType}-${session.startAt}`;
-              return (
-                <div
-                  key={sessionKey}
-                  className="border-b border-gray-50 pb-3 last:border-0 last:pb-0"
-                >
-                  <div className="flex justify-between items-center mb-1">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-xs px-2 py-0.5 rounded-full ${
-                          isMorning
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-purple-100 text-purple-700'
-                        }`}
-                      >
-                        {isMorning ? '오전' : '오후'}
+              return sortedDates.map((dateKst) => {
+                const daySessions = dateGroups.get(dateKst)!;
+                // 오전/오후 순서로 정렬
+                const sorted = [...daySessions].sort((a, b) =>
+                  a.shiftType === 'morning' ? -1 : 1
+                );
+
+                return (
+                  <div key={dateKst} className="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                    {/* 날짜 헤더 */}
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-bold text-gray-700">
+                        {dateKst}
                       </span>
-                      <span className="text-xs text-gray-500">
-                        {session.workDateKst}
+                      <span className="text-xs text-gray-400">
+                        일일 합계 {dailyTotalEarnings(monthSessions, dateKst).toLocaleString()}원
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold">
-                        {earnings.toLocaleString()}원
-                      </span>
-                      {/* 수정/삭제 버튼 */}
-                      <button
-                        onClick={() => startEdit(session)}
-                        className="text-blue-400 text-xs"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        onClick={() => {
-                          const id = session.id || sessionKey;
-                          handleDelete(id);
-                        }}
-                        className="text-red-400 text-xs"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </div>
 
-                  <div className="grid grid-cols-4 gap-1 text-[10px] text-gray-400">
-                    <span>건수 {count}건</span>
-                    <span>건당 {avg.toLocaleString()}원</span>
-                    <span>시급 {hr.toLocaleString()}원</span>
-                    <span>km당 {epk.toLocaleString()}원</span>
+                    {/* 오전/오후 각각 표시 */}
+                    {sorted.map((session) => {
+                      const earnings = sessionEarnings(session);
+                      const count = sessionTotalCount(session);
+                      const hr = hourlyRate(earnings, session.durationMin);
+                      const avg = avgPerOrder(earnings, count);
+                      const epk = earningsPerKm(earnings, session.distanceKmInput);
+                      const isMorning = session.shiftType === 'morning';
+                      const sessionKey = session.id || `${session.workDateKst}-${session.shiftType}-${session.startAt}`;
+
+                      return (
+                        <div
+                          key={sessionKey}
+                          className="ml-2 pl-3 border-l-2 border-gray-100 py-2"
+                        >
+                          <div className="flex justify-between items-center mb-1">
+                            <div className="flex items-center gap-2">
+                              <span
+                                className={`text-xs px-2 py-0.5 rounded-full ${
+                                  isMorning
+                                    ? 'bg-yellow-100 text-yellow-700'
+                                    : 'bg-purple-100 text-purple-700'
+                                }`}
+                              >
+                                {isMorning ? '오전' : '오후'}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-bold">
+                                {earnings.toLocaleString()}원
+                              </span>
+                              <button
+                                onClick={() => startEdit(session)}
+                                className="text-blue-400 text-xs"
+                              >
+                                ✏️
+                              </button>
+                              <button
+                                onClick={() => {
+                                  const id = session.id || sessionKey;
+                                  handleDelete(id);
+                                }}
+                                className="text-red-400 text-xs"
+                              >
+                                🗑️
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-4 gap-1 text-[10px] text-gray-400">
+                            <span>건수 {count}건</span>
+                            <span>건당 {avg.toLocaleString()}원</span>
+                            <span>시급 {hr.toLocaleString()}원</span>
+                            <span>km당 {epk.toLocaleString()}원</span>
+                          </div>
+                          <div className="text-[10px] text-gray-400 mt-0.5">
+                            {formatDurationShort(session.durationMin)} |{' '}
+                            {session.distanceKmInput}km
+                            {session.memo && ` | ${session.memo}`}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                  <div className="text-[10px] text-gray-400 mt-0.5">
-                    {formatDurationShort(session.durationMin)} |{' '}
-                    {session.distanceKmInput}km
-                    {session.memo && ` | ${session.memo}`}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              });
+            })()}
           </div>
         )}
       </div>
