@@ -485,82 +485,108 @@ export default function MainTab({
             이번 주 기록이 없습니다.
           </div>
         ) : (
-          <div className="space-y-3">
-            {thisWeekSessions.map((session) => {
-              const earnings = sessionEarnings(session, sessions);
-              const count = sessionTotalCount(session, sessions);
-              const hr = hourlyRate(earnings, session.durationMin);
-              const avg = avgPerOrder(earnings, count);
-              const epk = earningsPerKm(earnings, session.distanceKmInput);
-              const isMorning = session.shiftType === 'morning';
+          <div className="space-y-4">
+            {(() => {
+              // 날짜별로 그룹핑
+              const dateGroups = new Map<string, WorkSession[]>();
+              for (const s of thisWeekSessions) {
+                const existing = dateGroups.get(s.workDateKst) || [];
+                existing.push(s);
+                dateGroups.set(s.workDateKst, existing);
+              }
+              const sortedDates = Array.from(dateGroups.keys()).sort().reverse();
 
-              // 오전이면 입력값 그대로, 오후면 오전값을 빼서 추가분 계산
-              const morningSession = !isMorning
-                ? sessions.find(
-                    (s) => s.workDateKst === session.workDateKst && s.shiftType === 'morning'
-                  )
-                : null;
-              const cquickCount = isMorning
-                ? session.platforms.cquick.count
-                : Math.max(0, session.platforms.cquick.count - (morningSession?.platforms.cquick.count || 0));
-              const cquickAmount = isMorning
-                ? session.platforms.cquick.amount
-                : Math.max(0, session.platforms.cquick.amount - (morningSession?.platforms.cquick.amount || 0));
-              const baeminCount = isMorning
-                ? session.platforms.baemin.count
-                : Math.max(0, session.platforms.baemin.count - (morningSession?.platforms.baemin.count || 0));
-              const baeminAmount = isMorning
-                ? session.platforms.baemin.amount
-                : Math.max(0, session.platforms.baemin.amount - (morningSession?.platforms.baemin.amount || 0));
+              return sortedDates.map((dateKst) => {
+                const daySessions = dateGroups.get(dateKst)!;
+                const sorted = [...daySessions].sort((a, b) =>
+                  a.shiftType === 'morning' ? -1 : 1
+                );
 
-              const sessionKey = session.id || `${session.workDateKst}-${session.shiftType}-${session.startAt}`;
-              return (
-                <div
-                  key={sessionKey}
-                  className="border-b border-gray-50 pb-3 last:border-0 last:pb-0"
-                >
-                  {/* 날짜 + 오전/오후 */}
-                  <div className="flex justify-between items-center mb-1">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-xs px-2 py-0.5 rounded-full ${
-                          isMorning
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-purple-100 text-purple-700'
-                        }`}
-                      >
-                        {isMorning ? '오전' : '오후'}
+                return (
+                  <div key={dateKst} className="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                    {/* 날짜 헤더 */}
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-bold text-gray-700">
+                        {dateKst}
                       </span>
-                      <span className="text-xs text-gray-500">
-                        {session.workDateKst} ({getDayName(session.workDateKst)})
+                      <span className="text-xs text-gray-400">
+                        일일 합계 {dailyTotalEarnings(thisWeekSessions, dateKst).toLocaleString()}원
                       </span>
                     </div>
-                    <span className="text-sm font-bold">
-                      {earnings.toLocaleString()}원
-                    </span>
-                  </div>
 
-                  {/* 통합 상세 */}
-                  <div className="grid grid-cols-4 gap-1 text-[10px] text-gray-400">
-                    <span>건수 {count}건</span>
-                    <span>건당 {avg.toLocaleString()}원</span>
-                    <span>시급 {hr.toLocaleString()}원</span>
-                    <span>km당 {epk.toLocaleString()}원</span>
-                  </div>
+                    {sorted.map((session) => {
+                      const earnings = sessionEarnings(session, sessions);
+                      const count = sessionTotalCount(session, sessions);
+                      const hr = hourlyRate(earnings, session.durationMin);
+                      const avg = avgPerOrder(earnings, count);
+                      const epk = earningsPerKm(earnings, session.distanceKmInput);
+                      const isMorning = session.shiftType === 'morning';
+                      const sessionKey = session.id || `${session.workDateKst}-${session.shiftType}-${session.startAt}`;
 
-                  {/* 플랫폼별 상세 */}
-                  <div className="text-[11px] text-gray-600 space-y-0.5 mb-1">
-                    <div>카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원</div>
-                    <div>배민: {baeminCount}건 {baeminAmount.toLocaleString()}원</div>
-                  </div>
+                      // 오전이면 입력값 그대로, 오후면 오전값을 빼서 추가분 계산
+                      const morningSession = !isMorning
+                        ? sessions.find(
+                            (s) => s.workDateKst === session.workDateKst && s.shiftType === 'morning'
+                          )
+                        : null;
+                      const cquickCount = isMorning
+                        ? session.platforms.cquick.count
+                        : Math.max(0, session.platforms.cquick.count - (morningSession?.platforms.cquick.count || 0));
+                      const cquickAmount = isMorning
+                        ? session.platforms.cquick.amount
+                        : Math.max(0, session.platforms.cquick.amount - (morningSession?.platforms.cquick.amount || 0));
+                      const baeminCount = isMorning
+                        ? session.platforms.baemin.count
+                        : Math.max(0, session.platforms.baemin.count - (morningSession?.platforms.baemin.count || 0));
+                      const baeminAmount = isMorning
+                        ? session.platforms.baemin.amount
+                        : Math.max(0, session.platforms.baemin.amount - (morningSession?.platforms.baemin.amount || 0));
 
-                  <div className="text-[10px] text-gray-400 mt-0.5">
-                    {formatDurationShort(session.durationMin)} |{' '}
-                    {session.distanceKmInput}km
+                      return (
+                        <div
+                          key={sessionKey}
+                          className="ml-2 pl-3 border-l-2 border-gray-100 py-2"
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center gap-2">
+                              <span
+                                className={`text-xs px-2 py-0.5 rounded-full ${
+                                  isMorning
+                                    ? 'bg-yellow-100 text-yellow-700'
+                                    : 'bg-purple-100 text-purple-700'
+                                }`}
+                              >
+                                {isMorning ? '오전' : '오후'}
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold">
+                              {earnings.toLocaleString()}원
+                            </span>
+                          </div>
+
+                          {/* 플랫폼별 상세 */}
+                          <div className="text-[11px] text-gray-600 space-y-0.5 mb-1">
+                            <div>카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원</div>
+                            <div>배민: {baeminCount}건 {baeminAmount.toLocaleString()}원</div>
+                          </div>
+
+                          {/* 계산된 값 */}
+                          <div className="grid grid-cols-3 gap-1 text-[10px] text-gray-400">
+                            <span>건당 {avg.toLocaleString()}원</span>
+                            <span>시급 {hr.toLocaleString()}원</span>
+                            <span>km당 {epk.toLocaleString()}원</span>
+                          </div>
+                          <div className="text-[10px] text-gray-400 mt-0.5">
+                            {formatDurationShort(session.durationMin)} |{' '}
+                            {session.distanceKmInput}km
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
-                </div>
-              );
-            })}
+                );
+              });
+            })()}
           </div>
         )}
       </div>

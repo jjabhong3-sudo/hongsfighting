@@ -168,13 +168,16 @@ export default function Home() {
       const now = Date.now();
       const durationMin = data.durationMin ?? diffMinutes(activeSession.startAt, now);
 
-      // 오후 세션 저장 시 검증: 새 오후 raw 값이 기존 일일 합계보다 작으면 저장 차단
+      // 오후 세션 저장 시: 같은 날짜에 기존 오후 세션이 있으면 삭제 후 새로 저장 (최신화)
       if (activeSession.shiftType === 'afternoon') {
-        const existingDailyTotal = dailyTotalEarnings(sessions, activeSession.workDateKst);
-        const newAfternoonRaw = data.platforms.cquick.amount + data.platforms.baemin.amount;
-        if (newAfternoonRaw < existingDailyTotal) {
-          alert(`오후 입력값(${newAfternoonRaw.toLocaleString()}원)이 기존 일일 합계(${existingDailyTotal.toLocaleString()}원)보다 작아 저장할 수 없습니다.\n오후 입력값은 오전+추가분을 포함한 최종 누적값이어야 합니다.`);
-          return;
+        const existingAfternoon = sessions.find(
+          (s) => s.workDateKst === activeSession.workDateKst && s.shiftType === 'afternoon' && s.id !== activeSession.id
+        );
+        if (existingAfternoon?.id) {
+          try {
+            if (firebaseReady) await deleteSession(existingAfternoon.id);
+          } catch {}
+          setSessions((prev) => prev.filter((s) => s.id !== existingAfternoon.id));
         }
       }
 
