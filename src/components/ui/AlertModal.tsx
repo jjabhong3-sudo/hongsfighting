@@ -43,16 +43,16 @@ export default function AlertModal({
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 animate-fadeIn">
-      <div className="bg-[#faf3e0] w-80 rounded-2xl p-5 shadow-xl shadow-black/10 animate-scaleIn border border-[#e8dcc8]">
+      <div className="bg-white w-80 rounded-2xl p-5 shadow-xl shadow-black/10 animate-scaleIn border-2 border-[#7FC8FF]">
         <div className="text-center mb-4">
           <div className="text-3xl mb-2">{iconMap[type]}</div>
-          <h3 className="text-lg font-bold text-[#0f172a] mb-1">{title}</h3>
-          <p className="text-sm text-[#64748b] whitespace-pre-line">{message}</p>
+          <h3 className="text-lg font-bold text-[#2C3E50] mb-1">{title}</h3>
+          <p className="text-sm text-[#6B8BA8] whitespace-pre-line">{message}</p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={onCancel}
-            className="flex-1 bg-slate-200 text-[#64748b] rounded-lg py-2.5 font-medium text-sm hover:bg-slate-300 transition-colors"
+            className="flex-1 bg-[#E8F4FD] text-[#6B8BA8] rounded-lg py-2.5 font-medium text-sm hover:bg-[#D6E8F5] transition-colors border border-[#D6E8F5]"
           >
             {cancelText}
           </button>
