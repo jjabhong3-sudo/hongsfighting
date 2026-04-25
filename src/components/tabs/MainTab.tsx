@@ -749,6 +749,7 @@ export default function MainTab({
         }}
         dailyGoal={settings.goals.daily}
         durationMin={elapsedMin}
+        targetAchieved={achieved}
       />
     </div>
   );

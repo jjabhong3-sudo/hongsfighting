@@ -10,7 +10,7 @@ import { Platforms } from '@/types/domain';
 import { formatInputNumber, parseFormattedNumber } from '@/lib/utils/format';
 import AlertModal from '@/components/ui/AlertModal';
 
-/** 랜덤 위로/격려 문구 */
+/** 목표시간 달성 시 위로/격려 문구 */
 const ENCOURAGE_MESSAGES = [
   '고생했어!',
   '힘들었지? 수고했어!',
@@ -24,8 +24,23 @@ const ENCOURAGE_MESSAGES = [
   '한 걸음 더 가까워졌어! 계속 가보자!',
 ];
 
-function getRandomMessage(): string {
-  return ENCOURAGE_MESSAGES[Math.floor(Math.random() * ENCOURAGE_MESSAGES.length)];
+/** 목표시간 미달 시 더 일하게 유도하는 문구 */
+const NOT_ENOUGH_MESSAGES = [
+  '왜?? 벌써 퇴근할라고??',
+  '어짜피 집에가서 할거 없다!',
+  '한 건만 더! 딱 한 건만!',
+  '지금 가면 오늘 뭐한거야?',
+  '목표 시간 아직 안 됐어! 조금만 더!',
+  '집에 가서 뭐하게? 여기서 더 벌자!',
+  '아직 안 끝났어! 달려달려!',
+  '쉬는 것도 좋지만 돈도 좋잖아?',
+  '지금 가면 후회한다! 한 시간만 더!',
+  '오늘 조금만 더 하면 내일 덜 힘들다!',
+];
+
+function getRandomMessage(achieved: boolean): string {
+  const list = achieved ? ENCOURAGE_MESSAGES : NOT_ENOUGH_MESSAGES;
+  return list[Math.floor(Math.random() * list.length)];
 }
 
 interface ShiftEndModalProps {
@@ -39,6 +54,7 @@ interface ShiftEndModalProps {
   }) => void;
   dailyGoal: number;
   durationMin: number;
+  targetAchieved: boolean;
 }
 
 export default function ShiftEndModal({
@@ -47,6 +63,7 @@ export default function ShiftEndModal({
   onSubmit,
   dailyGoal,
   durationMin,
+  targetAchieved,
 }: ShiftEndModalProps) {
   const [cquickCount, setCquickCount] = useState('');
   const [cquickAmount, setCquickAmount] = useState('');
@@ -66,7 +83,7 @@ export default function ShiftEndModal({
     onConfirm: () => void;
   } | null>(null);
 
-  const encourageMsg = useMemo(() => getRandomMessage(), [isOpen]);
+  const encourageMsg = useMemo(() => getRandomMessage(targetAchieved), [isOpen, targetAchieved]);
 
   if (!isOpen) return null;
 
