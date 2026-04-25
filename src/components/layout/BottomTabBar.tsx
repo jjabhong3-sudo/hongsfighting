@@ -47,7 +47,7 @@ const tabs: { key: TabType; label: string; icon: React.ReactNode }[] = [
 
 export default function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 shadow-[0_-2px_8px_rgba(0,0,0,0.04)] safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#faf3e0] border-t border-[#93c5fd] shadow-[0_-2px_8px_rgba(0,0,0,0.06)] safe-area-bottom">
       <div className="flex justify-around items-center h-14 max-w-lg mx-auto">
         {tabs.map((tab) => (
           <button
