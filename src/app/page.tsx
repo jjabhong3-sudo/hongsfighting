@@ -69,7 +69,7 @@ export default function Home() {
   // 초기 데이터 로드
   useEffect(() => {
     async function loadData() {
-      // 1. 먼저 로컬 스토리지에서 데이터 복원 (오프라인 대비)
+      // 1. 먼저 로컬 스토리지에서 데이터 복원 (즉시 표시)
       const savedSessions = localStorage.getItem('okapp_sessions');
       const savedSettings = localStorage.getItem('okapp_settings');
       const savedActive = localStorage.getItem('okapp_activeSession');
@@ -90,7 +90,10 @@ export default function Home() {
         return;
       }
 
-      // 3. Firebase에서 데이터 로드 시도 (실패 시 로컬 스토리지 데이터 유지)
+      // 3. localStorage 데이터로 즉시 로딩 해제
+      setLoading(false);
+
+      // 4. Firebase에서 데이터 로드 시도 (백그라운드, 로딩 차단 없음)
       try {
         setFirebaseReady(true);
         const [loadedSessions, loadedSettings, active] = await Promise.all([
@@ -104,8 +107,6 @@ export default function Home() {
       } catch (err) {
         console.error('Firebase 데이터 로드 실패, 로컬 스토리지 데이터 유지:', err);
         setFirebaseReady(false);
-      } finally {
-        setLoading(false);
       }
     }
 
