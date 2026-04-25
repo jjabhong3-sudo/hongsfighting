@@ -1,22 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a;
-  --foreground: #f1f5f9;
-  --card-bg: #1e293b;
-  --card-border: #334155;
-  --accent-blue: #3b82f6;
-  --accent-cyan: #06b6d4;
-  --accent-violet: #8b5cf6;
+  --background: #f8fafc;
+  --foreground: #1e293b;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --accent-navy: #1e3a5f;
+  --accent-blue: #0ea5e9;
+  --accent-red: #ef4444;
+  --accent-yellow: #f59e0b;
+  --accent-amber: #f97316;
   --accent-green: #10b981;
-  --accent-orange: #f59e0b;
-  --accent-pink: #ec4899;
   --accent-rose: #f43f5e;
-  --accent-yellow: #eab308;
-  --accent-teal: #14b8a6;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
 }
 
 @theme inline {
@@ -32,53 +30,52 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 18px; /* 기본 폰트 3px 증가 */
+  font-size: 18px;
 }
 
-/* 카드 공통 스타일 */
+/* 카드 공통 스타일 - 흰색 배경 + 테두리 */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 12px;
 }
 
-/* 그라데이션 로딩바 공통 - 흰색/붉은색/노란색/남색 계통 */
+/* 그라데이션 로딩바 - 밝은 톤 */
 .gradient-bar-blue {
-  background: linear-gradient(90deg, #1e3a5f, #2563eb, #3b82f6);
+  background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #7dd3fc);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
 .gradient-bar-green {
-  background: linear-gradient(90deg, #1e3a5f, #2563eb, #f59e0b);
+  background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #f59e0b);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
 .gradient-bar-orange {
-  background: linear-gradient(90deg, #f59e0b, #f97316, #f43f5e);
+  background: linear-gradient(90deg, #f59e0b, #f97316, #ef4444);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
 .gradient-bar-purple {
-  background: linear-gradient(90deg, #1e3a5f, #3b82f6, #f59e0b);
+  background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #f59e0b);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
 .gradient-bar-rose {
-  background: linear-gradient(90deg, #f43f5e, #ec4899, #f59e0b);
+  background: linear-gradient(90deg, #ef4444, #f43f5e, #f59e0b);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
 .gradient-bar-teal {
-  background: linear-gradient(90deg, #1e3a5f, #3b82f6, #f1f5f9);
+  background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #f8fafc);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
-
 
 @keyframes shimmer {
   0% { background-position: 0% 50%; }
@@ -112,37 +109,21 @@ input[type="number"] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #cbd5e1;
   border-radius: 2px;
-}
-
-/* 네온 링 펄스 애니메이션 */
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.8);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(0.8);
-    opacity: 1;
-  }
 }
 
 /* 네온 팝업 스타일 */
 .mapboxgl-popup.neon-popup .mapboxgl-popup-content {
-  background: #1a1a2e !important;
-  border: 1px solid #00e5ff40;
+  background: #ffffff !important;
+  border: 1px solid #0ea5e940;
   border-radius: 8px;
   padding: 8px 12px;
-  box-shadow: 0 0 16px #00e5ff20;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .mapboxgl-popup.neon-popup .mapboxgl-popup-tip {
-  border-top-color: #1a1a2e !important;
+  border-top-color: #ffffff !important;
 }
 
 /* ===== 애니메이션 ===== */
