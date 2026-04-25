@@ -1,172 +1,136 @@
 // ============================================================
-// 세션 CRUD (Firestore)
+// 세션 CRUD (Firebase Realtime Database)
 // ============================================================
 
-import {
-  collection,
-  doc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  Timestamp,
-  DocumentData,
-} from 'firebase/firestore';
-import { getFirestoreDb } from '@/lib/firebase/client';
+import { ref, push, update, remove, get, query, orderByChild, equalTo, onValue, off } from 'firebase/database';
+import { getRealtimeDb } from '@/lib/firebase/client';
 import { WorkSession } from '@/types/domain';
 
-const COLLECTION = 'sessions';
+const ROOT_PATH = 'sessions';
 
 /**
- * Firestore 문서 → WorkSession 변환
+ * Realtime Database 데이터 → WorkSession 변환
  */
-function docToSession(id: string, data: DocumentData): WorkSession {
+function rtdbToSession(id: string, data: Record<string, unknown>): WorkSession {
   return {
     id,
-    startAt: data.startAt?.toMillis?.() ?? data.startAt ?? 0,
-    endAt: data.endAt?.toMillis?.() ?? data.endAt ?? null,
-    workDateKst: data.workDateKst ?? '',
-    shiftType: data.shiftType ?? 'morning',
-    durationMin: data.durationMin ?? 0,
-    distanceKmInput: data.distanceKmInput ?? 0,
-    platforms: data.platforms ?? { cquick: { count: 0, amount: 0 }, baemin: { count: 0, amount: 0 } },
-    memo: data.memo ?? '',
-    createdAt: data.createdAt?.toMillis?.() ?? data.createdAt ?? 0,
-    updatedAt: data.updatedAt?.toMillis?.() ?? data.updatedAt ?? 0,
+    startAt: (data.startAt as number) ?? 0,
+    endAt: (data.endAt as number) ?? null,
+    workDateKst: (data.workDateKst as string) ?? '',
+    shiftType: (data.shiftType as 'morning' | 'afternoon') ?? 'morning',
+    durationMin: (data.durationMin as number) ?? 0,
+    distanceKmInput: (data.distanceKmInput as number) ?? 0,
+    platforms: (data.platforms as WorkSession['platforms']) ?? {
+      cquick: { count: 0, amount: 0 },
+      baemin: { count: 0, amount: 0 },
+    },
+    memo: (data.memo as string) ?? '',
+    createdAt: (data.createdAt as number) ?? 0,
+    updatedAt: (data.updatedAt as number) ?? 0,
   };
 }
 
 /**
- * WorkSession → Firestore 저장용 데이터 변환
- */
-function sessionToDoc(session: Partial<WorkSession>): DocumentData {
-  const doc: DocumentData = { ...session };
-  if (doc.startAt && typeof doc.startAt === 'number') {
-    doc.startAt = Timestamp.fromMillis(doc.startAt);
-  }
-  if (doc.endAt && typeof doc.endAt === 'number') {
-    doc.endAt = Timestamp.fromMillis(doc.endAt);
-  }
-  if (doc.createdAt && typeof doc.createdAt === 'number') {
-    doc.createdAt = Timestamp.fromMillis(doc.createdAt);
-  }
-  if (doc.updatedAt && typeof doc.updatedAt === 'number') {
-    doc.updatedAt = Timestamp.fromMillis(doc.updatedAt);
-  }
-  return doc;
-}
-
-/**
- * 새 세션 추가
- */
-export async function addSession(session: WorkSession): Promise<string> {
-  const db = getFirestoreDb();
-  const docRef = await addDoc(collection(db, COLLECTION), sessionToDoc(session));
-  return docRef.id;
-}
-
-/**
- * 세션 업데이트
- */
-export async function updateSession(
-  sessionId: string,
-  data: Partial<WorkSession>
-): Promise<void> {
-  const db = getFirestoreDb();
-  await updateDoc(doc(db, COLLECTION, sessionId), sessionToDoc(data));
-}
-
-/**
- * 세션 삭제
- */
-export async function deleteSession(sessionId: string): Promise<void> {
-  const db = getFirestoreDb();
-  await deleteDoc(doc(db, COLLECTION, sessionId));
-}
-
-/**
- * 단일 세션 조회
- */
-export async function getSession(sessionId: string): Promise<WorkSession | null> {
-  const db = getFirestoreDb();
-  const snap = await getDoc(doc(db, COLLECTION, sessionId));
-  if (!snap.exists()) return null;
-  return docToSession(snap.id, snap.data());
-}
-
-/**
- * 모든 세션 조회 (최신순)
+ * 모든 세션 조회
  */
 export async function getAllSessions(): Promise<WorkSession[]> {
-  const db = getFirestoreDb();
-  const q = query(collection(db, COLLECTION), orderBy('startAt', 'desc'));
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => docToSession(d.id, d.data()));
+  const db = getRealtimeDb();
+  const snap = await get(ref(db, ROOT_PATH));
+  if (!snap.exists()) return [];
+  const data = snap.val() as Record<string, Record<string, unknown>>;
+  return Object.entries(data).map(([id, val]) => rtdbToSession(id, val));
 }
 
 /**
  * 특정 날짜의 세션 조회
  */
 export async function getSessionsByDate(dateKst: string): Promise<WorkSession[]> {
-  const db = getFirestoreDb();
-  const q = query(
-    collection(db, COLLECTION),
-    where('workDateKst', '==', dateKst),
-    orderBy('startAt', 'asc')
-  );
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => docToSession(d.id, d.data()));
+  const all = await getAllSessions();
+  return all.filter((s) => s.workDateKst === dateKst).sort((a, b) => a.startAt - b.startAt);
 }
 
 /**
  * 특정 월의 세션 조회
  */
 export async function getSessionsByMonth(yearMonth: string): Promise<WorkSession[]> {
-  const db = getFirestoreDb();
-  const q = query(
-    collection(db, COLLECTION),
-    where('workDateKst', '>=', `${yearMonth}-01`),
-    where('workDateKst', '<=', `${yearMonth}-31`),
-    orderBy('startAt', 'desc')
-  );
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => docToSession(d.id, d.data()));
+  const all = await getAllSessions();
+  return all.filter((s) => s.workDateKst.startsWith(yearMonth)).sort((a, b) => b.startAt - a.startAt);
 }
 
 /**
  * 특정 주의 세션 조회
  */
-export async function getSessionsByWeek(
-  weekStart: string,
-  weekEnd: string
-): Promise<WorkSession[]> {
-  const db = getFirestoreDb();
-  const q = query(
-    collection(db, COLLECTION),
-    where('workDateKst', '>=', weekStart),
-    where('workDateKst', '<=', weekEnd),
-    orderBy('startAt', 'desc')
-  );
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => docToSession(d.id, d.data()));
+export async function getSessionsByWeek(weekStart: string, weekEnd: string): Promise<WorkSession[]> {
+  const all = await getAllSessions();
+  return all
+    .filter((s) => s.workDateKst >= weekStart && s.workDateKst <= weekEnd)
+    .sort((a, b) => b.startAt - a.startAt);
 }
 
 /**
  * 진행 중인 세션 조회 (endAt이 null)
  */
 export async function getActiveSession(): Promise<WorkSession | null> {
-  const db = getFirestoreDb();
-  const q = query(
-    collection(db, COLLECTION),
-    where('endAt', '==', null),
-    orderBy('startAt', 'desc'),
-    // limit 1
-  );
-  const snap = await getDocs(q);
-  if (snap.empty) return null;
-  return docToSession(snap.docs[0].id, snap.docs[0].data());
+  const all = await getAllSessions();
+  const active = all.filter((s) => s.endAt === null).sort((a, b) => b.startAt - a.startAt);
+  return active.length > 0 ? active[0] : null;
+}
+
+/**
+ * 단일 세션 조회
+ */
+export async function getSession(sessionId: string): Promise<WorkSession | null> {
+  const db = getRealtimeDb();
+  const snap = await get(ref(db, `${ROOT_PATH}/${sessionId}`));
+  if (!snap.exists()) return null;
+  return rtdbToSession(sessionId, snap.val());
+}
+
+/**
+ * 새 세션 추가
+ */
+export async function addSession(session: WorkSession): Promise<string> {
+  const db = getRealtimeDb();
+  const newRef = push(ref(db, ROOT_PATH));
+  const data: Record<string, unknown> = { ...session };
+  delete data.id;
+  await update(newRef, data);
+  return newRef.key!;
+}
+
+/**
+ * 세션 업데이트
+ */
+export async function updateSession(sessionId: string, data: Partial<WorkSession>): Promise<void> {
+  const db = getRealtimeDb();
+  const updateData: Record<string, unknown> = { ...data };
+  delete updateData.id;
+  await update(ref(db, `${ROOT_PATH}/${sessionId}`), updateData);
+}
+
+/**
+ * 세션 삭제
+ */
+export async function deleteSession(sessionId: string): Promise<void> {
+  const db = getRealtimeDb();
+  await remove(ref(db, `${ROOT_PATH}/${sessionId}`));
+}
+
+/**
+ * 실시간 구독: 모든 세션 변경 감지
+ */
+export function subscribeSessions(callback: (sessions: WorkSession[]) => void): () => void {
+  const db = getRealtimeDb();
+  const sessionsRef = ref(db, ROOT_PATH);
+  const handler = (snap: import('firebase/database').DataSnapshot) => {
+    if (!snap.exists()) {
+      callback([]);
+      return;
+    }
+    const data = snap.val() as Record<string, Record<string, unknown>>;
+    const sessions = Object.entries(data).map(([id, val]) => rtdbToSession(id, val));
+    callback(sessions);
+  };
+  onValue(sessionsRef, handler);
+  return () => off(sessionsRef, 'value', handler);
 }

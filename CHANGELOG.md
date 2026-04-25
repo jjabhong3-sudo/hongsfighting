@@ -143,6 +143,21 @@
 - 일일합계 파란색 두꺼운 글씨
 - 플랫폼별 색상 구분 (카카오퀵=파랑, 배민=초록)
 
+### 31차 수정: 다크모드 UI 통일 (2026-04-25)
+- 전체 UI를 다크모드(slate-900 계열)로 통일
+- **page.tsx**: 배경 `bg-gray-50` → `bg-[#0f172a]`, 로딩 화면 다크모드 적용
+- **BottomTabBar.tsx**: 배경 `bg-white` → `bg-[#1e293b]`, 테두리 `border-gray-200` → `border-[#334155]`, 텍스트 색상 변경
+- **ShiftEndModal.tsx**: 모달 배경 `bg-white` → `bg-[#1e293b]`, 입력 필드 `bg-[#0f172a]`, 요약/시간 카드 다크모드 적용
+- **AlertModal.tsx**: 모달 배경 `bg-white` → `bg-[#1e293b]`, 취소 버튼 `bg-[#334155]`, 텍스트 색상 변경
+- **SettingsTab.tsx**: 모든 카드 `bg-white` → `bg-[#1e293b]`, 입력 필드 `bg-[#0f172a]`, 통계 카드 `bg-[#0f172a]` + `border-[#334155]`, 저장 버튼 gradient-bar 적용
+- **globals.css**: 이미 다크모드 CSS 변수 정의되어 있어 변경 불필요
+- **layout.tsx**: 이미 `bg-[#0f172a] text-[#f1f5f9]` 적용되어 있어 변경 불필요
+- **MainTab.tsx**: 이미 다크모드 스타일 적용되어 있어 변경 불필요
+- **MonthlyTab.tsx**: 이미 다크모드 스타일 적용되어 있어 변경 불필요
+- 빌드 검증 완료 (TypeScript + Next.js 컴파일 에러 없음)
+
+---
+
 ### 22차 수정: 폰트 크기 + 레이아웃 + COMPLETE
 - 폰트 크기 증가 (text-xs 12px)
 - 건수/시간/거리 오전/오후 금액과 같은 줄

@@ -298,12 +298,12 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="flex items-center justify-center min-h-screen bg-[#0f172a]">
         <div className="text-center">
           <div className="text-4xl mb-3 animate-bounce">🚴</div>
-          <div className="text-gray-400 font-medium">로딩 중...</div>
-          <div className="mt-3 w-32 h-1.5 bg-gray-200 rounded-full overflow-hidden mx-auto">
-            <div className="w-full h-full bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse" />
+          <div className="text-[#64748b] font-medium">로딩 중...</div>
+          <div className="mt-3 w-32 h-1.5 bg-[#1e293b] rounded-full overflow-hidden mx-auto">
+            <div className="w-full h-full gradient-bar-blue rounded-full animate-pulse" />
           </div>
         </div>
       </div>
@@ -311,7 +311,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 max-w-lg mx-auto">
+    <div className="min-h-screen bg-[#0f172a] max-w-lg mx-auto">
       {/* 상단 헤더 - MainTab에서 관리하므로 제거 (중복 방지) */}
 
       {/* 탭 컨텐츠 (스와이프 영역) */}

@@ -1,13 +1,14 @@
 // ============================================================
-// Firebase 초기화 (개인용, 로그인 없음)
+// Firebase 초기화 (개인용, 로그인 없음) - Realtime Database
 // ============================================================
 
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
-import { getFirestore, Firestore } from 'firebase/firestore';
+import { getDatabase, Database } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || '',
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || '',
+  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL || '',
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || '',
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || '',
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || '',
@@ -15,7 +16,7 @@ const firebaseConfig = {
 };
 
 let app: FirebaseApp | null = null;
-let db: Firestore | null = null;
+let db: Database | null = null;
 
 /**
  * Firebase 앱 인스턴스 반환 (싱글톤)
@@ -32,11 +33,11 @@ export function getFirebaseApp(): FirebaseApp {
 }
 
 /**
- * Firestore 인스턴스 반환 (싱글톤)
+ * Realtime Database 인스턴스 반환 (싱글톤)
  */
-export function getFirestoreDb(): Firestore {
+export function getRealtimeDb(): Database {
   if (!db) {
-    db = getFirestore(getFirebaseApp());
+    db = getDatabase(getFirebaseApp());
   }
   return db;
 }
@@ -47,6 +48,6 @@ export function getFirestoreDb(): Firestore {
 export function isFirebaseConfigured(): boolean {
   return !!(
     process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
-    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL
   );
 }
