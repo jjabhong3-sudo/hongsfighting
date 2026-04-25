@@ -2,17 +2,17 @@
 
 :root {
   --background: #f8fafc;
-  --foreground: #1e293b;
+  --foreground: #0f172a;
   --card-bg: #ffffff;
   --card-border: #e2e8f0;
-  --accent-navy: #1e3a5f;
-  --accent-blue: #0ea5e9;
   --accent-red: #ef4444;
-  --accent-yellow: #f59e0b;
-  --accent-amber: #f97316;
+  --accent-red-light: #fca5a5;
+  --accent-red-dark: #dc2626;
+  --accent-navy: #0f172a;
+  --accent-slate: #64748b;
   --accent-green: #10b981;
-  --accent-rose: #f43f5e;
-  --text-primary: #1e293b;
+  --accent-amber: #f59e0b;
+  --text-primary: #0f172a;
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
 }
@@ -33,46 +33,41 @@ body {
   font-size: 18px;
 }
 
-/* 카드 공통 스타일 - 흰색 배경 + 테두리 */
+/* 카드 공통 스타일 - 순백색 + 얇은 테두리 + 부드러운 그림자 */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
-/* 그라데이션 로딩바 - 밝은 톤 */
-.gradient-bar-blue {
-  background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #7dd3fc);
+/* 레드 그라데이션 로딩바 - 에너지 차오르는 느낌 */
+.gradient-bar-red {
+  background: linear-gradient(90deg, #ef4444, #f97316, #f59e0b);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
-.gradient-bar-green {
-  background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #f59e0b);
+.gradient-bar-red-strong {
+  background: linear-gradient(90deg, #dc2626, #ef4444, #fca5a5);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
-.gradient-bar-orange {
+.gradient-bar-navy {
+  background: linear-gradient(90deg, #0f172a, #1e293b, #334155);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.gradient-bar-amber {
   background: linear-gradient(90deg, #f59e0b, #f97316, #ef4444);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
-.gradient-bar-purple {
-  background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #f59e0b);
-  background-size: 200% 100%;
-  animation: shimmer 2s ease-in-out infinite;
-}
-
-.gradient-bar-rose {
-  background: linear-gradient(90deg, #ef4444, #f43f5e, #f59e0b);
-  background-size: 200% 100%;
-  animation: shimmer 2s ease-in-out infinite;
-}
-
-.gradient-bar-teal {
-  background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #f8fafc);
+.gradient-bar-green {
+  background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7);
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
@@ -116,7 +111,7 @@ input[type="number"] {
 /* 네온 팝업 스타일 */
 .mapboxgl-popup.neon-popup .mapboxgl-popup-content {
   background: #ffffff !important;
-  border: 1px solid #0ea5e940;
+  border: 1px solid #ef444440;
   border-radius: 8px;
   padding: 8px 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
