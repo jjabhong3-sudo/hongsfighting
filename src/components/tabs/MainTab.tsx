@@ -26,7 +26,7 @@ import {
   isTargetAchieved,
 } from '@/lib/work/shift';
 import { calculateProgress, interpolatePosition } from '@/lib/route/progress';
-import { WAYPOINTS, TOTAL_DISTANCE_KM } from '@/lib/route/waypoints';
+import { WAYPOINTS, TOTAL_DISTANCE_KM, COUNTRY_SEGMENTS } from '@/lib/route/waypoints';
 import {
   sessionEarnings,
   sessionTotalCount,
@@ -118,6 +118,38 @@ export default function MainTab({
     return 0;
   })();
 
+  // 현재 국가 찾기
+  const currentCountryIdx = (() => {
+    for (let i = COUNTRY_SEGMENTS.length - 1; i >= 0; i--) {
+      const seg = COUNTRY_SEGMENTS[i];
+      if (progress.currentWaypointIndex >= seg.startIndex) return i;
+    }
+    return 0;
+  })();
+  const currentCountry = COUNTRY_SEGMENTS[currentCountryIdx];
+  const nextCountry = currentCountryIdx < COUNTRY_SEGMENTS.length - 1
+    ? COUNTRY_SEGMENTS[currentCountryIdx + 1]
+    : null;
+
+  // 현재 국가 내 진행률
+  const countryStartKm = WAYPOINTS[currentCountry.startIndex].distanceKmFromStart;
+  const countryEndKm = WAYPOINTS[currentCountry.endIndex].distanceKmFromStart;
+  const countryTotalKm = countryEndKm - countryStartKm;
+  const countryProgressKm = Math.max(0, totalDistanceKm - countryStartKm);
+  const countryProgressPercent = countryTotalKm > 0
+    ? Math.min(100, Math.round((countryProgressKm / countryTotalKm) * 100))
+    : 100;
+
+  // 다음 나라까지 남은 거리
+  const remainingKmToNextCountry = nextCountry
+    ? Math.max(0, WAYPOINTS[nextCountry.startIndex].distanceKmFromStart - totalDistanceKm)
+    : 0;
+  const remainingDaysToNextCountry = Math.ceil(remainingKmToNextCountry / 50);
+
+  // 최종 목표까지 남은 거리
+  const remainingKmToFinal = Math.max(0, TOTAL_DISTANCE_KM - totalDistanceKm);
+  const remainingDaysToFinal = Math.ceil(remainingKmToFinal / 50);
+
   // 금주 상세 (오전/오후 분리)
   const thisWeekSessions = sessions.filter((s) => {
     const ws = weeklyStats.weekStart;
@@ -184,7 +216,7 @@ export default function MainTab({
   const motto = MOTTOS[Math.floor(Math.random() * MOTTOS.length)];
 
   return (
-    <div className="px-4 pb-24">
+    <div className="px-6 pb-24">
       {/* ===== 헤더: 타이틀 + 날짜 ===== */}
       <div className="flex items-center justify-between py-3 mb-2">
         <div className="text-lg font-bold text-gray-800">
@@ -195,12 +227,12 @@ export default function MainTab({
 
       {/* ===== 트래블 카드 (지도 + 상태 + 접기) ===== */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-3">
-        {/* 헤더: 연속출근 + 접기 버튼 */}
+        {/* 헤더: 운행일차 + 접기 버튼 */}
         <div className="flex items-center justify-between px-4 pt-3 pb-2">
           <div className="flex items-center gap-2">
-            <span className="text-lg">🔥</span>
+            <span className="text-lg">🚚</span>
             <span className="text-sm font-bold text-gray-700">
-              {streak}일째 출근중!
+              운행 {streak}일차. 어디까지 왔니?
             </span>
           </div>
           <button
@@ -218,45 +250,52 @@ export default function MainTab({
           </div>
         )}
 
-        {/* 상태 정보 */}
+        {/* 상태 정보 - 3개의 로딩바 */}
         <div className="px-4 pb-3">
-          <div className="bg-gray-50 rounded-lg p-3">
-            {/* 진행 바 */}
-            <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
-              <div
-                className="bg-blue-500 rounded-full h-2 transition-all duration-500"
-                style={{ width: `${progress.totalProgressPercent}%` }}
-              />
-            </div>
-            <div className="flex justify-between text-[10px] text-gray-400 mb-2">
-              <span>🏁 서울 화곡역</span>
-              <span>{progress.totalProgressPercent}%</span>
-              <span>🏖️ 파타야</span>
-            </div>
-
-            {/* 현재 위치 / 다음 목적지 */}
-            <div className="flex justify-between text-xs">
-              <div className="text-gray-600">
-                <span className="font-medium">📍 현재:</span>{' '}
-                {currentWaypoint
-                  ? `${currentWaypoint.emoji} ${currentWaypoint.name}`
-                  : '출발 전'}
+          <div className="bg-gray-50 rounded-lg p-3 space-y-3">
+            {/* 로딩바 1: 하루 동안 갈 수 있는 거리에 있는 도시의 진행률 */}
+            <div>
+              <div className="flex justify-between text-[10px] text-gray-500 mb-1">
+                <span>오늘의 목표 도시: {estimatedWaypointIdx < WAYPOINTS.length ? WAYPOINTS[estimatedWaypointIdx].name : '완주!'}</span>
+                <span>{progress.segmentProgressPercent}%</span>
               </div>
-              <div className="text-right text-gray-600">
-                <span className="font-medium">🎯 다음:</span>{' '}
-                {nextWaypoint
-                  ? `${nextWaypoint.emoji} ${nextWaypoint.name} (${progress.remainingKmToNext.toLocaleString()}km)`
-                  : '완주!'}
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-blue-500 rounded-full h-2 transition-all duration-500"
+                  style={{ width: `${progress.segmentProgressPercent}%` }}
+                />
               </div>
             </div>
 
-            {/* 예상 도착 */}
-            {estimatedWaypointIdx < WAYPOINTS.length && (
-              <div className="text-xs text-blue-500 mt-1.5 font-medium">
-                🎯 오늘 달리면 {WAYPOINTS[estimatedWaypointIdx].emoji}{' '}
-                {WAYPOINTS[estimatedWaypointIdx].name}까지 도착!
+            {/* 로딩바 2: 다음 나라까지 남은 날수 */}
+            {nextCountry && (
+              <div>
+                <div className="flex justify-between text-[10px] text-gray-500 mb-1">
+                  <span>다음 나라({nextCountry.name})까지</span>
+                  <span>{remainingDaysToNextCountry}일 남음</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-green-500 rounded-full h-2 transition-all duration-500"
+                    style={{ width: `${Math.min(100, (totalDistanceKm / WAYPOINTS[nextCountry.startIndex].distanceKmFromStart) * 100)}%` }}
+                  />
+                </div>
               </div>
             )}
+
+            {/* 로딩바 3: 최종 목표까지 남은 거리 */}
+            <div>
+              <div className="flex justify-between text-[10px] text-gray-500 mb-1">
+                <span>최종 목표(파타야)까지</span>
+                <span>{remainingKmToFinal.toLocaleString()}km ({remainingDaysToFinal}일)</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-purple-500 rounded-full h-2 transition-all duration-500"
+                  style={{ width: `${progress.totalProgressPercent}%` }}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
