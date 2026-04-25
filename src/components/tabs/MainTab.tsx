@@ -182,7 +182,7 @@ export default function MainTab({
   // 날짜 → 요일 이름
   const getDayName = (dateStr: string): string => {
     const [y, m, d] = dateStr.split('-').map(Number);
-    const dt = new Date(Date.UTC(y, m - 1, d) - 9 * 60 * 60 * 1000);
+    const dt = new Date(Date.UTC(y, m - 1, d));
     return DAY_NAMES[dt.getUTCDay()];
   };
 
@@ -207,11 +207,11 @@ export default function MainTab({
 
   // 모토
   const MOTTOS = [
-    '오늘도 파이팅! 🔥',
-    '한 건 더! 💪',
-    '목표를 향해 달려요! 🚀',
-    '오늘도 힘내자! ⚡',
-    '할 수 있다! 💯',
+    '오늘도 파이팅!',
+    '한 건 더!',
+    '목표를 향해 달려요!',
+    '오늘도 힘내자!',
+    '할 수 있다!',
   ];
   const motto = MOTTOS[Math.floor(Math.random() * MOTTOS.length)];
 
@@ -220,7 +220,7 @@ export default function MainTab({
       {/* ===== 헤더: 타이틀 + 날짜 ===== */}
       <div className="flex items-center justify-between py-3 mb-2">
         <div className="text-lg font-bold text-gray-800">
-          🏍 돈벌어서 여행가자!
+          돈벌어서 여행가자!
         </div>
         <div className="text-xs text-gray-400">{todayDisplay}</div>
       </div>
@@ -230,7 +230,7 @@ export default function MainTab({
         {/* 헤더: 운행일차 + 접기 버튼 */}
         <div className="flex items-center justify-between px-4 pt-3 pb-2">
           <div className="flex items-center gap-2">
-            <span className="text-lg">🚚</span>
+            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             <span className="text-sm font-bold text-gray-700">
               운행 {streak}일차. 어디까지 왔니?
             </span>
@@ -332,7 +332,7 @@ export default function MainTab({
               </div>
               <div className="text-xs text-gray-400 mt-1">
                 {achieved
-                  ? '✅ 목표 시간 달성!'
+                  ? '목표 시간 달성!'
                   : `목표까지 ${formatDuration(remainingMin)} 남음`}
               </div>
             </div>
@@ -358,7 +358,7 @@ export default function MainTab({
             </div>
             <button
               onClick={onStartShift}
-              className="w-full bg-blue-600 text-white rounded-lg py-3 font-bold text-sm"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-lg font-extrabold py-4 rounded-xl shadow-lg shadow-blue-500/30 active:scale-[0.98] transition-all tracking-wide"
             >
               출근하자!
             </button>
@@ -370,7 +370,7 @@ export default function MainTab({
       {settings.debts.length > 0 && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-3">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="font-bold text-gray-800">💸 갚아야 할 빚</h3>
+            <h3 className="font-bold text-gray-800">갚아야 할 빚</h3>
             <span className="text-sm font-bold text-orange-500">
               {debtProgress.paidPercent}%
             </span>
@@ -448,7 +448,7 @@ export default function MainTab({
                 onClick={() => setDebtExpanded(!debtExpanded)}
                 className="text-xs text-gray-400 mt-2 hover:text-gray-600"
               >
-                {debtExpanded ? '📂 부채내역 접기' : '📂 부채내역 보기'}
+                {debtExpanded ? '부채내역 접기' : '부채내역 보기'}
               </button>
             </>
           )}
@@ -496,7 +496,7 @@ export default function MainTab({
         {weeklyGoalAchieved && (
           <div className="text-center mb-3">
             <span className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-bold px-4 py-1.5 rounded-full animate-bounce shadow-lg">
-              🎉 주간 목표 COMPLETE! 🎉
+              주간 목표 COMPLETE!
             </span>
           </div>
         )}
@@ -704,12 +704,12 @@ export default function MainTab({
                           <div className="space-y-0.5">
                             {cquickCount > 0 && (
                               <div className="text-xs text-blue-600 font-medium">
-                                🚀 카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
+                                카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
                               </div>
                             )}
                             {baeminCount > 0 && (
                               <div className="text-xs text-emerald-600 font-medium">
-                                🛵 배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
+                                배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
                               </div>
                             )}
                           </div>

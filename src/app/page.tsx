@@ -312,12 +312,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 max-w-lg mx-auto">
-      {/* 상단 헤더 */}
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-200 px-4 py-3">
-        <h1 className="text-lg font-bold text-gray-800 text-center">
-          🚴 동기부여 배달기록지
-        </h1>
-      </header>
+      {/* 상단 헤더 - MainTab에서 관리하므로 제거 (중복 방지) */}
 
       {/* 탭 컨텐츠 (스와이프 영역) */}
       <main

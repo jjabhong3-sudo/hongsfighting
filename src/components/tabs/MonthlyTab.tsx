@@ -285,7 +285,7 @@ export default function MonthlyTab({
         {monthlyGoalAchieved && (
           <div className="text-center mt-3">
             <span className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-sm font-bold px-4 py-1.5 rounded-full animate-bounce shadow-lg">
-              🎉 월간 목표 COMPLETE! 🎉
+              월간 목표 COMPLETE!
             </span>
           </div>
         )}
@@ -398,18 +398,18 @@ export default function MonthlyTab({
                               </span>
                               <button
                                 onClick={() => startEdit(session)}
-                                className="text-blue-400 text-xs ml-1"
+                                className="text-blue-400 text-xs ml-1 hover:text-blue-600"
                               >
-                                ✏️
+                                <svg className="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                               </button>
                               <button
                                 onClick={() => {
                                   const id = session.id || sessionKey;
                                   handleDelete(id);
                                 }}
-                                className="text-red-400 text-xs"
+                                className="text-red-400 text-xs hover:text-red-600"
                               >
-                                🗑️
+                                <svg className="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                               </button>
                             </div>
                           </div>
@@ -425,12 +425,12 @@ export default function MonthlyTab({
                           <div className="space-y-0.5">
                             {cquickCount > 0 && (
                               <div className="text-xs text-blue-600 font-medium">
-                                🚀 카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
+                                카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
                               </div>
                             )}
                             {baeminCount > 0 && (
                               <div className="text-xs text-emerald-600 font-medium">
-                                🛵 배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
+                                배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
                               </div>
                             )}
                           </div>

@@ -12,16 +12,16 @@ import AlertModal from '@/components/ui/AlertModal';
 
 /** 랜덤 위로/격려 문구 */
 const ENCOURAGE_MESSAGES = [
-  '고생했어! 🎉',
-  '힘들었지? 수고했어! 💪',
-  '오늘도 수고 많았어! 🌟',
-  '잘했어! 오늘도 최고야! 👏',
-  '대단해! 오늘 하루도 화이팅! ⭐',
-  '수고했어, 내일도 힘내자! 💪',
-  '오늘 하루도 고생 많았어요! 😊',
-  '잘 쉬고 내일 또 달려보자! 🚴',
-  '오늘의 너, 정말 멋졌어! ✨',
-  '한 걸음 더 가까워졌어! 계속 가보자! 🎯',
+  '고생했어!',
+  '힘들었지? 수고했어!',
+  '오늘도 수고 많았어!',
+  '잘했어! 오늘도 최고야!',
+  '대단해! 오늘 하루도 화이팅!',
+  '수고했어, 내일도 힘내자!',
+  '오늘 하루도 고생 많았어요!',
+  '잘 쉬고 내일 또 달려보자!',
+  '오늘의 너, 정말 멋졌어!',
+  '한 걸음 더 가까워졌어! 계속 가보자!',
 ];
 
 function getRandomMessage(): string {
@@ -302,7 +302,7 @@ export default function ShiftEndModal({
 
             {goalAchieved && (
               <div className="text-center text-green-600 font-bold mt-2 py-2 bg-green-50 rounded-lg">
-                🎉 목표 달성! 오늘도 최고였어요! 🎉
+                목표 달성! 오늘도 최고였어요!
               </div>
             )}
 

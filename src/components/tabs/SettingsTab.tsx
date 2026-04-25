@@ -246,7 +246,7 @@ export default function SettingsTab({
             : 'bg-gray-200 text-gray-400 cursor-not-allowed'
         }`}
       >
-        {saved ? '✅ 저장 완료!' : hasChanges ? '설정 저장' : '변경사항 없음'}
+        {saved ? '저장 완료!' : hasChanges ? '설정 저장' : '변경사항 없음'}
       </button>
 
       {/* ===== 레이어3: 전체 기록 ===== */}
@@ -258,7 +258,7 @@ export default function SettingsTab({
               onClick={() => setShowResetAlert(true)}
               className="text-red-400 text-xs font-medium"
             >
-              🗑️ 기록 초기화
+              기록 초기화
             </button>
           )}
         </div>
