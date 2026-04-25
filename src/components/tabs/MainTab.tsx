@@ -30,6 +30,7 @@ import { WAYPOINTS, TOTAL_DISTANCE_KM } from '@/lib/route/waypoints';
 import {
   sessionEarnings,
   sessionTotalCount,
+  dailyTotalEarnings,
   calculateWeeklyStats,
   calculateDebtProgress,
   calculateStreak,
@@ -493,11 +494,24 @@ export default function MainTab({
               const epk = earningsPerKm(earnings, session.distanceKmInput);
               const isMorning = session.shiftType === 'morning';
 
-              // 플랫폼별 데이터
-              const cquickEarnings = session.platforms.cquick.amount;
-              const cquickCount = session.platforms.cquick.count;
-              const baeminEarnings = session.platforms.baemin.amount;
-              const baeminCount = session.platforms.baemin.count;
+              // 오전이면 입력값 그대로, 오후면 오전값을 빼서 추가분 계산
+              const morningSession = !isMorning
+                ? sessions.find(
+                    (s) => s.workDateKst === session.workDateKst && s.shiftType === 'morning'
+                  )
+                : null;
+              const cquickCount = isMorning
+                ? session.platforms.cquick.count
+                : Math.max(0, session.platforms.cquick.count - (morningSession?.platforms.cquick.count || 0));
+              const cquickAmount = isMorning
+                ? session.platforms.cquick.amount
+                : Math.max(0, session.platforms.cquick.amount - (morningSession?.platforms.cquick.amount || 0));
+              const baeminCount = isMorning
+                ? session.platforms.baemin.count
+                : Math.max(0, session.platforms.baemin.count - (morningSession?.platforms.baemin.count || 0));
+              const baeminAmount = isMorning
+                ? session.platforms.baemin.amount
+                : Math.max(0, session.platforms.baemin.amount - (morningSession?.platforms.baemin.amount || 0));
 
               const sessionKey = session.id || `${session.workDateKst}-${session.shiftType}-${session.startAt}`;
               return (
@@ -535,17 +549,9 @@ export default function MainTab({
                   </div>
 
                   {/* 플랫폼별 상세 */}
-                  <div className="flex gap-3 mt-1 text-[10px]">
-                    {cquickCount > 0 && (
-                      <span className="text-blue-500">
-                        🚀 카카오퀵 {cquickCount}건 {cquickEarnings.toLocaleString()}원
-                      </span>
-                    )}
-                    {baeminCount > 0 && (
-                      <span className="text-green-500">
-                        🛵 배민 {baeminCount}건 {baeminEarnings.toLocaleString()}원
-                      </span>
-                    )}
+                  <div className="text-[11px] text-gray-600 space-y-0.5 mb-1">
+                    <div>카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원</div>
+                    <div>배민: {baeminCount}건 {baeminAmount.toLocaleString()}원</div>
                   </div>
 
                   <div className="text-[10px] text-gray-400 mt-0.5">
