@@ -190,17 +190,6 @@ export default function MainTab({
   const todayDayName = getDayName(todayStr);
   const todayDisplay = `${todayStr.slice(5)} (${todayDayName})`;
 
-  // 완료된 부채 항목
-  const completedDebts = settings.debts.filter(
-    (d) => totalAllEarnings >=
-      settings.debts
-        .filter((_, i) => settings.debts.indexOf(d) >= i)
-        .reduce((sum, x) => sum + x.amount, 0)
-  );
-  const nextDebt = settings.debts.find(
-    (d) => !completedDebts.includes(d)
-  );
-
   // 주간 목표 달성 여부
   const weeklyGoalAchieved = weeklyStats.totalEarnings >= settings.goals.weekly;
 
@@ -229,11 +218,14 @@ export default function MainTab({
   ];
   const motto = MOTTOS[Math.floor(Math.random() * MOTTOS.length)];
 
+  // 부채 총액
+  const totalDebtAmount = settings.debts.reduce((sum, d) => sum + d.amount, 0);
+
   return (
     <div className="px-3 pb-24">
       {/* ===== 헤더: 타이틀 + 날짜 ===== */}
       <div className="flex items-center justify-between py-2 mb-1">
-        <div className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] via-[#06b6d4] to-[#14b8a6]">
+        <div className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#f43f5e] via-[#ec4899] to-[#d946ef]">
           돈벌어서 여행가자!
         </div>
         <div className="text-sm text-[#64748b]">{todayDisplay}</div>
@@ -246,7 +238,7 @@ export default function MainTab({
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5 text-[#06b6d4]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             <span className="text-base font-bold text-[#f1f5f9]">
-              운행 {streak}일차. 어디까지 왔니?
+              운행 <span className="text-[#f59e0b] font-extrabold">{streak}</span>일차. 어디까지 왔니?
             </span>
           </div>
           <button
@@ -271,9 +263,9 @@ export default function MainTab({
           <div className="bg-[#0f172a] rounded-lg p-2 space-y-2">
             {/* 로딩바 1: 하루 동안 갈 수 있는 거리에 있는 도시의 진행률 */}
             <div>
-              <div className="flex justify-between text-xs text-[#94a3b8] mb-0.5">
-                <span>오늘의 목표 도시: {estimatedWaypointIdx < WAYPOINTS.length ? WAYPOINTS[estimatedWaypointIdx].name : '완주!'}</span>
-                <span>{progress.segmentProgressPercent}%</span>
+              <div className="flex justify-between text-xs mb-0.5">
+                <span className="text-[#f59e0b] font-bold">오늘의 목표 도시: {estimatedWaypointIdx < WAYPOINTS.length ? WAYPOINTS[estimatedWaypointIdx].name : '완주!'}</span>
+                <span className="text-[#94a3b8]">{progress.segmentProgressPercent}%</span>
               </div>
               <div className="w-full bg-[#1e293b] rounded-full h-2.5">
                 <div
@@ -286,9 +278,9 @@ export default function MainTab({
             {/* 로딩바 2: 다음 나라까지 남은 날수 */}
             {nextCountry && (
               <div>
-                <div className="flex justify-between text-xs text-[#94a3b8] mb-0.5">
-                  <span>다음 나라({nextCountry.name})까지</span>
-                  <span>{remainingDaysToNextCountry}일 남음</span>
+                <div className="flex justify-between text-xs mb-0.5">
+                  <span className="text-[#f59e0b] font-bold">다음 나라({nextCountry.name})까지</span>
+                  <span className="text-[#94a3b8]">{remainingDaysToNextCountry}일 남음</span>
                 </div>
                 <div className="w-full bg-[#1e293b] rounded-full h-2.5">
                   <div
@@ -301,9 +293,9 @@ export default function MainTab({
 
             {/* 로딩바 3: 최종 목표까지 남은 거리 */}
             <div>
-              <div className="flex justify-between text-xs text-[#94a3b8] mb-0.5">
-                <span>최종 목표(파타야)까지</span>
-                <span>{remainingKmToFinal.toLocaleString()}km ({remainingDaysToFinal}일)</span>
+              <div className="flex justify-between text-xs mb-0.5">
+                <span className="text-[#f59e0b] font-bold">최종 목표(파타야)까지</span>
+                <span className="text-[#94a3b8]">{remainingKmToFinal.toLocaleString()}km ({remainingDaysToFinal}일)</span>
               </div>
               <div className="w-full bg-[#1e293b] rounded-full h-2.5">
                 <div
@@ -325,7 +317,7 @@ export default function MainTab({
                 activeSession ? 'bg-[#10b981] animate-pulse' : 'bg-[#475569]'
               }`}
             />
-            <span className="text-base font-semibold text-[#94a3b8]">
+            <span className="text-base font-semibold text-[#f59e0b]">
               {activeSession ? `${shiftLabel} 근무중` : '출근 준비'}
             </span>
           </div>
@@ -369,12 +361,12 @@ export default function MainTab({
           </>
         ) : (
           <>
-            <div className="text-center text-sm text-[#64748b] mb-2">
+            <div className="text-center text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#ec4899] mb-2 animate-pulse">
               {motto}
             </div>
             <button
               onClick={onStartShift}
-              className="w-full bg-gradient-to-r from-[#3b82f6] via-[#06b6d4] to-[#14b8a6] text-white text-xl font-extrabold py-4 rounded-xl shadow-lg shadow-cyan-500/30 active:scale-[0.98] transition-all tracking-wide"
+              className="w-full bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-[#ec4899] text-white text-xl font-extrabold py-4 rounded-xl shadow-lg shadow-orange-500/30 active:scale-[0.98] transition-all tracking-wide"
             >
               출근하자!
             </button>
@@ -382,92 +374,78 @@ export default function MainTab({
         )}
       </div>
 
-      {/* ===== 부채 동기부여 카드 ===== */}
+      {/* ===== 부채 동기부여 카드 (참고사이트 스타일) ===== */}
       {settings.debts.length > 0 && (
         <div className="bg-[#1e293b] rounded-xl shadow-lg shadow-black/20 border border-[#334155] p-3 mb-2">
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center justify-between mb-2">
             <h3 className="text-base font-bold text-[#f1f5f9]">갚아야 할 빚</h3>
             <span className="text-base font-bold text-[#f59e0b]">
               {debtProgress.paidPercent}%
             </span>
           </div>
 
-          {/* 진행 막대 */}
-          <div className="w-full bg-[#0f172a] rounded-full h-3 mb-2">
+          {/* 전체 부채 진행 막대 */}
+          <div className="w-full bg-[#0f172a] rounded-full h-4 mb-2 overflow-hidden">
             <div
-              className="gradient-bar-orange rounded-full h-3"
+              className="gradient-bar-orange rounded-full h-4 transition-all duration-500"
               style={{ width: `${debtProgress.paidPercent}%` }}
             />
           </div>
 
-          {/* 다음 부채 */}
-          {nextDebt && (
-            <div className="bg-[#0f172a] rounded-lg p-2 mb-1 border border-[#334155]">
-              <div className="flex justify-between text-sm">
-                <span className="text-[#94a3b8]">{nextDebt.name}</span>
-                <span className="font-medium text-[#f1f5f9]">
-                  {Math.min(
-                    nextDebt.amount,
-                    Math.max(0, totalAllEarnings)
-                  ).toLocaleString()}
-                  원 / {nextDebt.amount.toLocaleString()}원
-                </span>
-              </div>
-              <div className="w-full bg-[#1e293b] rounded-full h-2 mt-1">
+          {/* 전체 금액 표시 (갚은 금액 / 전체 금액) */}
+          <div className="text-center mb-2">
+            <span className="text-lg font-bold text-[#f1f5f9]">
+              {Math.min(totalAllEarnings, totalDebtAmount).toLocaleString()}원
+            </span>
+            <span className="text-base text-[#64748b]"> / </span>
+            <span className="text-lg font-bold text-[#f59e0b]">
+              {totalDebtAmount.toLocaleString()}원
+            </span>
+          </div>
+
+          {/* 부채 항목 리스트 (참고사이트 스타일) */}
+          <div className="space-y-1.5">
+            {settings.debts.map((debt, i) => {
+              const cumulative = settings.debts
+                .slice(0, i + 1)
+                .reduce((sum, x) => sum + x.amount, 0);
+              const prevCumulative = settings.debts
+                .slice(0, i)
+                .reduce((sum, x) => sum + x.amount, 0);
+              const paid = Math.min(cumulative, Math.max(0, totalAllEarnings));
+              const debtPaid = Math.max(0, Math.min(debt.amount, paid - prevCumulative));
+              const isCompleted = debtPaid >= debt.amount;
+
+              return (
                 <div
-                  className="bg-[#f59e0b] rounded-full h-2"
-                  style={{
-                    width: `${Math.min(
-                      100,
-                      (totalAllEarnings / nextDebt.amount) * 100
-                    )}%`,
-                  }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* 완료된 항목 */}
-          {completedDebts.length > 0 && (
-            <div className="text-sm text-[#10b981] mt-1">
-              {completedDebts.map((d) => d.name).join(', ')}{' '}
-              <span className="font-bold">COMPLETE</span>
-            </div>
-          )}
-
-          {/* 부채 내역 보기 */}
-          {settings.debts.length > 1 && (
-            <>
-              {debtExpanded && (
-                <div className="mt-1 space-y-1">
-                  {settings.debts.map((d, i) => {
-                    const cumulative = settings.debts
-                      .slice(0, i + 1)
-                      .reduce((sum, x) => sum + x.amount, 0);
-                    const paid = Math.min(cumulative, Math.max(0, totalAllEarnings));
-                    const prevCumulative = settings.debts
-                      .slice(0, i)
-                      .reduce((sum, x) => sum + x.amount, 0);
-                    const debtPaid = Math.max(0, Math.min(d.amount, paid - prevCumulative));
-                    return (
-                      <div key={i} className="flex justify-between text-sm text-[#64748b]">
-                        <span>{d.name}</span>
-                        <span>
-                          {debtPaid.toLocaleString()}원 / {d.amount.toLocaleString()}원
-                        </span>
-                      </div>
-                    );
-                  })}
+                  key={i}
+                  className={`flex items-center justify-between px-2 py-1.5 rounded-lg ${
+                    isCompleted
+                      ? 'bg-[#064e3b] border border-[#10b981]/30'
+                      : 'bg-[#0f172a] border border-[#334155]'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    {isCompleted && (
+                      <span className="text-[#10b981] text-sm">✅</span>
+                    )}
+                    <span className={`text-sm font-medium ${isCompleted ? 'text-[#10b981]' : 'text-[#94a3b8]'}`}>
+                      {debt.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-sm font-bold ${isCompleted ? 'text-[#10b981]' : 'text-[#f1f5f9]'}`}>
+                      {debtPaid.toLocaleString()}원
+                    </span>
+                    <span className="text-sm text-[#64748b]">/</span>
+                    <span className="text-sm text-[#f59e0b]">
+                      {debt.amount.toLocaleString()}원
+                    </span>
+                  </div>
                 </div>
-              )}
-              <button
-                onClick={() => setDebtExpanded(!debtExpanded)}
-                className="text-sm text-[#64748b] mt-1 hover:text-[#94a3b8]"
-              >
-                {debtExpanded ? '부채내역 접기' : '부채내역 보기'}
-              </button>
-            </>
-          )}
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -755,5 +733,3 @@ export default function MainTab({
     </div>
   );
 }
-
-
