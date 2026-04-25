@@ -95,28 +95,17 @@ export default function Home() {
 
       // 4. Firebase에서 데이터 로드 시도 (백그라운드, 로딩 차단 없음)
       try {
-        console.log('[Firebase] 설정 확인 완료, 연결 시도...');
         setFirebaseReady(true);
         const [loadedSessions, loadedSettings, active] = await Promise.all([
           getAllSessions(),
           getSettings(),
           getActiveSession(),
         ]);
-        console.log('[Firebase] 데이터 로드 성공:', {
-          sessions: loadedSessions.length,
-          settings: !!loadedSettings,
-          active: !!active,
-        });
         setSessions(loadedSessions);
         setSettings(loadedSettings);
         setActiveSession(active);
       } catch (err) {
-        console.error('[Firebase] 데이터 로드 실패, 로컬 스토리지 데이터 유지:', err);
-        console.log('[Firebase] isFirebaseConfigured:', isFirebaseConfigured());
-        console.log('[Firebase] 환경변수:', {
-          apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.slice(0, 10) + '...',
-          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        });
+        console.error('Firebase 데이터 로드 실패, 로컬 스토리지 데이터 유지:', err);
         setFirebaseReady(false);
       }
     }
