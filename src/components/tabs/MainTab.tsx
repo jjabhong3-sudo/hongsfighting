@@ -225,7 +225,7 @@ export default function MainTab({
     <div className="px-3 pb-24">
       {/* ===== 헤더: 타이틀 + 날짜 ===== */}
       <div className="flex items-center justify-between py-2 mb-1">
-        <div className="text-xl font-extrabold text-[#ef4444]">
+        <div className="text-xl font-extrabold text-[#648DE5]">
           돈벌어서 여행가자!
         </div>
         <div className="text-sm text-[#2d334a]">{todayDisplay}</div>
@@ -264,7 +264,7 @@ export default function MainTab({
             {/* 로딩바 1: 하루 동안 갈 수 있는 거리에 있는 도시의 진행률 */}
             <div>
               <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-[#0f172a] font-bold">오늘의 목표 도시: {estimatedWaypointIdx < WAYPOINTS.length ? WAYPOINTS[estimatedWaypointIdx].name : '완주!'}</span>
+                <span className="text-[#2D848A] font-bold">오늘의 목표 도시: {estimatedWaypointIdx < WAYPOINTS.length ? WAYPOINTS[estimatedWaypointIdx].name : '완주!'}</span>
                 <span className="text-[#64748b]">{progress.segmentProgressPercent}%</span>
               </div>
               <div className="w-full bg-slate-200 rounded-full h-2.5">
@@ -279,7 +279,7 @@ export default function MainTab({
             {nextCountry && (
               <div>
                 <div className="flex justify-between text-xs mb-0.5">
-                  <span className="text-[#0f172a] font-bold">다음 나라({nextCountry.name})까지</span>
+                  <span className="text-[#2D848A] font-bold">다음 나라({nextCountry.name})까지</span>
                   <span className="text-[#64748b]">{remainingDaysToNextCountry}일 남음</span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2.5">
@@ -294,7 +294,7 @@ export default function MainTab({
             {/* 로딩바 3: 최종 목표까지 남은 거리 */}
             <div>
               <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-[#0f172a] font-bold">최종 목표(파타야)까지</span>
+                <span className="text-[#2D848A] font-bold">최종 목표(파타야)까지</span>
                 <span className="text-[#64748b]">{remainingKmToFinal.toLocaleString()}km ({remainingDaysToFinal}일)</span>
               </div>
               <div className="w-full bg-slate-200 rounded-full h-2.5">
@@ -338,7 +338,7 @@ export default function MainTab({
               <div className="text-4xl font-bold text-[#ef4444]">
                 {formatDuration(elapsedMin)}
               </div>
-              <div className="text-sm text-[#64748b] mt-0.5">
+              <div className="text-sm text-[#648DE5] mt-0.5">
                 {achieved
                   ? '✅ 목표 시간 달성!'
                   : `목표까지 ${formatDuration(remainingMin)} 남음`}
@@ -476,7 +476,7 @@ export default function MainTab({
           </span>
         </div>
 
-        <div className="text-4xl font-bold text-[#ef4444] mb-1">
+        <div className="text-4xl font-bold text-[#F46036] mb-1">
           {weeklyStats.totalEarnings.toLocaleString()}
           <small className="text-base font-normal text-[#64748b] ml-1">원</small>
         </div>
