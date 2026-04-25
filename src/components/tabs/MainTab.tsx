@@ -509,7 +509,7 @@ export default function MainTab({
                       <span className="text-sm font-bold text-gray-700">
                         {dateKst}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs font-bold text-blue-600">
                         일일 합계 {dailyTotalEarnings(thisWeekSessions, dateKst).toLocaleString()}원
                       </span>
                     </div>
@@ -542,6 +542,10 @@ export default function MainTab({
                         ? session.platforms.baemin.amount
                         : Math.max(0, session.platforms.baemin.amount - (morningSession?.platforms.baemin.amount || 0));
 
+                      // 플랫폼별 건당 금액
+                      const cquickAvg = cquickCount > 0 ? Math.round(cquickAmount / cquickCount) : 0;
+                      const baeminAvg = baeminCount > 0 ? Math.round(baeminAmount / baeminCount) : 0;
+
                       return (
                         <div
                           key={sessionKey}
@@ -564,21 +568,30 @@ export default function MainTab({
                             </span>
                           </div>
 
-                          {/* 플랫폼별 상세 */}
-                          <div className="text-[11px] text-gray-600 space-y-0.5 mb-1">
-                            <div>카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원</div>
-                            <div>배민: {baeminCount}건 {baeminAmount.toLocaleString()}원</div>
+                          {/* 건수 | 시간 | 거리 */}
+                          <div className="text-[11px] text-gray-500 mb-1">
+                            건수 {count}건 | {formatDurationShort(session.durationMin)} | {session.distanceKmInput}km
                           </div>
 
-                          {/* 계산된 값 */}
-                          <div className="grid grid-cols-3 gap-1 text-[10px] text-gray-400">
+                          {/* 건당 | 시급 | km당 */}
+                          <div className="grid grid-cols-3 gap-1 text-[10px] text-gray-400 mb-1">
                             <span>건당 {avg.toLocaleString()}원</span>
                             <span>시급 {hr.toLocaleString()}원</span>
                             <span>km당 {epk.toLocaleString()}원</span>
                           </div>
-                          <div className="text-[10px] text-gray-400 mt-0.5">
-                            {formatDurationShort(session.durationMin)} |{' '}
-                            {session.distanceKmInput}km
+
+                          {/* 플랫폼별 상세 (색상 구분) */}
+                          <div className="space-y-0.5">
+                            {cquickCount > 0 && (
+                              <div className="text-[11px] text-blue-600 font-medium">
+                                🚀 카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
+                              </div>
+                            )}
+                            {baeminCount > 0 && (
+                              <div className="text-[11px] text-emerald-600 font-medium">
+                                🛵 배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
+                              </div>
+                            )}
                           </div>
                         </div>
                       );
