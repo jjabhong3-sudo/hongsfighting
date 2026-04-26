@@ -233,6 +233,84 @@ export default function MainTab({
         </div>
       </div>
 
+      {/* ===== 출퇴근 카드 ===== */}
+      <div className="card p-3 mb-2">
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2">
+            <span
+              className="w-3 h-3 rounded-full"
+              style={{
+                backgroundColor: activeSession ? 'var(--accent-green)' : 'var(--text-muted)',
+                animation: activeSession ? 'pulse 2s infinite' : 'none',
+              }}
+            />
+            <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>
+              {activeSession ? `${shiftLabel} 근무중` : '출근 준비'}
+            </span>
+          </div>
+          {activeSession && (
+            <span style={{ color: 'var(--text-secondary)' }} className="text-sm">
+              {new Date(activeSession.startAt).toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}{' '}
+              출근
+            </span>
+          )}
+        </div>
+
+        {activeSession ? (
+          <>
+            <div className="text-center mb-1">
+              <div className="text-4xl font-bold" style={{ color: 'var(--accent-red)' }}>
+                {formatDuration(elapsedMin)}
+              </div>
+              <div className="text-sm mt-0.5" style={{ color: 'var(--accent-blue)' }}>
+                {achieved
+                  ? '✅ 목표 시간 달성!'
+                  : `목표까지 ${formatDuration(remainingMin)} 남음`}
+              </div>
+            </div>
+            <div className="w-full rounded-full h-2.5 mb-2" style={{ backgroundColor: 'var(--card-border)' }}>
+              <div
+                className={`rounded-full h-2.5 transition-all duration-500 ${
+                  achieved ? 'gradient-bar-green' : 'gradient-bar-red'
+                }`}
+                style={{ width: `${Math.min(100, progressPercent)}%` }}
+              />
+            </div>
+            <button
+              onClick={() => setShowEndModal(true)}
+              className="btn-primary"
+              style={{ backgroundColor: 'var(--accent-red)' }}
+            >
+              퇴근하기
+            </button>
+          </>
+        ) : (
+          <>
+            <div
+              className="text-center text-base font-extrabold mb-2"
+              style={{ color: 'var(--accent-red)' }}
+            >
+              {motto}
+            </div>
+            <button
+              onClick={onStartShift}
+              className="btn-primary"
+              style={{
+                backgroundColor: 'var(--accent-red)',
+                fontSize: '1.25rem',
+                padding: '1rem',
+                letterSpacing: '0.05em',
+              }}
+            >
+              출근하자!
+            </button>
+          </>
+        )}
+      </div>
+
       {/* ===== 트래블 카드 (지도 + 상태 + 접기) ===== */}
       <div className="card overflow-hidden mb-2">
         {/* 헤더: 운행일차 + 접기 버튼 */}
@@ -322,84 +400,6 @@ export default function MainTab({
             </div>
           </div>
         </div>
-      </div>
-
-      {/* ===== 출퇴근 카드 ===== */}
-      <div className="card p-3 mb-2">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-2">
-            <span
-              className="w-3 h-3 rounded-full"
-              style={{
-                backgroundColor: activeSession ? 'var(--accent-green)' : 'var(--text-muted)',
-                animation: activeSession ? 'pulse 2s infinite' : 'none',
-              }}
-            />
-            <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>
-              {activeSession ? `${shiftLabel} 근무중` : '출근 준비'}
-            </span>
-          </div>
-          {activeSession && (
-            <span style={{ color: 'var(--text-secondary)' }} className="text-sm">
-              {new Date(activeSession.startAt).toLocaleTimeString('ko-KR', {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}{' '}
-              출근
-            </span>
-          )}
-        </div>
-
-        {activeSession ? (
-          <>
-            <div className="text-center mb-1">
-              <div className="text-4xl font-bold" style={{ color: 'var(--accent-red)' }}>
-                {formatDuration(elapsedMin)}
-              </div>
-              <div className="text-sm mt-0.5" style={{ color: 'var(--accent-blue)' }}>
-                {achieved
-                  ? '✅ 목표 시간 달성!'
-                  : `목표까지 ${formatDuration(remainingMin)} 남음`}
-              </div>
-            </div>
-            <div className="w-full rounded-full h-2.5 mb-2" style={{ backgroundColor: 'var(--card-border)' }}>
-              <div
-                className={`rounded-full h-2.5 transition-all duration-500 ${
-                  achieved ? 'gradient-bar-green' : 'gradient-bar-red'
-                }`}
-                style={{ width: `${Math.min(100, progressPercent)}%` }}
-              />
-            </div>
-            <button
-              onClick={() => setShowEndModal(true)}
-              className="btn-primary"
-              style={{ backgroundColor: 'var(--accent-red)' }}
-            >
-              퇴근하기
-            </button>
-          </>
-        ) : (
-          <>
-            <div
-              className="text-center text-base font-extrabold mb-2"
-              style={{ color: 'var(--accent-red)' }}
-            >
-              {motto}
-            </div>
-            <button
-              onClick={onStartShift}
-              className="btn-primary"
-              style={{
-                backgroundColor: 'var(--accent-red)',
-                fontSize: '1.25rem',
-                padding: '1rem',
-                letterSpacing: '0.05em',
-              }}
-            >
-              출근하자!
-            </button>
-          </>
-        )}
       </div>
 
       {/* ===== 부채 동기부여 카드 ===== */}
