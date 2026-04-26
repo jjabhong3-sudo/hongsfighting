@@ -225,25 +225,32 @@ export default function MainTab({
     <div className="px-[17px] pb-24">
       {/* ===== 헤더: 타이틀 + 날짜 ===== */}
       <div className="flex items-center justify-between py-2 mb-1">
-        <div className="text-xl font-extrabold text-[#648DE5]">
+        <div className="text-xl font-extrabold" style={{ color: 'var(--accent-blue)' }}>
           돈벌어서 여행가자!
         </div>
-        <div className="text-sm text-[#2d334a]">{todayDisplay}</div>
+        <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+          {todayDisplay}
+        </div>
       </div>
 
       {/* ===== 트래블 카드 (지도 + 상태 + 접기) ===== */}
-      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] overflow-hidden mb-2">
+      <div className="card overflow-hidden mb-2">
         {/* 헤더: 운행일차 + 접기 버튼 */}
         <div className="flex items-center justify-between px-3 pt-2 pb-1">
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-            <span className="text-base font-bold text-[#0f172a]">
-              운행 <span className="text-[#ef4444] font-extrabold">{streak}</span>일차. 어디까지 왔니?
+            <svg className="w-5 h-5" style={{ color: 'var(--accent-red)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>
+              운행 <span style={{ color: 'var(--accent-red)' }} className="font-extrabold">{streak}</span>일차. 어디까지 왔니?
             </span>
           </div>
           <button
             onClick={() => setMapCollapsed(!mapCollapsed)}
-            className="text-xs text-[#2d334a] bg-[#e3f6f5] px-3 py-1 rounded-full hover:bg-[#bae8e8] transition-colors"
+            className="text-xs px-3 py-1 rounded-full transition-colors"
+            style={{
+              color: 'var(--text-secondary)',
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
           >
             {mapCollapsed ? '지도 펼치기' : '지도 접기'}
           </button>
@@ -260,14 +267,19 @@ export default function MainTab({
 
         {/* 상태 정보 - 3개의 로딩바 */}
         <div className="px-3 pb-2">
-          <div className="bg-slate-50 rounded-lg p-2 space-y-2">
+          <div
+            className="rounded-lg p-2 space-y-2"
+            style={{ backgroundColor: 'var(--bg-tertiary)' }}
+          >
             {/* 로딩바 1: 하루 동안 갈 수 있는 거리에 있는 도시의 진행률 */}
             <div>
               <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-[#2D848A] font-bold">오늘의 목표 도시: {estimatedWaypointIdx < WAYPOINTS.length ? WAYPOINTS[estimatedWaypointIdx].name : '완주!'}</span>
-                <span className="text-[#64748b]">{progress.segmentProgressPercent}%</span>
+                <span className="font-bold" style={{ color: 'var(--accent-green)' }}>
+                  오늘의 목표 도시: {estimatedWaypointIdx < WAYPOINTS.length ? WAYPOINTS[estimatedWaypointIdx].name : '완주!'}
+                </span>
+                <span style={{ color: 'var(--text-muted)' }}>{progress.segmentProgressPercent}%</span>
               </div>
-              <div className="w-full bg-slate-200 rounded-full h-2.5">
+              <div className="w-full rounded-full h-2.5" style={{ backgroundColor: 'var(--card-border)' }}>
                 <div
                   className="gradient-bar-red rounded-full h-2.5"
                   style={{ width: `${progress.segmentProgressPercent}%` }}
@@ -279,10 +291,12 @@ export default function MainTab({
             {nextCountry && (
               <div>
                 <div className="flex justify-between text-xs mb-0.5">
-                  <span className="text-[#2D848A] font-bold">다음 나라({nextCountry.name})까지</span>
-                  <span className="text-[#64748b]">{remainingDaysToNextCountry}일 남음</span>
+                  <span className="font-bold" style={{ color: 'var(--accent-green)' }}>
+                    다음 나라({nextCountry.name})까지
+                  </span>
+                  <span style={{ color: 'var(--text-muted)' }}>{remainingDaysToNextCountry}일 남음</span>
                 </div>
-                <div className="w-full bg-slate-200 rounded-full h-2.5">
+                <div className="w-full rounded-full h-2.5" style={{ backgroundColor: 'var(--card-border)' }}>
                   <div
                     className="gradient-bar-amber rounded-full h-2.5"
                     style={{ width: `${Math.min(100, (totalDistanceKm / WAYPOINTS[nextCountry.startIndex].distanceKmFromStart) * 100)}%` }}
@@ -294,10 +308,12 @@ export default function MainTab({
             {/* 로딩바 3: 최종 목표까지 남은 거리 */}
             <div>
               <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-[#2D848A] font-bold">최종 목표(파타야)까지</span>
-                <span className="text-[#64748b]">{remainingKmToFinal.toLocaleString()}km ({remainingDaysToFinal}일)</span>
+                <span className="font-bold" style={{ color: 'var(--accent-green)' }}>
+                  최종 목표(파타야)까지
+                </span>
+                <span style={{ color: 'var(--text-muted)' }}>{remainingKmToFinal.toLocaleString()}km ({remainingDaysToFinal}일)</span>
               </div>
-              <div className="w-full bg-slate-200 rounded-full h-2.5">
+              <div className="w-full rounded-full h-2.5" style={{ backgroundColor: 'var(--card-border)' }}>
                 <div
                   className="gradient-bar-red-strong rounded-full h-2.5"
                   style={{ width: `${progress.totalProgressPercent}%` }}
@@ -309,20 +325,22 @@ export default function MainTab({
       </div>
 
       {/* ===== 출퇴근 카드 ===== */}
-      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-2">
+      <div className="card p-3 mb-2">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <span
-              className={`w-3 h-3 rounded-full ${
-                activeSession ? 'bg-[#10b981] animate-pulse' : 'bg-[#bae8e8]'
-              }`}
+              className="w-3 h-3 rounded-full"
+              style={{
+                backgroundColor: activeSession ? 'var(--accent-green)' : 'var(--text-muted)',
+                animation: activeSession ? 'pulse 2s infinite' : 'none',
+              }}
             />
-            <span className="text-base font-bold text-[#272343]">
+            <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>
               {activeSession ? `${shiftLabel} 근무중` : '출근 준비'}
             </span>
           </div>
           {activeSession && (
-            <span className="text-sm text-[#2d334a]">
+            <span style={{ color: 'var(--text-secondary)' }} className="text-sm">
               {new Date(activeSession.startAt).toLocaleTimeString('ko-KR', {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -335,16 +353,16 @@ export default function MainTab({
         {activeSession ? (
           <>
             <div className="text-center mb-1">
-              <div className="text-4xl font-bold text-[#ef4444]">
+              <div className="text-4xl font-bold" style={{ color: 'var(--accent-red)' }}>
                 {formatDuration(elapsedMin)}
               </div>
-              <div className="text-sm text-[#648DE5] mt-0.5">
+              <div className="text-sm mt-0.5" style={{ color: 'var(--accent-blue)' }}>
                 {achieved
                   ? '✅ 목표 시간 달성!'
                   : `목표까지 ${formatDuration(remainingMin)} 남음`}
               </div>
             </div>
-            <div className="w-full bg-slate-100 rounded-full h-2.5 mb-2">
+            <div className="w-full rounded-full h-2.5 mb-2" style={{ backgroundColor: 'var(--card-border)' }}>
               <div
                 className={`rounded-full h-2.5 transition-all duration-500 ${
                   achieved ? 'gradient-bar-green' : 'gradient-bar-red'
@@ -354,19 +372,29 @@ export default function MainTab({
             </div>
             <button
               onClick={() => setShowEndModal(true)}
-              className="w-full bg-[#ef4444] text-white rounded-xl py-3 font-bold text-base shadow-sm hover:bg-[#dc2626] transition-colors"
+              className="btn-primary"
+              style={{ backgroundColor: 'var(--accent-red)' }}
             >
               퇴근하기
             </button>
           </>
         ) : (
           <>
-            <div className="text-center text-base font-extrabold text-[#ef4444] mb-2 animate-pulse">
+            <div
+              className="text-center text-base font-extrabold mb-2"
+              style={{ color: 'var(--accent-red)' }}
+            >
               {motto}
             </div>
             <button
               onClick={onStartShift}
-              className="w-full bg-[#ef4444] text-white text-xl font-extrabold py-4 rounded-xl shadow-sm hover:bg-[#dc2626] active:scale-[0.98] transition-all tracking-wide"
+              className="btn-primary"
+              style={{
+                backgroundColor: 'var(--accent-red)',
+                fontSize: '1.25rem',
+                padding: '1rem',
+                letterSpacing: '0.05em',
+              }}
             >
               출근하자!
             </button>
@@ -376,16 +404,16 @@ export default function MainTab({
 
       {/* ===== 부채 동기부여 카드 ===== */}
       {settings.debts.length > 0 && (
-        <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-2">
+        <div className="card p-3 mb-2">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-base font-bold text-[#272343]">갚아야 할 빚</h3>
-            <span className="text-base font-bold text-[#ef4444]">
+            <h3 className="card-header">갚아야 할 빚</h3>
+            <span className="text-base font-bold" style={{ color: 'var(--accent-red)' }}>
               {debtProgress.paidPercent}%
             </span>
           </div>
 
           {/* 전체 부채 진행 막대 - 내부에 금액 표시 */}
-          <div className="w-full bg-slate-100 rounded-full h-10 mb-2 overflow-hidden relative">
+          <div className="w-full rounded-full h-10 mb-2 overflow-hidden relative" style={{ backgroundColor: 'var(--card-border)' }}>
             <div
               className={`rounded-full h-10 transition-all duration-500 absolute top-0 left-0 ${
                 debtProgress.remainingPercent <= 25
@@ -401,7 +429,7 @@ export default function MainTab({
             <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
               <span>{Math.min(totalAllEarnings, totalDebtAmount).toLocaleString()}원</span>
               <span className="mx-1 text-white/70">/</span>
-              <span className="text-[#fbbf24]">{totalDebtAmount.toLocaleString()}원</span>
+              <span style={{ color: '#fbbf24' }}>{totalDebtAmount.toLocaleString()}원</span>
               <span className="ml-2 text-xs text-white/80">({debtProgress.remainingPercent}% 남음)</span>
             </div>
           </div>
@@ -409,7 +437,11 @@ export default function MainTab({
           {/* 부채 항목 리스트 (접기 가능, 기본 접힘) */}
           <button
             onClick={() => setDebtExpanded(!debtExpanded)}
-            className="w-full flex items-center justify-between text-sm text-[#64748b] bg-slate-50 rounded-lg px-3 py-2 hover:text-[#0f172a] transition-colors"
+            className="w-full flex items-center justify-between text-sm rounded-lg px-3 py-2 transition-colors"
+            style={{
+              color: 'var(--text-muted)',
+              backgroundColor: 'var(--bg-tertiary)',
+            }}
           >
             <span>부채 내역 보기 ({settings.debts.length}개)</span>
             <svg
@@ -436,26 +468,32 @@ export default function MainTab({
                 return (
                   <div
                     key={i}
-                    className={`flex items-center justify-between px-2 py-1.5 rounded-lg ${
-                      isCompleted
-                        ? 'bg-green-50 border border-green-200'
-                        : 'bg-slate-50 border border-slate-200'
-                    }`}
+                    className="flex items-center justify-between px-2 py-1.5 rounded-lg"
+                    style={{
+                      backgroundColor: isCompleted ? 'rgba(16, 185, 129, 0.1)' : 'var(--bg-tertiary)',
+                      border: `1px solid ${isCompleted ? 'rgba(16, 185, 129, 0.3)' : 'var(--card-border)'}`,
+                    }}
                   >
                     <div className="flex items-center gap-2">
                       {isCompleted && (
-                        <span className="text-[#10b981] text-sm">✅</span>
+                        <span className="text-sm" style={{ color: 'var(--accent-green)' }}>✅</span>
                       )}
-                      <span className={`text-sm font-medium ${isCompleted ? 'text-[#10b981]' : 'text-[#64748b]'}`}>
+                      <span
+                        className="text-sm font-medium"
+                        style={{ color: isCompleted ? 'var(--accent-green)' : 'var(--text-secondary)' }}
+                      >
                         {debt.name}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`text-sm font-bold ${isCompleted ? 'text-[#10b981]' : 'text-[#0f172a]'}`}>
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: isCompleted ? 'var(--accent-green)' : 'var(--text-primary)' }}
+                      >
                         {debtPaid.toLocaleString()}원
                       </span>
-                      <span className="text-sm text-[#94a3b8]">/</span>
-                      <span className="text-sm text-[#ef4444]">
+                      <span className="text-sm" style={{ color: 'var(--text-muted)' }}>/</span>
+                      <span className="text-sm" style={{ color: 'var(--accent-red)' }}>
                         {debt.amount.toLocaleString()}원
                       </span>
                     </div>
@@ -468,21 +506,21 @@ export default function MainTab({
       )}
 
       {/* ===== 금주 수익 ===== */}
-      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-2">
+      <div className="card p-3 mb-2">
         <div className="flex justify-between items-center mb-1">
-          <h3 className="text-base font-bold text-[#272343]">이번 주 수익</h3>
-          <span className="text-sm text-[#2d334a]">
+          <h3 className="card-header">이번 주 수익</h3>
+          <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
             {weeklyStats.weekStart.slice(5)} ~ {weeklyStats.weekEnd.slice(5)}
           </span>
         </div>
 
-        <div className="text-4xl font-bold text-[#F46036] mb-1">
+        <div className="text-4xl font-bold mb-1" style={{ color: 'var(--accent-orange)' }}>
           {weeklyStats.totalEarnings.toLocaleString()}
-          <small className="text-base font-normal text-[#64748b] ml-1">원</small>
+          <small className="text-base font-normal" style={{ color: 'var(--text-muted)' }}> 원</small>
         </div>
 
         {/* 주간 목표 진행 */}
-        <div className="w-full bg-slate-100 rounded-full h-3 mb-1">
+        <div className="w-full rounded-full h-3 mb-1" style={{ backgroundColor: 'var(--card-border)' }}>
           <div
             className={`rounded-full h-3 transition-all ${
               weeklyGoalAchieved
@@ -497,9 +535,9 @@ export default function MainTab({
             }}
           />
         </div>
-        <div className="flex justify-between text-sm text-[#64748b] mb-2">
+        <div className="flex justify-between text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
           <span>주간 목표 {settings.goals.weekly.toLocaleString()}원</span>
-          <span className="font-bold text-[#ef4444]">
+          <span className="font-bold" style={{ color: 'var(--accent-red)' }}>
             {Math.min(100, Math.round((weeklyStats.totalEarnings / settings.goals.weekly) * 100))}%
           </span>
         </div>
@@ -515,21 +553,39 @@ export default function MainTab({
 
         {/* 3행 통계 */}
         <div className="grid grid-cols-3 gap-2">
-          <div className="bg-slate-50 rounded-lg p-2 text-center border border-slate-200">
-            <div className="text-sm text-[#64748b] mb-0.5">오늘</div>
-            <div className="text-xl font-bold text-[#ef4444]">
+          <div
+            className="rounded-lg p-2 text-center"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
+            <div className="text-sm" style={{ color: 'var(--text-muted)' }}>오늘</div>
+            <div className="text-xl font-bold" style={{ color: 'var(--accent-red)' }}>
               {todayEarnings.toLocaleString()}
             </div>
           </div>
-          <div className="bg-slate-50 rounded-lg p-2 text-center border border-slate-200">
-            <div className="text-sm text-[#64748b] mb-0.5">일 평균</div>
-            <div className="text-xl font-bold text-[#0f172a]">
+          <div
+            className="rounded-lg p-2 text-center"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
+            <div className="text-sm" style={{ color: 'var(--text-muted)' }}>일 평균</div>
+            <div className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
               {dailyAvg.toLocaleString()}
             </div>
           </div>
-          <div className="bg-slate-50 rounded-lg p-2 text-center border border-slate-200">
-            <div className="text-sm text-[#64748b] mb-0.5">근무일</div>
-            <div className="text-xl font-bold text-[#10b981]">
+          <div
+            className="rounded-lg p-2 text-center"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
+            <div className="text-sm" style={{ color: 'var(--text-muted)' }}>근무일</div>
+            <div className="text-xl font-bold" style={{ color: 'var(--accent-green)' }}>
               {weeklyStats.totalSessions}일
             </div>
           </div>
@@ -537,8 +593,8 @@ export default function MainTab({
       </div>
 
       {/* ===== 금주 수익 그래프 (월~일 7일) ===== */}
-      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-2">
-        <h3 className="text-base font-bold text-[#272343] mb-2">금주 수익 그래프</h3>
+      <div className="card p-3 mb-2">
+        <h3 className="card-header mb-2">금주 수익 그래프</h3>
         <div className="flex items-end gap-1.5 h-32 mb-2">
           {(() => {
             const ws = weekStartKst();
@@ -575,44 +631,45 @@ export default function MainTab({
             const dayName = getDayName(day.date);
             return (
               <div key={day.date} className="flex-1 flex flex-col items-center">
-                <div className="text-xs text-[#64748b] mb-0.5">
+                <div className="text-xs" style={{ color: 'var(--text-muted)' }}>
                   {hasData ? day.earnings.toLocaleString() : ''}
                 </div>
                 <div
-                  className={`w-full rounded-t transition-all ${
-                    hasData
+                  className="w-full rounded-t transition-all"
+                  style={{
+                    height: `${Math.max(hasData ? 24 : 4, (heightPercent / 100) * 128)}px`,
+                    background: hasData
                       ? day.achieved
-                        ? 'bg-gradient-to-t from-[#ef4444] to-[#fca5a5]'
-                        : 'bg-slate-300'
-                      : 'bg-slate-100'
-                  }`}
-                  style={{ height: `${Math.max(hasData ? 24 : 4, (heightPercent / 100) * 128)}px` }}
+                        ? 'linear-gradient(to top, var(--accent-red), var(--accent-red-light))'
+                        : 'var(--text-muted)'
+                      : 'var(--card-border)',
+                  }}
                 />
-                <span className="text-xs text-[#64748b] mt-1">
+                <span className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
                   {dayName}
                 </span>
               </div>
             );
           })}
         </div>
-        <div className="flex justify-end gap-3 text-xs text-[#64748b]">
+        <div className="flex justify-end gap-3 text-xs" style={{ color: 'var(--text-muted)' }}>
           <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm bg-slate-300 inline-block" />
+            <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: 'var(--text-muted)' }} />
             수익
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm bg-gradient-to-r from-[#ef4444] to-[#fca5a5] inline-block" />
+            <span className="w-2 h-2 rounded-sm inline-block" style={{ background: 'linear-gradient(to right, var(--accent-red), var(--accent-red-light))' }} />
             목표달성
           </span>
         </div>
       </div>
 
       {/* ===== 금주 수익 상세기록 ===== */}
-      <div className="bg-[#fffffe] rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-4">
-        <h3 className="text-base font-bold text-[#272343] mb-2">이번 주 기록</h3>
+      <div className="card p-3 mb-4">
+        <h3 className="card-header mb-2">이번 주 기록</h3>
 
         {thisWeekSessions.length === 0 ? (
-          <div className="text-center text-[#64748b] text-base py-4">
+          <div className="text-center text-base py-4" style={{ color: 'var(--text-muted)' }}>
             이번 주 기록이 없습니다.
           </div>
         ) : (
@@ -635,9 +692,9 @@ export default function MainTab({
                 const dailyGoalAchieved = dailyTotal >= settings.goals.daily;
 
                 return (
-                  <div key={dateKst} className="border-b border-slate-200 pb-3 last:border-0 last:pb-0">
+                  <div key={dateKst} className="pb-3 last:border-0 last:pb-0" style={{ borderBottom: '1px solid var(--card-border)' }}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-base font-bold text-[#0f172a]">
+                      <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>
                         {dateKst}
                       </span>
                       <div className="flex items-center gap-2">
@@ -646,7 +703,7 @@ export default function MainTab({
                             COMPLETE
                           </span>
                         )}
-                        <span className="text-sm font-bold text-[#ef4444]">
+                        <span className="text-sm font-bold" style={{ color: 'var(--accent-red)' }}>
                           일일 합계 {dailyTotal.toLocaleString()}원
                         </span>
                       </div>
@@ -685,45 +742,55 @@ export default function MainTab({
                       return (
                         <div
                           key={sessionKey}
-                          className="ml-2 pl-3 border-l-2 border-slate-200 py-1"
+                          className="ml-2 pl-3 py-1"
+                          style={{ borderLeft: '2px solid var(--card-border)' }}
                         >
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex items-center gap-2">
                               <span
-                                className={`text-sm px-2 py-0.5 rounded-full ${
-                                  isMorning
-                                    ? 'bg-red-50 text-[#ef4444]'
-                                    : 'bg-slate-100 text-[#64748b]'
-                                }`}
+                                className="text-sm px-2 py-0.5 rounded-full"
+                                style={{
+                                  backgroundColor: isMorning ? 'rgba(239, 68, 68, 0.1)' : 'var(--bg-tertiary)',
+                                  color: isMorning ? 'var(--accent-red)' : 'var(--text-muted)',
+                                }}
                               >
                                 {isMorning ? '오전' : '오후'}
                               </span>
-                              <span className="text-base font-bold text-[#0f172a]">
+                              <span className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>
                                 {earnings.toLocaleString()}원
                               </span>
-                              <span className="text-sm text-[#64748b]">
+                              <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                                 {count}건 | {formatDurationShort(session.durationMin)} | {session.distanceKmInput}km
                               </span>
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-3 gap-1 text-sm text-[#64748b] mb-1">
-                            <span>건당 {avg.toLocaleString()}원</span>
-                            <span>시급 {hr.toLocaleString()}원</span>
-                            <span>km당 {epk.toLocaleString()}원</span>
+                          <div className="grid grid-cols-3 gap-1 text-sm mb-1" style={{ color: 'var(--text-muted)' }}>
+                            <div>
+                              쿠팡이츠{' '}
+                              <span className="font-bold" style={{ color: 'var(--text-primary)' }}>
+                                {cquickCount}건
+                              </span>
+                              <span className="ml-1">(건당 {cquickAvg.toLocaleString()}원)</span>
+                            </div>
+                            <div>
+                              배민{' '}
+                              <span className="font-bold" style={{ color: 'var(--text-primary)' }}>
+                                {baeminCount}건
+                              </span>
+                              <span className="ml-1">(건당 {baeminAvg.toLocaleString()}원)</span>
+                            </div>
+                            <div>
+                              시급{' '}
+                              <span className="font-bold" style={{ color: 'var(--accent-red)' }}>
+                                {hr.toLocaleString()}원
+                              </span>
+                            </div>
                           </div>
-
-                          <div className="space-y-0.5">
-                            {cquickCount > 0 && (
-                              <div className="text-sm text-[#ef4444] font-medium">
-                                카카오퀵: {cquickCount}건 {cquickAmount.toLocaleString()}원 (건당 {cquickAvg.toLocaleString()}원)
-                              </div>
-                            )}
-                            {baeminCount > 0 && (
-                              <div className="text-sm text-[#0f172a] font-medium">
-                                배민: {baeminCount}건 {baeminAmount.toLocaleString()}원 (건당 {baeminAvg.toLocaleString()}원)
-                              </div>
-                            )}
+                          <div className="flex justify-between text-xs" style={{ color: 'var(--text-muted)' }}>
+                            <span>건당 {avg.toLocaleString()}원</span>
+                            <span>km당 {epk.toLocaleString()}원</span>
+                            <span>{session.memo || '메모 없음'}</span>
                           </div>
                         </div>
                       );

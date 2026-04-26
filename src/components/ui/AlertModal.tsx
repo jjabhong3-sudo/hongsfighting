@@ -36,29 +36,41 @@ export default function AlertModal({
   };
 
   const colorMap = {
-    warning: 'bg-orange-500',
-    success: 'bg-green-500',
-    info: 'bg-blue-500',
+    warning: 'var(--accent-red)',
+    success: 'var(--accent-green)',
+    info: 'var(--accent-blue)',
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 animate-fadeIn">
-      <div className="bg-white w-80 rounded-2xl p-5 shadow-xl shadow-black/10 animate-scaleIn border border-[#e3f6f5]">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center animate-fadeIn"
+      style={{ backgroundColor: 'var(--bg-overlay)' }}>
+      <div className="w-80 rounded-2xl p-5 shadow-xl animate-scaleIn"
+        style={{
+          backgroundColor: 'var(--card-bg)',
+          border: '1px solid var(--card-border)',
+        }}
+      >
         <div className="text-center mb-4">
           <div className="text-3xl mb-2">{iconMap[type]}</div>
-          <h3 className="text-lg font-bold text-[#0B3954] mb-1">{title}</h3>
-          <p className="text-sm text-[#6B8BA8] whitespace-pre-line">{message}</p>
+          <h3 className="text-lg font-bold mb-1" style={{ color: 'var(--text-primary)' }}>{title}</h3>
+          <p className="text-sm whitespace-pre-line" style={{ color: 'var(--text-secondary)' }}>{message}</p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={onCancel}
-            className="flex-1 bg-[#E8F4FD] text-[#6B8BA8] rounded-lg py-2.5 font-medium text-sm hover:bg-[#D6E8F5] transition-colors border border-[#D6E8F5]"
+            className="flex-1 rounded-lg py-2.5 font-medium text-sm transition-colors"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--card-border)',
+            }}
           >
             {cancelText}
           </button>
           <button
             onClick={onConfirm}
-            className={`flex-1 text-white rounded-lg py-2.5 font-medium text-sm ${colorMap[type]}`}
+            className="flex-1 text-white rounded-lg py-2.5 font-medium text-sm"
+            style={{ backgroundColor: colorMap[type] }}
           >
             {confirmText}
           </button>

@@ -1,11 +1,26 @@
 @import "tailwindcss";
 
+/* ============================================================
+   CSS 변수 (라이트/다크 모드)
+   ============================================================ */
 :root {
-  --background: #F0F6FA;
-  --foreground: #0B3954;
-  --card-bg: #FFFFFF;
-  --card-border: #7FC8FF;
-  --card-border-strong: #35A7FF;
+  /* 배경 */
+  --bg-primary: #0f172a;       /* slate-900 */
+  --bg-secondary: #1e293b;     /* slate-800 */
+  --bg-tertiary: #0f172a;      /* 카드 내부 입력 필드 등 */
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  /* 카드 */
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+  /* 텍스트 (3단계) */
+  --text-primary: #f1f5f9;     /* slate-100 */
+  --text-secondary: #94a3b8;   /* slate-400 */
+  --text-muted: #64748b;       /* slate-500 */
+
+  /* 강조 색상 */
   --accent-red: #EF4444;
   --accent-red-light: #FCA5A5;
   --accent-red-dark: #DC2626;
@@ -14,36 +29,88 @@
   --accent-blue-dark: #38618C;
   --accent-green: #10B981;
   --accent-amber: #F59E0B;
-  --text-primary: #0B3954;
-  --text-secondary: #6B8BA8;
-  --text-muted: #8FA8C0;
+  --accent-orange: #F97316;
+
+  /* z-index 체계 */
+  --z-content: 10;
+  --z-tabbar: 50;
+  --z-modal-overlay: 55;
+  --z-modal: 60;
+  --z-alert: 70;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+/* ============================================================
+   기본 스타일
+   ============================================================ */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 18px;
 }
 
-/* 카드 공통 스타일 */
+/* ============================================================
+   카드 공통 스타일
+   ============================================================ */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(53, 167, 255, 0.08);
+  box-shadow: var(--card-shadow);
 }
 
-/* 블루 그라데이션 로딩바 */
+.card-header {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.card-subheader {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   버튼 공통 스타일
+   ============================================================ */
+.btn-primary {
+  width: 100%;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================================
+   그라데이션 로딩바
+   ============================================================ */
 .gradient-bar-blue {
   background: linear-gradient(90deg, #35A7FF, #7FC8FF, #B0D8FF);
   background-size: 200% 100%;
@@ -86,7 +153,9 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* 모바일 safe area 대응 */
+/* ============================================================
+   유틸리티
+   ============================================================ */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -112,25 +181,28 @@ input[type="number"] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D6E8F5;
+  background: var(--card-border);
   border-radius: 2px;
 }
 
-/* 맵 팝업 스타일 */
+/* ============================================================
+   맵 팝업 스타일
+   ============================================================ */
 .mapboxgl-popup.neon-popup .mapboxgl-popup-content {
-  background: #FFFFFF !important;
-  border: 1px solid #35A7FF40;
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   padding: 8px 12px;
-  box-shadow: 0 2px 8px rgba(53, 167, 255, 0.1);
+  box-shadow: var(--card-shadow);
 }
 
 .mapboxgl-popup.neon-popup .mapboxgl-popup-tip {
-  border-top-color: #FFFFFF !important;
+  border-top-color: var(--card-bg) !important;
 }
 
-/* ===== 애니메이션 ===== */
-
+/* ============================================================
+   애니메이션
+   ============================================================ */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

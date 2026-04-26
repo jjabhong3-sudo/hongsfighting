@@ -139,12 +139,12 @@ export default function SettingsTab({
   return (
     <div className="px-3 pb-24">
       {/* ===== 레이어1: 금액 목표 설정 ===== */}
-      <div className="bg-white rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-3">
-        <h3 className="text-base font-bold text-[#0B3954] mb-2">금액 목표 설정</h3>
+      <div className="card p-3 mb-3">
+        <h3 className="card-header mb-2">금액 목표 설정</h3>
 
         <div className="space-y-2">
           <div>
-            <label className="text-sm text-[#6B8BA8] mb-1 block">
+            <label className="text-sm mb-1 block" style={{ color: 'var(--text-secondary)' }}>
               일일 목표 금액
             </label>
             <input
@@ -152,12 +152,17 @@ export default function SettingsTab({
               inputMode="numeric"
               value={dailyGoal}
               onChange={(e) => setDailyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+              className="w-full rounded-lg px-3 py-2 text-base"
+              style={{
+                backgroundColor: 'var(--bg-tertiary)',
+                border: '1px solid var(--card-border)',
+                color: 'var(--text-primary)',
+              }}
               placeholder="50,000"
             />
           </div>
           <div>
-            <label className="text-sm text-[#6B8BA8] mb-1 block">
+            <label className="text-sm mb-1 block" style={{ color: 'var(--text-secondary)' }}>
               주간 목표 금액
             </label>
             <input
@@ -165,12 +170,17 @@ export default function SettingsTab({
               inputMode="numeric"
               value={weeklyGoal}
               onChange={(e) => setWeeklyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+              className="w-full rounded-lg px-3 py-2 text-base"
+              style={{
+                backgroundColor: 'var(--bg-tertiary)',
+                border: '1px solid var(--card-border)',
+                color: 'var(--text-primary)',
+              }}
               placeholder="300,000"
             />
           </div>
           <div>
-            <label className="text-sm text-[#6B8BA8] mb-1 block">
+            <label className="text-sm mb-1 block" style={{ color: 'var(--text-secondary)' }}>
               월간 목표 금액
             </label>
             <input
@@ -178,7 +188,12 @@ export default function SettingsTab({
               inputMode="numeric"
               value={monthlyGoal}
               onChange={(e) => setMonthlyGoal(formatInputNumber(e.target.value))}
-              className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+              className="w-full rounded-lg px-3 py-2 text-base"
+              style={{
+                backgroundColor: 'var(--bg-tertiary)',
+                border: '1px solid var(--card-border)',
+                color: 'var(--text-primary)',
+              }}
               placeholder="1,200,000"
             />
           </div>
@@ -186,19 +201,20 @@ export default function SettingsTab({
       </div>
 
       {/* ===== 레이어2: 부채 목록 설정 ===== */}
-      <div className="bg-white rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-3">
+      <div className="card p-3 mb-3">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-base font-bold text-[#0B3954]">부채 목록</h3>
+          <h3 className="card-header">부채 목록</h3>
           <button
             onClick={addDebt}
-            className="text-[#35A7FF] text-base font-medium"
+            className="text-base font-medium"
+            style={{ color: 'var(--accent-blue)' }}
           >
             + 추가
           </button>
         </div>
 
         {debts.length === 0 ? (
-          <div className="text-center text-[#6B8BA8] text-base py-4">
+          <div className="text-center text-base py-4" style={{ color: 'var(--text-secondary)' }}>
             부채를 추가해주세요.
           </div>
         ) : (
@@ -209,7 +225,12 @@ export default function SettingsTab({
                   type="text"
                   value={debt.name}
                   onChange={(e) => updateDebt(index, 'name', e.target.value)}
-                  className="flex-1 bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="flex-1 rounded-lg px-3 py-2 text-base"
+                  style={{
+                    backgroundColor: 'var(--bg-tertiary)',
+                    border: '1px solid var(--card-border)',
+                    color: 'var(--text-primary)',
+                  }}
                   placeholder="부채명"
                 />
                 <input
@@ -219,12 +240,18 @@ export default function SettingsTab({
                   onChange={(e) =>
                     updateDebt(index, 'amount', e.target.value)
                   }
-                  className="w-28 bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-right text-[#0B3954]"
+                  className="w-28 rounded-lg px-3 py-2 text-base text-right"
+                  style={{
+                    backgroundColor: 'var(--bg-tertiary)',
+                    border: '1px solid var(--card-border)',
+                    color: 'var(--text-primary)',
+                  }}
                   placeholder="금액"
                 />
                 <button
                   onClick={() => removeDebt(index)}
-                  className="text-[#EF4444] text-base px-1"
+                  className="text-base px-1"
+                  style={{ color: 'var(--accent-red)' }}
                 >
                   ✕
                 </button>
@@ -243,20 +270,26 @@ export default function SettingsTab({
             ? 'gradient-bar-green text-white'
             : hasChanges
             ? 'gradient-bar-blue text-white'
-            : 'bg-[#D6E8F5] text-[#8FA8C0] cursor-not-allowed'
+            : ''
         }`}
+        style={{
+          backgroundColor: !hasChanges && !saved ? 'var(--card-border)' : undefined,
+          color: !hasChanges && !saved ? 'var(--text-muted)' : undefined,
+          cursor: !hasChanges && !saved ? 'not-allowed' : undefined,
+        }}
       >
         {saved ? '저장 완료!' : hasChanges ? '설정 저장' : '변경사항 없음'}
       </button>
 
       {/* ===== 레이어3: 전체 기록 ===== */}
-      <div className="bg-white rounded-xl shadow-sm border border-[#e3f6f5] p-3 mb-3">
+      <div className="card p-3 mb-3">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-base font-bold text-[#0B3954]">전체 기록</h3>
+          <h3 className="card-header">전체 기록</h3>
           {sessions.length > 0 && (
             <button
               onClick={() => setShowResetAlert(true)}
-              className="text-[#EF4444] text-sm font-medium"
+              className="text-sm font-medium"
+              style={{ color: 'var(--accent-red)' }}
             >
               기록 초기화
             </button>
@@ -265,60 +298,90 @@ export default function SettingsTab({
 
         <div className="space-y-2">
           {/* 근무일 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#e3f6f5]">
-            <div className="text-sm text-[#6B8BA8] mb-0.5">총 근무일</div>
-            <div className="text-xl font-bold text-[#0B3954]">
+          <div
+            className="rounded-lg p-2"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
+            <div className="text-sm mb-0.5" style={{ color: 'var(--text-secondary)' }}>총 근무일</div>
+            <div className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
               {sessions.length}일
             </div>
-            <div className="text-xs text-[#6B8BA8]">
+            <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
               {formatDuration(totalDurationMin)}
             </div>
           </div>
 
           {/* 연속 출근 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#e3f6f5]">
-            <div className="text-sm text-[#6B8BA8] mb-0.5">최대 연속 출근</div>
-            <div className="text-xl font-bold text-[#F59E0B]">
+          <div
+            className="rounded-lg p-2"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
+            <div className="text-sm mb-0.5" style={{ color: 'var(--text-secondary)' }}>최대 연속 출근</div>
+            <div className="text-xl font-bold" style={{ color: 'var(--accent-amber)' }}>
               {streak}일째
             </div>
           </div>
 
           {/* 누적 건수 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#e3f6f5]">
-            <div className="text-sm text-[#6B8BA8] mb-0.5">누적 건수</div>
-            <div className="text-xl font-bold text-[#0B3954]">
+          <div
+            className="rounded-lg p-2"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
+            <div className="text-sm mb-0.5" style={{ color: 'var(--text-secondary)' }}>누적 건수</div>
+            <div className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
               {totalCount}건
             </div>
             <div className="grid grid-cols-2 gap-2 mt-1">
-              <div className="text-xs text-[#6B8BA8]">
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                 카카오퀵: {cquickCount}건
               </div>
-              <div className="text-xs text-[#6B8BA8]">
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                 배민: {baeminCount}건
               </div>
             </div>
           </div>
 
           {/* 누적 수익 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#e3f6f5]">
-            <div className="text-sm text-[#6B8BA8] mb-0.5">누적 수익</div>
-            <div className="text-xl font-bold text-[#35A7FF]">
+          <div
+            className="rounded-lg p-2"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
+            <div className="text-sm mb-0.5" style={{ color: 'var(--text-secondary)' }}>누적 수익</div>
+            <div className="text-xl font-bold" style={{ color: 'var(--accent-blue)' }}>
               {totalEarnings.toLocaleString()}원
             </div>
             <div className="grid grid-cols-2 gap-2 mt-1">
-              <div className="text-xs text-[#6B8BA8]">
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                 카카오퀵: {cquickTotal.toLocaleString()}원
               </div>
-              <div className="text-xs text-[#6B8BA8]">
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                 배민: {baeminTotal.toLocaleString()}원
               </div>
             </div>
           </div>
 
           {/* 누적 이동거리 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 border border-[#e3f6f5]">
-            <div className="text-sm text-[#6B8BA8] mb-0.5">누적 이동거리</div>
-            <div className="text-xl font-bold text-[#0B3954]">
+          <div
+            className="rounded-lg p-2"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
+            <div className="text-sm mb-0.5" style={{ color: 'var(--text-secondary)' }}>누적 이동거리</div>
+            <div className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
               {totalDistance.toLocaleString()}km
             </div>
           </div>

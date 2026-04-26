@@ -165,30 +165,42 @@ export default function ShiftEndModal({
   return (
     <>
       {/* 배경 오버레이 (fade in) */}
-      <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/50 animate-fadeIn">
+      <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center animate-fadeIn"
+        style={{ backgroundColor: 'var(--bg-overlay)' }}>
         {/* 모달 본체 (slide up) */}
-        <div className="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 max-h-[90vh] overflow-y-auto animate-slideUp border border-[#e3f6f5]">
+        <div className="w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 max-h-[90vh] overflow-y-auto animate-slideUp"
+          style={{
+            backgroundColor: 'var(--card-bg)',
+            border: '1px solid var(--card-border)',
+          }}
+        >
           {/* 헤더 */}
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-xl font-bold text-[#0B3954]">퇴근 기록</h2>
+            <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>퇴근 기록</h2>
             <button
               onClick={onClose}
-              className="text-[#6B8BA8] text-xl leading-none p-1"
+              className="text-xl leading-none p-1"
+              style={{ color: 'var(--text-secondary)' }}
             >
               ✕
             </button>
           </div>
 
           {/* 위로 문구 */}
-          <div className="text-center text-xl font-bold text-[#35A7FF] mb-3">
+          <div className="text-center text-xl font-bold mb-3" style={{ color: 'var(--accent-blue)' }}>
             {encourageMsg}
           </div>
 
           {/* 근무 시간 (수동 입력 가능) */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 mb-3 border border-[#e3f6f5]">
+          <div className="rounded-lg p-2 mb-3"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
             <div className="flex items-center justify-between mb-1">
-              <div className="text-sm text-[#6B8BA8]">오늘 근무 시간</div>
-              <label className="flex items-center gap-1 text-sm text-[#6B8BA8]">
+              <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>오늘 근무 시간</div>
+              <label className="flex items-center gap-1 text-sm" style={{ color: 'var(--text-secondary)' }}>
                 <input
                   type="checkbox"
                   checked={useManualDuration}
@@ -205,13 +217,18 @@ export default function ShiftEndModal({
                   inputMode="numeric"
                   value={manualDurationMin}
                   onChange={(e) => setManualDurationMin(e.target.value)}
-                  className="w-24 text-center bg-[#E8F4FD] border-2 border-[#35A7FF] rounded-lg px-3 py-2 text-xl font-bold text-[#35A7FF]"
+                  className="w-24 text-center rounded-lg px-3 py-2 text-xl font-bold"
+                  style={{
+                    backgroundColor: 'var(--bg-tertiary)',
+                    border: '2px solid var(--accent-blue)',
+                    color: 'var(--accent-blue)',
+                  }}
                   placeholder={String(durationMin)}
                 />
-                <span className="text-sm text-[#6B8BA8]">분</span>
+                <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>분</span>
               </div>
             ) : (
-              <div className="text-3xl font-bold text-[#35A7FF] text-center">
+              <div className="text-3xl font-bold text-center" style={{ color: 'var(--accent-blue)' }}>
                 {formatMin(durationMin)}
               </div>
             )}
@@ -219,27 +236,37 @@ export default function ShiftEndModal({
 
           {/* 카카오퀵 */}
           <div className="mb-3">
-            <h3 className="text-base font-semibold text-[#8FA8C0] mb-1">카카오퀵</h3>
+            <h3 className="text-base font-semibold mb-1" style={{ color: 'var(--text-muted)' }}>카카오퀵</h3>
             <div className="flex gap-2">
               <div className="flex-1">
-                <label className="text-sm text-[#6B8BA8]">건수</label>
+                <label className="text-sm" style={{ color: 'var(--text-secondary)' }}>건수</label>
                 <input
                   type="text"
                   inputMode="numeric"
                   value={cquickCount}
                   onChange={(e) => setCquickCount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="w-full rounded-lg px-3 py-2 text-base"
+                  style={{
+                    backgroundColor: 'var(--bg-tertiary)',
+                    border: '1px solid var(--card-border)',
+                    color: 'var(--text-primary)',
+                  }}
                   placeholder="0"
                 />
               </div>
               <div className="flex-1">
-                <label className="text-sm text-[#6B8BA8]">금액</label>
+                <label className="text-sm" style={{ color: 'var(--text-secondary)' }}>금액</label>
                 <input
                   type="text"
                   inputMode="numeric"
                   value={cquickAmount}
                   onChange={(e) => setCquickAmount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="w-full rounded-lg px-3 py-2 text-base"
+                  style={{
+                    backgroundColor: 'var(--bg-tertiary)',
+                    border: '1px solid var(--card-border)',
+                    color: 'var(--text-primary)',
+                  }}
                   placeholder="0"
                 />
               </div>
@@ -248,27 +275,37 @@ export default function ShiftEndModal({
 
           {/* 배민 */}
           <div className="mb-3">
-            <h3 className="text-base font-semibold text-[#8FA8C0] mb-1">배민</h3>
+            <h3 className="text-base font-semibold mb-1" style={{ color: 'var(--text-muted)' }}>배민</h3>
             <div className="flex gap-2">
               <div className="flex-1">
-                <label className="text-sm text-[#6B8BA8]">건수</label>
+                <label className="text-sm" style={{ color: 'var(--text-secondary)' }}>건수</label>
                 <input
                   type="text"
                   inputMode="numeric"
                   value={baeminCount}
                   onChange={(e) => setBaeminCount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="w-full rounded-lg px-3 py-2 text-base"
+                  style={{
+                    backgroundColor: 'var(--bg-tertiary)',
+                    border: '1px solid var(--card-border)',
+                    color: 'var(--text-primary)',
+                  }}
                   placeholder="0"
                 />
               </div>
               <div className="flex-1">
-                <label className="text-sm text-[#6B8BA8]">금액</label>
+                <label className="text-sm" style={{ color: 'var(--text-secondary)' }}>금액</label>
                 <input
                   type="text"
                   inputMode="numeric"
                   value={baeminAmount}
                   onChange={(e) => setBaeminAmount(formatInputNumber(e.target.value))}
-                  className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+                  className="w-full rounded-lg px-3 py-2 text-base"
+                  style={{
+                    backgroundColor: 'var(--bg-tertiary)',
+                    border: '1px solid var(--card-border)',
+                    color: 'var(--text-primary)',
+                  }}
                   placeholder="0"
                 />
               </div>
@@ -277,7 +314,7 @@ export default function ShiftEndModal({
 
           {/* 이동거리 */}
           <div className="mb-3">
-            <label className="text-base font-semibold text-[#8FA8C0] mb-1 block">
+            <label className="text-base font-semibold mb-1 block" style={{ color: 'var(--text-muted)' }}>
               이동거리 (km)
             </label>
             <input
@@ -285,56 +322,79 @@ export default function ShiftEndModal({
               inputMode="decimal"
               value={distanceKm}
               onChange={(e) => setDistanceKm(e.target.value)}
-              className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954]"
+              className="w-full rounded-lg px-3 py-2 text-base"
+              style={{
+                backgroundColor: 'var(--bg-tertiary)',
+                border: '1px solid var(--card-border)',
+                color: 'var(--text-primary)',
+              }}
               placeholder="전기자전거 계기판 거리 입력"
             />
           </div>
 
           {/* 메모 */}
           <div className="mb-3">
-            <label className="text-base font-semibold text-[#8FA8C0] mb-1 block">
+            <label className="text-base font-semibold mb-1 block" style={{ color: 'var(--text-muted)' }}>
               메모
             </label>
             <textarea
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
-              className="w-full bg-[#E8F4FD] border border-[#e3f6f5] rounded-lg px-3 py-2 text-base text-[#0B3954] resize-none"
+              className="w-full rounded-lg px-3 py-2 text-base resize-none"
+              style={{
+                backgroundColor: 'var(--bg-tertiary)',
+                border: '1px solid var(--card-border)',
+                color: 'var(--text-primary)',
+              }}
               rows={2}
               placeholder="오늘 하루는 어땠나요? (선택)"
             />
           </div>
 
           {/* 요약 */}
-          <div className="bg-[#E8F4FD] rounded-lg p-2 mb-3 text-base border border-[#e3f6f5]">
+          <div className="rounded-lg p-2 mb-3 text-base"
+            style={{
+              backgroundColor: 'var(--bg-tertiary)',
+              border: '1px solid var(--card-border)',
+            }}
+          >
             <div className="flex justify-between mb-1">
-              <span className="text-[#6B8BA8]">총 수익</span>
-              <span className="font-bold text-[#0B3954]">{totalAmount.toLocaleString()}원</span>
+              <span style={{ color: 'var(--text-secondary)' }}>총 수익</span>
+              <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{totalAmount.toLocaleString()}원</span>
             </div>
             <div className="flex justify-between mb-1">
-              <span className="text-[#6B8BA8]">총 건수</span>
-              <span className="font-bold text-[#0B3954]">{totalCount}건</span>
+              <span style={{ color: 'var(--text-secondary)' }}>총 건수</span>
+              <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{totalCount}건</span>
             </div>
             <div className="flex justify-between mb-1">
-              <span className="text-[#6B8BA8]">건당 평균</span>
-              <span className="font-bold text-[#0B3954]">{avgPerOrderVal.toLocaleString()}원</span>
+              <span style={{ color: 'var(--text-secondary)' }}>건당 평균</span>
+              <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{avgPerOrderVal.toLocaleString()}원</span>
             </div>
 
             {goalAchieved && (
-              <div className="text-center text-[#10B981] font-bold mt-1 py-1.5 bg-[#D1FAE5] rounded-lg border-2 border-[#10B981]/30">
+              <div className="text-center font-bold mt-1 py-1.5 rounded-lg"
+                style={{
+                  color: 'var(--accent-green)',
+                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                  border: '2px solid rgba(16, 185, 129, 0.3)',
+                }}
+              >
                 목표 달성! 오늘도 최고였어요!
               </div>
             )}
 
             {!goalAchieved && totalAmount > 0 && (
-              <div className="mt-1 pt-1 border-t-2 border-[#D6E8F5]">
-                <div className="flex justify-between text-[#F59E0B] mb-1">
+              <div className="mt-1 pt-1"
+                style={{ borderTop: '2px solid var(--card-border)' }}
+              >
+                <div className="flex justify-between mb-1" style={{ color: 'var(--accent-amber)' }}>
                   <span>목표까지</span>
                   <span className="font-bold">
                     {remainingForGoal.toLocaleString()}원
                   </span>
                 </div>
                 {neededOrders > 0 && (
-                  <div className="text-sm text-[#6B8BA8] text-center mt-1">
+                  <div className="text-sm text-center mt-1" style={{ color: 'var(--text-secondary)' }}>
                     평균 {avgPerOrderVal.toLocaleString()}원 기준 {neededOrders}건 더
                     배달하면 목표 달성!
                   </div>
@@ -345,13 +405,13 @@ export default function ShiftEndModal({
 
           {/* 에러 */}
           {error && (
-            <div className="text-[#EF4444] text-base mb-2 text-center">{error}</div>
+            <div className="text-base mb-2 text-center" style={{ color: 'var(--accent-red)' }}>{error}</div>
           )}
 
           {/* 제출 버튼 */}
           <button
             onClick={handleSubmitClick}
-            className="w-full gradient-bar-blue text-white rounded-lg py-3 font-bold text-base"
+            className="btn-primary gradient-bar-blue"
           >
             저장하기
           </button>

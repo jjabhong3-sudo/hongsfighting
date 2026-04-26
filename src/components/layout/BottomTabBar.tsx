@@ -44,23 +44,35 @@ const tabs: { key: TabType; label: string; icon: React.ReactNode }[] = [
   },
 ];
 
-
 export default function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#D6E8F5] shadow-[0_-2px_8px_rgba(53,167,255,0.08)] safe-area-bottom">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 safe-area-bottom"
+      style={{
+        backgroundColor: 'var(--bg-secondary)',
+        borderTop: '1px solid var(--card-border)',
+        boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.2)',
+      }}
+    >
       <div className="flex justify-around items-center h-14 max-w-lg mx-auto">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => onTabChange(tab.key)}
-            className={`flex flex-col items-center justify-center flex-1 h-full transition-colors ${
-              activeTab === tab.key
-                ? 'text-[#35A7FF]'
-                : 'text-[#8FA8C0]'
-            }`}
+            className="flex flex-col items-center justify-center flex-1 h-full transition-colors"
+            style={{
+              color: activeTab === tab.key ? 'var(--accent-blue)' : 'var(--text-muted)',
+            }}
           >
             <span className="text-lg">{tab.icon}</span>
-            <span className={`text-xs mt-0.5 font-bold ${activeTab === tab.key ? 'text-[#35A7FF]' : 'text-[#8FA8C0]'}`}>{tab.label}</span>
+            <span
+              className="text-xs mt-0.5 font-bold"
+              style={{
+                color: activeTab === tab.key ? 'var(--accent-blue)' : 'var(--text-muted)',
+              }}
+            >
+              {tab.label}
+            </span>
           </button>
         ))}
       </div>
